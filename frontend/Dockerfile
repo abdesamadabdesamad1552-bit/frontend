@@ -1,14 +1,15 @@
-# ━━━ Stage 1: Install dependencies ━━━
+# Build context must be the frontend/ folder (Easypanel Build Path: frontend)
+# Easypanel Dockerfile field: Dockerfile
+
 FROM node:20-alpine AS deps
 WORKDIR /app
-COPY frontend/package.json frontend/package-lock.json* ./
+COPY package.json package-lock.json* ./
 RUN npm ci --ignore-scripts
 
-# ━━━ Stage 2: Build ━━━
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY frontend/ .
+COPY . .
 
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
@@ -16,7 +17,6 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN npm run build
 
-# ━━━ Stage 3: Production ━━━
 FROM node:20-alpine AS runner
 WORKDIR /app
 
