@@ -1,5 +1,4 @@
-# Build context must be the backend/ folder (Easypanel Build Path: backend)
-# Easypanel Dockerfile field: Dockerfile
+# Easypanel Build Path: backend | Dockerfile: Dockerfile
 
 FROM node:20-alpine AS deps
 WORKDIR /app
