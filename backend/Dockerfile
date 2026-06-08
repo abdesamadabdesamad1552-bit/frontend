@@ -1,14 +1,14 @@
 # ━━━ Stage 1: Install dependencies ━━━
 FROM node:20-alpine AS deps
 WORKDIR /app
-COPY package.json package-lock.json* ./
+COPY backend/package.json backend/package-lock.json* ./
 RUN npm ci --ignore-scripts
 
 # ━━━ Stage 2: Build TypeScript ━━━
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY backend/ .
 RUN npm run build
 
 # ━━━ Stage 3: Production ━━━
