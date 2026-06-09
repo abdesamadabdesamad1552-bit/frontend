@@ -8,6 +8,16 @@ const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 const isProduction = process.env.NODE_ENV === "production";
 
+// ━━━ MaxMind License Key (from .env or Easypanel env vars) ━━━
+const maxmindLicenseKey = process.env.MAXMIND_LICENSE_KEY;
+
+if (maxmindLicenseKey) {
+  const masked = `${maxmindLicenseKey.slice(0, 4)}…${maxmindLicenseKey.slice(-4)}`;
+  console.log(`[env] MAXMIND_LICENSE_KEY loaded (${masked})`);
+} else {
+  console.warn("[env] MAXMIND_LICENSE_KEY not set — GeoIP will use fallback");
+}
+
 const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3000")
   .split(",")
   .map((u) => u.trim());
