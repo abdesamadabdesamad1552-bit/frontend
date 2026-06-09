@@ -1,4 +1,5 @@
 import { Router, type Request, type Response } from "express";
+import { getPool } from "../db.js";
 
 export const orderRoutes = Router();
 
@@ -11,6 +12,10 @@ interface OrderBody {
   currency: string;
 }
 
+function generateOrderId(): string {
+  return `NQ-${Date.now().toString(36).toUpperCase()}`;
+}
+
 orderRoutes.post("/", async (req: Request, res: Response) => {
   const body = req.body as OrderBody;
 
@@ -19,8 +24,30 @@ orderRoutes.post("/", async (req: Request, res: Response) => {
     return;
   }
 
-  const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  const orderId = generateOrderId();
 
+  try {
+    const db = getPool();
+    await db.query(
+      `INSERT INTO orders (order_id, name, phone, country, items, total, currency)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [
+        orderId,
+        body.name.trim(),
+        body.phone.trim(),
+        body.country,
+        JSON.stringify(body.items),
+        body.total,
+        body.currency,
+      ]
+    );
+  } catch (err) {
+    console.error("Database save failed:", err);
+    res.status(503).json({ error: "Could not save order. Database unavailable." });
+    return;
+  }
+
+  const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
   if (webhookUrl) {
     try {
       await fetch(webhookUrl, {
@@ -28,10 +55,13 @@ orderRoutes.post("/", async (req: Request, res: Response) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           timestamp: new Date().toISOString(),
+          orderId,
           name: body.name,
           phone: body.phone,
           country: body.country,
-          items: body.items.map((i) => `#${i.productId} x${i.quantity}${i.isUpsell ? " (upsell)" : ""}`).join(", "),
+          items: body.items
+            .map((i) => `#${i.productId} x${i.quantity}${i.isUpsell ? " (upsell)" : ""}`)
+            .join(", "),
           total: `${body.total} ${body.currency}`,
         }),
       });
@@ -42,7 +72,7 @@ orderRoutes.post("/", async (req: Request, res: Response) => {
 
   res.json({
     success: true,
-    orderId: `NQ-${Date.now().toString(36).toUpperCase()}`,
+    orderId,
     message: "Order received",
   });
 });

@@ -3,19 +3,27 @@ import express from "express";
 import cors from "cors";
 import { orderRoutes } from "./routes/orders.js";
 import { geoRoutes } from "./routes/geo.js";
+import { initDatabase, checkDatabase, closeDatabase } from "./db.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 const isProduction = process.env.NODE_ENV === "production";
 
-// ━━━ MaxMind GeoIP (Account ID + License Key) ━━━
 const maxmindAccountId = process.env.MAXMIND_ACCOUNT_ID;
 const maxmindLicenseKey = process.env.MAXMIND_LICENSE_KEY;
 
 if (maxmindAccountId && maxmindLicenseKey) {
-  console.log(`[env] MaxMind configured (account: ${maxmindAccountId}, key: ${maxmindLicenseKey.slice(0, 4)}…${maxmindLicenseKey.slice(-4)})`);
+  console.log(
+    `[env] MaxMind configured (account: ${maxmindAccountId}, key: ${maxmindLicenseKey.slice(0, 4)}…${maxmindLicenseKey.slice(-4)})`
+  );
 } else {
   console.warn("[env] MaxMind not fully configured — set MAXMIND_ACCOUNT_ID and MAXMIND_LICENSE_KEY");
+}
+
+if (process.env.DATABASE_URL) {
+  console.log("[env] DATABASE_URL loaded");
+} else {
+  console.warn("[env] DATABASE_URL not set — orders cannot be saved");
 }
 
 const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3000")
@@ -44,10 +52,13 @@ if (!isProduction) {
   });
 }
 
-app.get("/api/health", (_req, res) => {
+app.get("/api/health", async (_req, res) => {
+  const dbOk = process.env.DATABASE_URL ? await checkDatabase() : false;
+
   res.json({
-    status: "ok",
+    status: dbOk ? "ok" : "degraded",
     env: isProduction ? "production" : "development",
+    database: dbOk ? "connected" : "disconnected",
     timestamp: new Date().toISOString(),
   });
 });
@@ -67,14 +78,27 @@ app.use(
   }
 );
 
-const server = app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Backend running on http://localhost:${PORT} [${isProduction ? "production" : "development"}]`);
-});
+async function start() {
+  if (process.env.DATABASE_URL) {
+    try {
+      await initDatabase();
+      console.log("[db] PostgreSQL connected and schema ready");
+    } catch (err) {
+      console.error("[db] Failed to connect:", err);
+    }
+  }
 
-function shutdown() {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Backend running on http://localhost:${PORT} [${isProduction ? "production" : "development"}]`);
+  });
+}
+
+start();
+
+async function shutdown() {
   console.log("Shutting down...");
-  server.close(() => process.exit(0));
-  setTimeout(() => process.exit(1), 5000);
+  await closeDatabase();
+  process.exit(0);
 }
 
 process.on("SIGTERM", shutdown);
