@@ -25,26 +25,47 @@ orderRoutes.post("/", async (req: Request, res: Response) => {
   }
 
   const orderId = generateOrderId();
+  const db = getPool();
+  const client = await db.connect();
 
   try {
-    const db = getPool();
-    await db.query(
-      `INSERT INTO orders (order_id, name, phone, country, items, total, currency)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+    await client.query("BEGIN");
+
+    await client.query(
+      `INSERT INTO orders (order_id, name, phone, country, total, currency, status)
+       VALUES ($1, $2, $3, $4, $5, $6, 'pending')`,
       [
         orderId,
         body.name.trim(),
         body.phone.trim(),
         body.country,
-        JSON.stringify(body.items),
         body.total,
         body.currency,
       ]
     );
+
+    for (const item of body.items) {
+      await client.query(
+        `INSERT INTO order_items (order_id, product_id, quantity, is_upsell)
+         VALUES ($1, $2, $3, $4)`,
+        [orderId, item.productId, item.quantity, item.isUpsell ?? false]
+      );
+    }
+
+    await client.query(
+      `INSERT INTO tracking_events (order_id, event, metadata)
+       VALUES ($1, 'order_created', $2)`,
+      [orderId, JSON.stringify({ source: "website", country: body.country })]
+    );
+
+    await client.query("COMMIT");
   } catch (err) {
+    await client.query("ROLLBACK");
     console.error("Database save failed:", err);
     res.status(503).json({ error: "Could not save order. Database unavailable." });
     return;
+  } finally {
+    client.release();
   }
 
   const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
