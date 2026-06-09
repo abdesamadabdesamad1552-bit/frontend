@@ -1,4 +1,4 @@
-# Easypanel backend.git: Build Path = (empty) | Dockerfile = Dockerfile
+# Easypanel backend.git: Build Path = (empty) | Dockerfile = Dockerfile.backend
 
 FROM node:20-alpine AS deps
 WORKDIR /app
