@@ -4,6 +4,32 @@ const { Pool } = pg;
 
 let pool: pg.Pool | null = null;
 
+function poolSsl(connectionString: string): false | { rejectUnauthorized: boolean } {
+  if (connectionString.includes("sslmode=disable")) return false;
+  if (connectionString.includes("sslmode=require")) {
+    return { rejectUnauthorized: false };
+  }
+
+  try {
+    const host = new URL(connectionString.replace(/^postgresql:/, "http:")).hostname;
+    // Easypanel / Docker internal Postgres — no SSL
+    if (
+      host === "database" ||
+      host === "localhost" ||
+      host === "127.0.0.1" ||
+      host.endsWith(".internal")
+    ) {
+      return false;
+    }
+  } catch {
+    // fall through
+  }
+
+  return process.env.NODE_ENV === "production"
+    ? { rejectUnauthorized: false }
+    : false;
+}
+
 export function getPool(): pg.Pool {
   const url = process.env.DATABASE_URL;
   if (!url) {
@@ -13,7 +39,7 @@ export function getPool(): pg.Pool {
   if (!pool) {
     pool = new Pool({
       connectionString: url,
-      ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : undefined,
+      ssl: poolSsl(url),
     });
   }
 
