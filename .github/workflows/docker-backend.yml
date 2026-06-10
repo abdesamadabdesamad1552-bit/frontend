@@ -35,3 +35,27 @@ jobs:
           tags: |
             ghcr.io/abdesamadabdesamad1552-bit/naqa-backend:latest
             ghcr.io/abdesamadabdesamad1552-bit/naqa-backend:${{ github.sha }}
+
+      - name: Make GHCR package public
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGE: naqa-backend
+        run: |
+          OWNER="${{ github.repository_owner }}"
+          OWNER_TYPE="$(gh api "/users/${OWNER}" --jq .type)"
+          if [ "$OWNER_TYPE" = "Organization" ]; then
+            ENDPOINT="/orgs/${OWNER}/packages/container/${PACKAGE}"
+          else
+            ENDPOINT="/user/packages/container/${PACKAGE}"
+          fi
+
+          VISIBILITY="$(gh api "${ENDPOINT}" --jq .visibility 2>/dev/null || echo unknown)"
+          echo "Current visibility: ${VISIBILITY}"
+
+          if [ "$VISIBILITY" != "public" ]; then
+            gh api --method PATCH "${ENDPOINT}/visibility" -f visibility=public \
+              && echo "Package is now public" \
+              || echo "::warning::Could not set visibility via API. Make it public manually on GitHub."
+          else
+            echo "Package is already public"
+          fi
