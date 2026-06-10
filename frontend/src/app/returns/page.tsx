@@ -26,7 +26,7 @@ export default function ReturnsPage() {
             <section>
               <h2 className="text-[15px] font-bold text-text-primary mb-3">كيفية طلب الإرجاع</h2>
               <ol className="list-decimal list-inside space-y-2 mr-4 text-text-muted">
-                <li>تواصلي معنا عبر: <a href="mailto:contact@naqabeauty.shop" className="text-gold/70 hover:text-gold transition-colors">contact@naqabeauty.shop</a></li>
+                <li>تواصلي معنا عبر: <a href="mailto:contact@naqabeauty.store" className="text-gold/70 hover:text-gold transition-colors">contact@naqabeauty.store</a></li>
                 <li>اذكري رقم الطلب وسبب الإرجاع</li>
                 <li>سنرد عليك خلال 24 ساعة بتعليمات الإرجاع</li>
               </ol>

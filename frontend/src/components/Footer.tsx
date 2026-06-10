@@ -13,7 +13,7 @@ const links = {
   ],
   contact: [
     { href: "/contact", label: "تواصل معنا", isLink: true },
-    { href: "mailto:contact@naqabeauty.shop", label: "contact@naqabeauty.shop", isLink: false },
+    { href: "mailto:contact@naqabeauty.store", label: "contact@naqabeauty.store", isLink: false },
   ],
 };
 

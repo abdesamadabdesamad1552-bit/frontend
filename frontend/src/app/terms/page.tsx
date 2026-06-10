@@ -14,7 +14,7 @@ export default function TermsPage() {
           <div className="space-y-8 text-[14px] text-text-secondary leading-[1.8]">
             <section>
               <h2 className="text-[15px] font-bold text-text-primary mb-3">عام</h2>
-              <p>باستخدامك لموقع naqabeauty.shop، فإنك توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق على أي من هذه الشروط، يُرجى عدم استخدام الموقع.</p>
+              <p>باستخدامك لموقع naqabeauty.store، فإنك توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق على أي من هذه الشروط، يُرجى عدم استخدام الموقع.</p>
             </section>
             <section>
               <h2 className="text-[15px] font-bold text-text-primary mb-3">الطلبات والدفع</h2>

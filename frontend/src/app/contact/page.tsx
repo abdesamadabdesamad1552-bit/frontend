@@ -24,8 +24,8 @@ export default function ContactPage() {
             <div className="p-7 rounded-xl bg-obsidian-surface border border-glass-border text-center">
               <Mail className="w-6 h-6 text-gold/50 mx-auto mb-3" strokeWidth={1.5} />
               <h2 className="text-[14px] font-bold text-text-primary mb-2">البريد الإلكتروني</h2>
-              <a href="mailto:contact@naqabeauty.shop" className="text-[13px] text-gold/70 hover:text-gold transition-colors">
-                contact@naqabeauty.shop
+              <a href="mailto:contact@naqabeauty.store" className="text-[13px] text-gold/70 hover:text-gold transition-colors">
+                contact@naqabeauty.store
               </a>
             </div>
             <div className="p-7 rounded-xl bg-obsidian-surface border border-glass-border text-center">

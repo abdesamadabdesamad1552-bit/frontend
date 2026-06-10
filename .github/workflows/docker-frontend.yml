@@ -32,4 +32,4 @@ jobs:
             ghcr.io/abdesamadabdesamad1552-bit/naqa-frontend:latest
             ghcr.io/abdesamadabdesamad1552-bit/naqa-frontend:${{ github.sha }}
           build-args: |
-            NEXT_PUBLIC_API_URL=https://api.naqabeauty.shop
+            NEXT_PUBLIC_API_URL=https://api.naqabeauty.store

@@ -25,7 +25,7 @@ export default function PrivacyPage() {
             ))}
             <section>
               <h2 className="text-[15px] font-bold text-text-primary mb-3">التواصل</h2>
-              <p>إذا كان لديك أي أسئلة، يمكنك التواصل معنا عبر: <a href="mailto:contact@naqabeauty.shop" className="text-gold/70 hover:text-gold transition-colors">contact@naqabeauty.shop</a></p>
+              <p>إذا كان لديك أي أسئلة، يمكنك التواصل معنا عبر: <a href="mailto:contact@naqabeauty.store" className="text-gold/70 hover:text-gold transition-colors">contact@naqabeauty.store</a></p>
             </section>
             <p className="text-[12px] text-text-faint pt-6 border-t border-glass-border">آخر تحديث: يونيو 2026</p>
           </div>
