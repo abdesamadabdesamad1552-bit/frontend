@@ -1,28 +1,29 @@
-"use client";
-
 import Link from "next/link";
-import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/lib/products";
-import { ArrowLeft, CheckCircle, ShieldCheck, Sparkles, Truck } from "lucide-react";
 
-const pillars = [
+const trustPillars = [
   {
-    icon: Sparkles,
-    title: "مكونات فعّالة",
-    text: "تركيزات حقيقية — فيتامين سي، نياسيناميد، ريتينول، وغيرها.",
+    icon: "🧪",
+    title: "تركيزات حقيقية",
+    description: 'نسب دقيقة لكل مكون — مو بس "يحتوي على"',
   },
   {
-    icon: ShieldCheck,
-    title: "مصممة للخليج",
-    text: "تركيبات تتحمل الحرارة والرطوبة — بدون أكسدة ولا دهنية زائدة.",
+    icon: "☀️",
+    title: "مصمم للخليج",
+    description: "تركيبات مستقرة في الحرارة العالية والرطوبة",
   },
   {
-    icon: Truck,
-    title: "توصيل + COD",
-    text: "توصيل مجاني لجميع دول GCC. الدفع عند الاستلام فقط.",
+    icon: "🔍",
+    title: "شفافية كاملة",
+    description: "قائمة مكونات واضحة مع شرح لكل مكون",
+  },
+  {
+    icon: "✅",
+    title: "نتائج مرئية",
+    description: "مكونات مثبتة بدراسات سريرية — مو وعود فارغة",
   },
 ];
 
@@ -45,129 +46,93 @@ const testimonials = [
 ];
 
 export default function Home() {
-  const heroProduct = products[0];
-
   return (
     <>
       <Header />
 
       <main>
         {/* Hero */}
-        <section className="relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-28">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,168,83,0.08),transparent_55%)]" />
-
-          <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
-            <div>
-              <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.25em] text-gold/70">
-                Naqa Beauty · GCC
-              </p>
-
-              <h1 className="mb-6 text-[clamp(2.25rem,5.5vw,4.25rem)] font-bold leading-[1.15] text-white">
-                نقاء للتجميل الفاخر
-                <span className="mt-3 block text-[clamp(1.25rem,3vw,2rem)] font-medium text-gold">
-                  لأن بشرتك تستحق الأنقى
-                </span>
-              </h1>
-
-              <p className="mb-10 max-w-lg text-[16px] leading-[1.9] text-white/60">
-                5 منتجات premium تحل مشاكل حقيقية — تصبغات، جفاف، تساقط الشعر،
-                هالات، وحب الشباب. توصيل مجاني ودفع عند الاستلام.
-              </p>
-
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/shop"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-8 py-4 text-[15px] font-bold text-[#0a0a0a] transition-colors hover:bg-gold-light"
-                >
-                  تسوقي المجموعة
-                  <ArrowLeft className="h-4 w-4" />
-                </Link>
-                <Link
-                  href={`/products/${heroProduct.slug}`}
-                  className="inline-flex items-center justify-center rounded-xl border border-white/10 px-8 py-4 text-[15px] font-medium text-white/80 transition-colors hover:border-gold/30 hover:text-gold"
-                >
-                  المنتج الأكثر مبيعاً
-                </Link>
-              </div>
-
-              <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-white/45">
-                {["توصيل مجاني GCC", "الدفع عند الاستلام", "مكونات مثبتة علمياً"].map((item) => (
-                  <span key={item} className="inline-flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-gold/50" />
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-              <div className="overflow-hidden rounded-3xl border border-white/[0.08] bg-[#111111] shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
-                <div className="relative aspect-[4/5]">
-                  <Image
-                    src={heroProduct.image}
-                    alt={heroProduct.name}
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 90vw, 480px"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent" />
-                </div>
-                <div className="p-6">
-                  <p className="mb-1 text-[11px] uppercase tracking-[0.2em] text-gold/60">{heroProduct.badge}</p>
-                  <h2 className="mb-2 text-xl font-semibold text-white">{heroProduct.name}</h2>
-                  <p className="text-[14px] text-white/50">{heroProduct.tagline}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Products */}
-        <section className="border-t border-white/[0.06] py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mb-12 text-center md:mb-16">
-              <p className="mb-3 text-[11px] uppercase tracking-[0.25em] text-gold/60">المجموعة</p>
-              <h2 className="mb-4 text-[clamp(1.75rem,4vw,2.75rem)] font-bold text-white">
-                5 منتجات — 5 حلول
-              </h2>
-              <p className="mx-auto max-w-xl text-[15px] leading-relaxed text-white/50">
-                كل منتج يستهدف مشكلة محددة. اختاري ما يناسبك أو كوني مجموعة كاملة.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
-            <div className="mt-12 text-center">
+        <section className="bg-gradient-to-b from-brand-beige via-brand-white to-brand-white pt-16 pb-20 md:pt-24 md:pb-28">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <p className="text-brand-gray text-sm md:text-base mb-8 leading-relaxed">
+              تركيبات علمية – مكونات فعالة – تركيزات حقيقية
+            </p>
+            <h1 className="text-[clamp(2.5rem,7vw,4.5rem)] font-bold text-brand-black leading-[1.15]">
+              لأن بشرتك
+            </h1>
+            <p className="text-[clamp(2.5rem,7vw,4.5rem)] font-bold text-brand-gold leading-[1.15] mt-1 mb-10">
+              تستحق الأنقى
+            </p>
+            <p className="text-brand-gray text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
+              5 منتجات premium تحل مشاكل حقيقية — تصبغات، جفاف، تساقط الشعر،
+              هالات، وحب الشباب. توصيل مجاني ودفع عند الاستلام.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-2 text-[14px] font-medium text-gold transition-colors hover:text-gold-light"
+                className="inline-flex items-center justify-center gap-2 bg-brand-black text-brand-white text-base font-semibold px-8 py-4 rounded-xl hover:bg-brand-gold transition-colors"
               >
-                عرض كل المنتجات
-                <ArrowLeft className="h-4 w-4" />
+                تسوقي المجموعة
+              </Link>
+              <Link
+                href="#products"
+                className="inline-flex items-center justify-center text-base font-medium text-brand-gold border border-brand-gold/30 px-8 py-4 rounded-xl hover:bg-brand-beige transition-colors"
+              >
+                تصفحي المنتجات
               </Link>
             </div>
           </div>
         </section>
 
-        {/* Pillars */}
-        <section className="border-t border-white/[0.06] bg-[#0a0a0a] py-20 md:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              {pillars.map(({ icon: Icon, title, text }) => (
+        {/* Trust bar */}
+        <section className="bg-brand-black text-brand-white py-5">
+          <div className="max-w-5xl mx-auto px-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-sm">
+            <span>+2,347 عميلة</span>
+            <span>★★★★★ 4.9/5</span>
+            <span>5 منتجات</span>
+            <span>6 دول خليجية</span>
+          </div>
+        </section>
+
+        {/* Products */}
+        <section id="products" className="py-16 md:py-24 bg-brand-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-brand-black mb-4">
+                مجموعة نقاء
+              </h2>
+              <p className="text-brand-gray max-w-xl mx-auto">
+                5 منتجات — 5 حلول. كل منتج يستهدف مشكلة محددة.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Why Naqa */}
+        <section className="py-16 md:py-24 bg-brand-beige">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-black text-center mb-12">
+              لماذا نقاء؟
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {trustPillars.map((pillar) => (
                 <div
-                  key={title}
-                  className="rounded-2xl border border-white/[0.06] bg-[#111111] p-8"
+                  key={pillar.title}
+                  className="bg-brand-white rounded-2xl border border-brand-beige-dark p-6 text-center"
                 >
-                  <div className="mb-5 inline-flex rounded-xl border border-gold/15 bg-gold/5 p-3">
-                    <Icon className="h-5 w-5 text-gold" />
-                  </div>
-                  <h3 className="mb-3 text-lg font-semibold text-white">{title}</h3>
-                  <p className="text-[14px] leading-relaxed text-white/50">{text}</p>
+                  <span className="text-3xl block mb-4">{pillar.icon}</span>
+                  <h3 className="text-lg font-bold text-brand-black mb-2">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-sm text-brand-gray leading-relaxed">
+                    {pillar.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -175,23 +140,23 @@ export default function Home() {
         </section>
 
         {/* Testimonials */}
-        <section className="border-t border-white/[0.06] py-20 md:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mb-12 text-center">
-              <h2 className="text-[clamp(1.5rem,3.5vw,2.25rem)] font-bold text-white">
-                آراء عميلاتنا
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        <section className="py-16 md:py-24 bg-brand-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-black text-center mb-12">
+              آراء عميلاتنا
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {testimonials.map((t) => (
                 <blockquote
                   key={t.name}
-                  className="rounded-2xl border border-white/[0.06] bg-[#111111] p-6"
+                  className="bg-brand-beige rounded-2xl border border-brand-beige-dark p-6"
                 >
-                  <p className="mb-5 text-[14px] leading-[1.85] text-white/65">&ldquo;{t.text}&rdquo;</p>
-                  <footer className="border-t border-white/[0.06] pt-4">
-                    <p className="text-[13px] font-semibold text-white">{t.name}</p>
-                    <p className="text-[12px] text-white/40">{t.city}</p>
+                  <p className="text-brand-black/80 text-sm leading-relaxed mb-5">
+                    &ldquo;{t.text}&rdquo;
+                  </p>
+                  <footer>
+                    <p className="font-semibold text-brand-black text-sm">{t.name}</p>
+                    <p className="text-brand-gray text-xs">{t.city}</p>
                   </footer>
                 </blockquote>
               ))}
@@ -200,20 +165,19 @@ export default function Home() {
         </section>
 
         {/* CTA */}
-        <section className="border-t border-white/[0.06] py-20 md:py-28">
-          <div className="mx-auto max-w-2xl px-6 text-center">
-            <h2 className="mb-4 text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-white">
+        <section className="py-16 md:py-24 bg-brand-beige">
+          <div className="max-w-2xl mx-auto px-6 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-black mb-4">
               ابدئي رحلتك مع نقاء
             </h2>
-            <p className="mb-10 text-[15px] leading-relaxed text-white/50">
-              طلبك يصلك لباب البيت — تدفعي عند الاستلام فقط.
+            <p className="text-brand-gray mb-8 leading-relaxed">
+              طلبك يصلك لباب البيت — تدفعين عند الاستلام فقط.
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-10 py-4 text-[15px] font-bold text-[#0a0a0a] transition-colors hover:bg-gold-light"
+              className="inline-flex items-center justify-center bg-brand-black text-brand-white text-base font-semibold px-10 py-4 rounded-xl hover:bg-brand-gold transition-colors"
             >
               تسوقي الآن
-              <ArrowLeft className="h-4 w-4" />
             </Link>
           </div>
         </section>

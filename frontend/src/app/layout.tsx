@@ -1,5 +1,4 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
@@ -8,12 +7,6 @@ import CheckoutModal from "@/components/CheckoutModal";
 import FlashUpsell from "@/components/FlashUpsell";
 import AnalyticsPixels from "@/components/AnalyticsPixels";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
 const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic", "latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -21,10 +14,17 @@ const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#ffffff",
+};
+
 export const metadata: Metadata = {
   title: "نقاء للتجميل الفاخر | Naqa Beauty",
   description:
-    "تركيبات علمية بمكونات فعّالة — مصممة لمناخ الخليج. توصيل مجاني. الدفع عند الاستلام.",
+    "تركيبات علمية بمكونات فعّالة بتركيزات حقيقية — مصممة لمناخ الخليج. توصيل مجاني. الدفع عند الاستلام.",
   metadataBase: new URL("https://naqabeauty.store"),
   keywords: [
     "نقاء",
@@ -44,7 +44,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body
-        className={`${inter.variable} ${ibmPlexSansArabic.variable} font-arabic antialiased bg-obsidian text-text-primary`}
+        className={`${ibmPlexSansArabic.variable} font-arabic antialiased bg-brand-white text-brand-black`}
       >
         <CartProvider>
           {children}

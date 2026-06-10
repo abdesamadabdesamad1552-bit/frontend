@@ -3,52 +3,43 @@
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { countries, type CountryCode } from "@/lib/pricing";
-import { useState, useEffect } from "react";
-import { ShoppingBag, ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 const countryList = Object.values(countries);
+
+function AnnouncementBar() {
+  return (
+    <div className="bg-brand-black text-brand-white text-center text-xs sm:text-sm py-2 px-3 sm:px-4">
+      <span className="hidden sm:inline">توصيل مجاني لجميع دول الخليج 🚚 | الدفع عند الاستلام</span>
+      <span className="sm:hidden">توصيل مجاني 🚚 | COD</span>
+    </div>
+  );
+}
 
 export default function Header() {
   const { state, openDrawer, setCountry, totalItems } = useCart();
   const [showCountryPicker, setShowCountryPicker] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
-
   const currentCountry = countries[state.country];
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-white/[0.06] bg-[#050505]/90 backdrop-blur-xl"
-          : "bg-transparent"
-      }`}
-    >
-      {!scrolled && (
-        <div className="border-b border-white/[0.06] py-2 text-center text-[12px] text-white/45">
-          توصيل مجاني لجميع دول الخليج · الدفع عند الاستلام
-        </div>
-      )}
-
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+    <header className="sticky top-0 z-50 bg-brand-white/95 backdrop-blur-md border-b border-brand-beige-dark">
+      <AnnouncementBar />
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <div className="relative">
           <button
             onClick={() => setShowCountryPicker(!showCountryPicker)}
-            className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm text-white/50 transition-colors hover:text-white"
+            className="text-sm text-brand-gray hover:text-brand-black transition-colors flex items-center gap-1"
           >
             {currentCountry.flag}
-            <ChevronDown className="h-3.5 w-3.5" />
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </button>
 
           {showCountryPicker && (
             <>
               <div className="fixed inset-0 z-10" onClick={() => setShowCountryPicker(false)} />
-              <div className="absolute right-0 top-full z-20 mt-2 min-w-[180px] rounded-xl border border-white/[0.08] bg-[#111111] py-1 shadow-2xl">
+              <div className="absolute top-full mt-2 right-0 bg-brand-white rounded-xl shadow-lg border border-brand-beige-dark py-2 z-20 min-w-[160px]">
                 {countryList.map((c) => (
                   <button
                     key={c.code}
@@ -56,8 +47,10 @@ export default function Header() {
                       setCountry(c.code as CountryCode);
                       setShowCountryPicker(false);
                     }}
-                    className={`flex w-full items-center gap-3 px-4 py-2.5 text-right text-sm transition-colors hover:bg-white/[0.04] ${
-                      state.country === c.code ? "font-semibold text-gold" : "text-white/70"
+                    className={`w-full text-right px-4 py-2.5 text-sm hover:bg-brand-beige transition-colors flex items-center gap-3 ${
+                      state.country === c.code
+                        ? "text-brand-gold font-semibold"
+                        : "text-brand-black"
                     }`}
                   >
                     <span>{c.flag}</span>
@@ -69,28 +62,37 @@ export default function Header() {
           )}
         </div>
 
-        <Link href="/" className="absolute left-1/2 -translate-x-1/2 text-center">
-          <span className="block text-[22px] font-bold leading-none text-white">نقاء</span>
-          <span className="mt-1 block text-[9px] font-medium uppercase tracking-[0.35em] text-gold/70">
-            Naqa Beauty
+        <Link href="/" className="text-center">
+          <span className="text-2xl font-bold text-brand-black tracking-tight block">
+            نقاء
+          </span>
+          <span className="text-[10px] tracking-[0.3em] text-brand-gold font-medium uppercase">
+            NAQA BEAUTY
           </span>
         </Link>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4 sm:gap-6">
           <Link
             href="/shop"
-            className="hidden text-[13px] font-medium text-white/50 transition-colors hover:text-gold sm:block"
+            className="text-sm font-medium text-brand-black hover:text-brand-gold transition-colors"
           >
-            المجموعة
+            تسوق
           </Link>
           <button
             onClick={openDrawer}
-            className="relative p-1 text-white/50 transition-colors hover:text-gold"
+            className="relative text-brand-black hover:text-brand-gold transition-colors"
             aria-label="السلة"
           >
-            <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.5} />
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+            </svg>
             {totalItems > 0 && (
-              <span className="absolute -left-1.5 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-gold px-1 text-[9px] font-bold text-[#0a0a0a]">
+              <span className="absolute -top-2 -left-2 w-5 h-5 bg-brand-gold text-brand-white text-[10px] font-bold rounded-full flex items-center justify-center">
                 {totalItems}
               </span>
             )}

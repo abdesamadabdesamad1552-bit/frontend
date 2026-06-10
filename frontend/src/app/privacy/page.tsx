@@ -8,10 +8,10 @@ export default function PrivacyPage() {
   return (
     <>
       <Header />
-      <main className="pt-32 pb-20 md:pt-40 md:pb-28">
-        <article className="max-w-3xl mx-auto px-6 lg:px-8">
-          <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-text-primary mb-10">سياسة الخصوصية</h1>
-          <div className="space-y-8 text-[14px] text-text-secondary leading-[1.8]">
+      <main className="bg-brand-white py-16 md:py-24">
+        <article className="max-w-3xl mx-auto px-6">
+          <h1 className="text-3xl md:text-4xl font-bold text-brand-black mb-10">سياسة الخصوصية</h1>
+          <div className="space-y-8 text-sm text-brand-black/80 leading-relaxed">
             {[
               { title: "جمع المعلومات", body: "نجمع المعلومات التي تقدمها لنا مباشرة عند إتمام عملية الشراء، بما في ذلك الاسم الكامل ورقم الهاتف. لا نطلب عنوان البريد الإلكتروني أو العنوان البريدي إلا عند الحاجة للتوصيل." },
               { title: "استخدام المعلومات", body: "نستخدم معلوماتك الشخصية فقط لمعالجة وتأكيد طلبك، التواصل معك بخصوص حالة التوصيل، وتحسين خدماتنا ومنتجاتنا." },
@@ -19,15 +19,15 @@ export default function PrivacyPage() {
               { title: "ملفات تعريف الارتباط", body: "نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربة التصفح وتحليل حركة الزوار. يمكنك تعطيل ملفات تعريف الارتباط من إعدادات المتصفح." },
             ].map((s) => (
               <section key={s.title}>
-                <h2 className="text-[15px] font-bold text-text-primary mb-3">{s.title}</h2>
+                <h2 className="text-[15px] font-bold text-brand-black mb-3">{s.title}</h2>
                 <p>{s.body}</p>
               </section>
             ))}
             <section>
-              <h2 className="text-[15px] font-bold text-text-primary mb-3">التواصل</h2>
-              <p>إذا كان لديك أي أسئلة، يمكنك التواصل معنا عبر: <a href="mailto:contact@naqabeauty.store" className="text-gold/70 hover:text-gold transition-colors">contact@naqabeauty.store</a></p>
+              <h2 className="text-[15px] font-bold text-brand-black mb-3">التواصل</h2>
+              <p>إذا كان لديك أي أسئلة، يمكنك التواصل معنا عبر: <a href="mailto:contact@naqabeauty.store" className="text-brand-gold hover:underline transition-colors">contact@naqabeauty.store</a></p>
             </section>
-            <p className="text-[12px] text-text-faint pt-6 border-t border-glass-border">آخر تحديث: يونيو 2026</p>
+            <p className="text-xs text-brand-gray pt-6 border-t border-brand-beige-dark">آخر تحديث: يونيو 2026</p>
           </div>
         </article>
       </main>

@@ -3,129 +3,167 @@
 import Image from "next/image";
 import { useCart } from "@/lib/cart-context";
 import { products } from "@/lib/products";
-import { calculateCartTotal, getSinglePrice, formatPrice } from "@/lib/pricing";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Minus, Plus, ArrowLeft, Sparkles } from "lucide-react";
+import {
+  calculateCartTotal,
+  getSinglePrice,
+  formatPrice,
+  getFlashUpsellPrice,
+} from "@/lib/pricing";
 
 export default function CartDrawer() {
   const {
-    state, closeDrawer, increment, decrement, removeItem,
-    addItem, openCheckout, totalItems, cartProductIds,
+    state,
+    closeDrawer,
+    increment,
+    decrement,
+    removeItem,
+    addItem,
+    openCheckout,
+    totalItems,
+    cartProductIds,
   } = useCart();
 
   if (!state.isDrawerOpen) return null;
 
   const cartProducts = state.items
-    .map((item) => ({ ...item, product: products.find((p) => p.id === item.productId)! }))
+    .map((item) => ({
+      ...item,
+      product: products.find((p) => p.id === item.productId)!,
+    }))
     .filter((item) => item.product);
 
   const crossSells = products.filter((p) => !cartProductIds.includes(p.id));
   const total = calculateCartTotal(totalItems, state.country);
   const singlePrice = getSinglePrice(state.country);
+  const upsellPrice = getFlashUpsellPrice(state.country);
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+      <div
+        className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
         onClick={closeDrawer}
       />
 
-      <div className="fixed inset-y-0 left-0 z-50 w-full max-w-md bg-obsidian-light border-r border-glass-border shadow-2xl flex flex-col animate-slide-in-left">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-glass-border">
-          <h2 className="text-[15px] font-bold text-text-primary flex items-center gap-2">
-            <ShoppingBag className="w-4 h-4 text-gold/60" strokeWidth={1.5} />
+      <div className="fixed inset-y-0 left-0 z-50 w-full max-w-md bg-brand-white shadow-2xl flex flex-col animate-slide-in-left">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-brand-beige-dark">
+          <h2 className="text-lg font-bold text-brand-black">
             سلة التسوق
             {totalItems > 0 && (
-              <span className="text-[12px] font-normal text-text-faint mr-1">({totalItems})</span>
+              <span className="text-sm font-normal text-brand-gray mr-2">
+                ({totalItems})
+              </span>
             )}
           </h2>
           <button
             onClick={closeDrawer}
-            className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/[0.04] transition-colors text-text-muted"
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-brand-beige transition-colors text-brand-gray"
           >
-            <X className="w-3.5 h-3.5" />
+            ✕
           </button>
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto">
           {cartProducts.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full px-6 text-center">
-              <div className="w-14 h-14 rounded-full bg-white/[0.02] border border-glass-border flex items-center justify-center mb-4">
-                <ShoppingBag className="w-6 h-6 text-text-faint" strokeWidth={1.5} />
-              </div>
-              <p className="text-[13px] text-text-muted mb-3">سلتك فارغة</p>
-              <button onClick={closeDrawer} className="text-[12px] text-gold/70 font-medium hover:text-gold transition-colors">
+              <span className="text-5xl mb-4">🛒</span>
+              <p className="text-brand-gray text-sm">سلتك فارغة</p>
+              <button
+                onClick={closeDrawer}
+                className="mt-4 text-sm text-brand-gold font-semibold hover:underline"
+              >
                 تصفحي المنتجات
               </button>
             </div>
           ) : (
-            <div className="px-6 py-5 space-y-4">
-              <AnimatePresence>
-                {cartProducts.map(({ product, quantity, isUpsell }) => (
-                  <motion.div
-                    key={product.id}
-                    layout
-                    initial={{ opacity: 0, x: -15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -15 }}
-                    className="flex gap-4 p-3 rounded-xl bg-obsidian-surface border border-glass-border"
-                  >
-                    <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
-                      <Image src={product.image} alt={product.name} fill sizes="56px" className="object-cover" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-[13px] font-semibold text-text-primary truncate">{product.name}</h3>
-                      <p className="text-[11px] text-text-faint">{product.subtitle}</p>
-                      <div className="flex items-center justify-between mt-2">
-                        <span className="text-[13px] font-bold text-gold">
-                          {isUpsell
-                            ? formatPrice(
-                                state.country === "SA" ? 99 : state.country === "AE" ? 95 : state.country === "KW" ? 8 : state.country === "QA" ? 95 : 10,
-                                state.country
-                              )
-                            : formatPrice(singlePrice, state.country)}
-                          {isUpsell && <span className="text-[10px] text-aurora-violet mr-1">عرض</span>}
+            <div className="px-6 py-4 space-y-4">
+              {cartProducts.map(({ product, quantity, isUpsell }) => (
+                <div
+                  key={product.id}
+                  className="flex gap-4 p-3 rounded-xl bg-brand-beige/50 border border-brand-beige-dark"
+                >
+                  <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-bold text-brand-black truncate">
+                      {product.name}
+                    </h3>
+                    <p className="text-xs text-brand-gray">{product.subtitle}</p>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-sm font-bold text-brand-black">
+                        {isUpsell
+                          ? formatPrice(upsellPrice, state.country)
+                          : formatPrice(singlePrice, state.country)}
+                        {isUpsell && (
+                          <span className="text-xs text-red-500 mr-1">عرض خاص</span>
+                        )}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => decrement(product.id)}
+                          className="w-7 h-7 flex items-center justify-center rounded-full border border-brand-beige-dark text-brand-gray hover:border-brand-gold text-sm"
+                        >
+                          −
+                        </button>
+                        <span className="text-sm font-semibold text-brand-black w-5 text-center">
+                          {quantity}
                         </span>
-                        <div className="flex items-center gap-1.5">
-                          <button onClick={() => decrement(product.id)} className="w-6 h-6 flex items-center justify-center rounded-md bg-white/[0.03] border border-glass-border text-text-muted hover:border-gold/20 hover:text-gold transition-colors">
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="text-[12px] font-semibold text-text-primary w-4 text-center">{quantity}</span>
-                          <button onClick={() => increment(product.id)} className="w-6 h-6 flex items-center justify-center rounded-md bg-white/[0.03] border border-glass-border text-text-muted hover:border-gold/20 hover:text-gold transition-colors">
-                            <Plus className="w-3 h-3" />
-                          </button>
-                        </div>
+                        <button
+                          onClick={() => increment(product.id)}
+                          className="w-7 h-7 flex items-center justify-center rounded-full border border-brand-beige-dark text-brand-gray hover:border-brand-gold text-sm"
+                        >
+                          +
+                        </button>
                       </div>
                     </div>
-                    <button onClick={() => removeItem(product.id)} className="text-text-faint hover:text-red-400 transition-colors self-start mt-1">
-                      <X className="w-3 h-3" />
-                    </button>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+                  </div>
+                  <button
+                    onClick={() => removeItem(product.id)}
+                    className="text-brand-gray-light hover:text-red-500 transition-colors self-start text-xs"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
 
               {crossSells.length > 0 && (
-                <div className="pt-5 border-t border-glass-border">
-                  <p className="text-[12px] font-semibold text-text-muted mb-3 flex items-center gap-2">
-                    <Sparkles className="w-3 h-3 text-gold/50" />
-                    أضيفي لطلبك
+                <div className="pt-4 border-t border-brand-beige-dark">
+                  <p className="text-sm font-bold text-brand-black mb-3">
+                    ✦ أضيفي لطلبك
                   </p>
                   <div className="space-y-2">
                     {crossSells.map((product) => (
-                      <div key={product.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-obsidian-surface border border-glass-border hover:border-gold/10 transition-colors">
-                        <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
-                          <Image src={product.image} alt={product.name} fill sizes="40px" className="object-cover" />
+                      <div
+                        key={product.id}
+                        className="flex items-center gap-3 p-2.5 rounded-lg border border-brand-beige-dark hover:border-brand-gold/30 transition-colors"
+                      >
+                        <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            fill
+                            sizes="48px"
+                            className="object-cover"
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[12px] font-semibold text-text-primary truncate">{product.name}</p>
-                          <p className="text-[10px] text-text-faint">{formatPrice(singlePrice, state.country)}</p>
+                          <p className="text-sm font-semibold text-brand-black truncate">
+                            {product.name}
+                          </p>
+                          <p className="text-xs text-brand-gray">
+                            {formatPrice(singlePrice, state.country)}
+                          </p>
                         </div>
-                        <button onClick={() => addItem(product.id)} className="text-[10px] font-semibold text-gold/70 border border-gold/15 px-2.5 py-1 rounded-md hover:bg-gold hover:text-obsidian transition-colors flex-shrink-0">
+                        <button
+                          onClick={() => addItem(product.id)}
+                          className="text-xs font-semibold text-brand-gold border border-brand-gold/30 px-3 py-1.5 rounded-lg hover:bg-brand-gold hover:text-brand-white transition-colors flex-shrink-0"
+                        >
                           أضف
                         </button>
                       </div>
@@ -137,23 +175,36 @@ export default function CartDrawer() {
           )}
         </div>
 
-        {/* Footer */}
         {cartProducts.length > 0 && (
-          <div className="border-t border-glass-border px-6 py-5 space-y-3">
+          <div className="border-t border-brand-beige-dark px-6 py-4 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-[12px] text-text-muted">المجموع</span>
-              <span className="text-[20px] font-bold text-gold">{formatPrice(total, state.country)}</span>
+              <span className="text-sm text-brand-gray">المجموع</span>
+              <span className="text-xl font-bold text-brand-black">
+                {formatPrice(total, state.country)}
+              </span>
             </div>
-            <p className="text-[10px] text-gold/50 flex items-center gap-1">✓ توصيل مجاني</p>
-            <motion.button
+            <p className="text-xs text-brand-gold flex items-center gap-1">
+              ✓ توصيل مجاني
+            </p>
+            <button
               onClick={openCheckout}
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              className="w-full bg-gold text-obsidian text-[14px] font-bold py-3.5 rounded-xl hover:bg-gold-light transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-brand-black text-brand-white text-base font-bold py-4 rounded-xl hover:bg-brand-gold transition-colors flex items-center justify-center gap-2"
             >
               إتمام الطلب
-              <ArrowLeft className="w-3.5 h-3.5" />
-            </motion.button>
+              <svg
+                className="w-4 h-4 rotate-180"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                />
+              </svg>
+            </button>
           </div>
         )}
       </div>

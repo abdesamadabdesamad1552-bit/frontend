@@ -8,6 +8,8 @@ interface AddToCartButtonProps {
   className?: string;
   showPrice?: boolean;
   label?: string;
+  variant?: "primary" | "accent";
+  accentBg?: string;
 }
 
 export default function AddToCartButton({
@@ -15,14 +17,21 @@ export default function AddToCartButton({
   className = "",
   showPrice = false,
   label = "أضف للسلة",
+  variant = "primary",
+  accentBg,
 }: AddToCartButtonProps) {
   const { addItem, state } = useCart();
   const price = getSinglePrice(state.country);
 
+  const baseClasses =
+    variant === "accent" && accentBg
+      ? `${accentBg} text-white hover:opacity-90`
+      : "bg-brand-black text-brand-white hover:bg-brand-gold";
+
   return (
     <button
       onClick={() => addItem(productId)}
-      className={`cursor-pointer rounded-lg bg-gold font-semibold text-[#0a0a0a] transition-colors hover:bg-gold-light ${className}`}
+      className={`font-semibold rounded-xl transition-all ${baseClasses} ${className}`}
     >
       {showPrice ? `${label} — ${formatPrice(price, state.country)}` : label}
     </button>

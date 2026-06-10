@@ -5,40 +5,71 @@ import type { Product } from "@/lib/products";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-[#111111] transition-colors hover:border-gold/20">
-      <Link href={`/products/${product.slug}`} className="relative block aspect-[4/5] overflow-hidden">
+    <div className="group bg-brand-white rounded-2xl border border-brand-beige-dark hover:border-brand-gold/40 transition-all duration-300 hover:shadow-lg hover:shadow-brand-gold/5 overflow-hidden flex flex-col">
+      <Link
+        href={`/products/${product.slug}`}
+        className="relative aspect-square overflow-hidden block"
+      >
+        <span
+          className={`absolute top-4 right-4 z-10 text-xs font-semibold px-3 py-1 rounded-full ${product.badgeBg}`}
+        >
+          {product.badge}
+        </span>
         <Image
           src={product.image}
           alt={product.name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent" />
-        <span className="absolute top-4 right-4 rounded-full border border-gold/20 bg-black/40 px-3 py-1 text-[10px] font-medium text-gold backdrop-blur-sm">
-          {product.badge}
-        </span>
+        <div className={`absolute inset-0 bg-gradient-to-t ${product.gradient} opacity-30`} />
       </Link>
 
-      <div className="flex flex-1 flex-col p-5">
+      <div className="p-6 flex flex-col flex-1">
         <Link href={`/products/${product.slug}`}>
-          <h3 className="mb-1 text-[17px] font-semibold text-white transition-colors group-hover:text-gold">
+          <h3 className="text-lg font-bold text-brand-black mb-1 group-hover:text-brand-gold transition-colors">
             {product.name}
           </h3>
         </Link>
-        <p className="mb-3 text-[13px] text-white/50">{product.subtitle}</p>
-        <p className="mb-5 flex-1 text-[13px] leading-relaxed text-white/40">{product.tagline}</p>
+        <p className="text-sm text-brand-gray mb-2">{product.subtitle}</p>
+        <p className="text-sm text-brand-black/70 mb-4 leading-relaxed flex-1">
+          {product.description}
+        </p>
 
-        <div className="flex items-center justify-between gap-3 border-t border-white/[0.06] pt-4">
+        <div className="mb-4">
+          <div className="flex flex-wrap gap-1.5">
+            {product.ingredients.slice(0, 3).map((ing) => (
+              <span
+                key={ing.name}
+                className="inline-flex items-center gap-1 text-xs bg-brand-beige text-brand-black/80 px-2.5 py-1 rounded-full"
+              >
+                {ing.name}
+                {ing.concentration && (
+                  <span className={`font-bold ${product.accentColor}`}>
+                    {ing.concentration}
+                  </span>
+                )}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between pt-4 border-t border-brand-beige">
           <Link
             href={`/products/${product.slug}`}
-            className="text-[12px] font-medium text-gold/80 transition-colors hover:text-gold"
+            className="text-xs text-brand-gold font-semibold hover:underline"
           >
             التفاصيل
           </Link>
-          <AddToCartButton productId={product.id} label="أضف للسلة" className="text-[12px] px-4 py-2" />
+          <AddToCartButton
+            productId={product.id}
+            label="أضف للسلة"
+            variant="accent"
+            accentBg={product.accentBg}
+            className="text-sm px-5 py-2.5"
+          />
         </div>
       </div>
-    </article>
+    </div>
   );
 }

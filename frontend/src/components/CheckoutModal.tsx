@@ -3,13 +3,20 @@
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
 import { products } from "@/lib/products";
-import { calculateCartTotal, getSinglePrice, formatPrice, validatePhone, getPhoneError, getFlashUpsellProductId, countries } from "@/lib/pricing";
+import {
+  calculateCartTotal,
+  getSinglePrice,
+  formatPrice,
+  validatePhone,
+  getPhoneError,
+  getFlashUpsellProductId,
+  countries,
+} from "@/lib/pricing";
 import { submitOrder } from "@/lib/api";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Lock, CheckCircle, Truck, AlertCircle } from "lucide-react";
 
 export default function CheckoutModal() {
-  const { state, closeCheckout, openUpsell, clearCart, totalItems, cartProductIds } = useCart();
+  const { state, closeCheckout, openUpsell, clearCart, totalItems, cartProductIds } =
+    useCart();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
@@ -21,7 +28,10 @@ export default function CheckoutModal() {
   if (!state.isCheckoutOpen) return null;
 
   const cartProducts = state.items
-    .map((item) => ({ ...item, product: products.find((p) => p.id === item.productId)! }))
+    .map((item) => ({
+      ...item,
+      product: products.find((p) => p.id === item.productId)!,
+    }))
     .filter((item) => item.product);
 
   const total = calculateCartTotal(totalItems, state.country);
@@ -34,9 +44,16 @@ export default function CheckoutModal() {
     setApiError("");
 
     const newErrors: { name?: string; phone?: string } = {};
-    if (!name.trim() || name.trim().length < 3) newErrors.name = "الرجاء إدخال الاسم الكامل";
-    if (!validatePhone(phone, country)) newErrors.phone = getPhoneError(country);
-    if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return; }
+    if (!name.trim() || name.trim().length < 3) {
+      newErrors.name = "الرجاء إدخال الاسم الكامل";
+    }
+    if (!validatePhone(phone, country)) {
+      newErrors.phone = getPhoneError(country);
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     setErrors({});
     setIsSubmitting(true);
@@ -62,10 +79,16 @@ export default function CheckoutModal() {
         openUpsell();
       } else {
         setIsSuccess(true);
-        setTimeout(() => { clearCart(); setIsSuccess(false); closeCheckout(); }, 4000);
+        setTimeout(() => {
+          clearCart();
+          setIsSuccess(false);
+          closeCheckout();
+        }, 4000);
       }
     } catch (err) {
-      setApiError(err instanceof Error ? err.message : "حدث خطأ، يرجى المحاولة مرة أخرى");
+      setApiError(
+        err instanceof Error ? err.message : "حدث خطأ، يرجى المحاولة مرة أخرى"
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -74,123 +97,151 @@ export default function CheckoutModal() {
   if (isSuccess) {
     return (
       <>
-        <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-md" />
+        <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm" />
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-obsidian-surface rounded-2xl max-w-md w-full p-10 text-center border border-glass-border glow-gold-strong"
-          >
-            <div className="w-14 h-14 rounded-full bg-gold/[0.08] flex items-center justify-center mx-auto mb-5">
-              <CheckCircle className="w-7 h-7 text-gold" strokeWidth={1.5} />
-            </div>
-            <h2 className="text-xl font-bold text-text-primary mb-2">تم تأكيد طلبك بنجاح!</h2>
+          <div className="bg-brand-white rounded-2xl max-w-md w-full p-8 text-center border border-brand-beige-dark shadow-xl">
+            <span className="text-5xl block mb-4">✅</span>
+            <h2 className="text-2xl font-bold text-brand-black mb-2">
+              تم تأكيد طلبك بنجاح!
+            </h2>
             {orderId && (
-              <p className="text-[13px] text-gold/70 font-mono mb-2">رقم الطلب: {orderId}</p>
+              <p className="text-sm text-brand-gold mb-2">رقم الطلب: {orderId}</p>
             )}
-            <p className="text-[14px] text-text-muted">سنتواصل معك قريباً لتأكيد التوصيل</p>
-          </motion.div>
+            <p className="text-brand-gray">سنتواصل معك قريباً لتأكيد التوصيل</p>
+          </div>
         </div>
       </>
     );
   }
 
   return (
-    <AnimatePresence>
-      <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-md" onClick={closeCheckout} />
+    <>
+      <div
+        className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm"
+        onClick={closeCheckout}
+      />
       <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-        <motion.div
-          initial={{ scale: 0.96, opacity: 0, y: 8 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.96, opacity: 0, y: 8 }}
-          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="bg-obsidian-surface rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-glass-border glow-gold"
-        >
-          <div className="flex items-center justify-between px-6 py-5 border-b border-glass-border">
-            <h2 className="text-[15px] font-bold text-text-primary">إتمام الطلب</h2>
-            <button onClick={closeCheckout} className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/[0.04] transition-colors text-text-muted">
-              <X className="w-3.5 h-3.5" />
+        <div className="bg-brand-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-brand-beige-dark shadow-xl">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-brand-beige-dark">
+            <h2 className="text-lg font-bold text-brand-black">إتمام الطلب</h2>
+            <button
+              onClick={closeCheckout}
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-brand-beige transition-colors text-brand-gray"
+            >
+              ✕
             </button>
           </div>
 
-          <div className="px-6 py-6 space-y-6">
-            {/* Summary */}
+          <div className="px-6 py-5 space-y-5">
             <div>
-              <p className="text-[11px] tracking-[0.15em] uppercase text-text-faint font-medium mb-3">ملخص الطلب</p>
+              <p className="text-sm font-bold text-brand-black mb-3">── ملخص الطلب ──</p>
               <div className="space-y-2">
                 {cartProducts.map(({ product, quantity }) => (
-                  <div key={product.id} className="flex items-center justify-between text-[13px]">
-                    <span className="text-text-muted">{product.name} × {quantity}</span>
-                    <span className="font-semibold text-text-primary">{formatPrice(singlePrice * quantity, country)}</span>
+                  <div
+                    key={product.id}
+                    className="flex items-center justify-between text-sm"
+                  >
+                    <span className="text-brand-black">
+                      {product.name} × {quantity}
+                    </span>
+                    <span className="font-semibold text-brand-black">
+                      {formatPrice(singlePrice * quantity, country)}
+                    </span>
                   </div>
                 ))}
               </div>
-              <div className="border-t border-glass-border mt-3 pt-3 space-y-1.5">
-                <div className="flex items-center justify-between text-[13px]">
-                  <span className="text-text-faint">التوصيل</span>
-                  <span className="text-gold/70 font-medium flex items-center gap-1">
-                    <Truck className="w-3 h-3" />مجاني
-                  </span>
+              <div className="border-t border-brand-beige mt-3 pt-3 space-y-1.5">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-brand-gray">التوصيل</span>
+                  <span className="text-emerald-600 font-medium">مجاني</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[14px] font-bold text-text-primary">الإجمالي</span>
-                  <span className="text-[20px] font-bold text-gold">{formatPrice(total, country)}</span>
+                  <span className="text-base font-bold text-brand-black">الإجمالي</span>
+                  <span className="text-xl font-bold text-brand-black">
+                    {formatPrice(total, country)}
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* API Error */}
             {apiError && (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/[0.06] border border-red-500/15 text-[12px] text-red-400">
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-600">
                 {apiError}
               </div>
             )}
 
-            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
-              <p className="text-[11px] tracking-[0.15em] uppercase text-text-faint font-medium">بيانات التوصيل</p>
+              <p className="text-sm font-bold text-brand-black">── بيانات التوصيل ──</p>
 
               <div>
-                <label htmlFor="checkout-name" className="block text-[12px] font-medium text-text-muted mb-1.5">الاسم الكامل</label>
+                <label
+                  htmlFor="checkout-name"
+                  className="block text-sm font-medium text-brand-black mb-1.5"
+                >
+                  الاسم الكامل
+                </label>
                 <input
-                  id="checkout-name" type="text" value={name}
+                  id="checkout-name"
+                  type="text"
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="مثال: محمد أحمد"
-                  className={`w-full px-4 py-3 rounded-xl bg-obsidian-elevated border ${errors.name ? "border-red-400/30" : "border-glass-border"} text-text-primary text-[14px] placeholder:text-text-faint focus:outline-none focus:border-gold/30 transition-colors`}
+                  className={`w-full px-4 py-3 rounded-xl border ${
+                    errors.name
+                      ? "border-red-400 bg-red-50/50"
+                      : "border-brand-beige-dark"
+                  } bg-brand-white text-brand-black placeholder:text-brand-gray-light focus:outline-none focus:border-brand-gold transition-colors`}
                 />
-                {errors.name && <p className="text-[11px] text-red-400/80 mt-1">{errors.name}</p>}
+                {errors.name && (
+                  <p className="text-xs text-red-500 mt-1">{errors.name}</p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="checkout-phone" className="block text-[12px] font-medium text-text-muted mb-1.5">رقم الجوال</label>
+                <label
+                  htmlFor="checkout-phone"
+                  className="block text-sm font-medium text-brand-black mb-1.5"
+                >
+                  رقم الجوال
+                </label>
                 <input
-                  id="checkout-phone" type="tel" value={phone}
+                  id="checkout-phone"
+                  type="tel"
+                  value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder={state.country === "SA" ? "05xxxxxxxx" : state.country === "AE" ? "05xxxxxxxx" : "xxxx xxxx"}
+                  placeholder={
+                    state.country === "SA" || state.country === "AE"
+                      ? "05xxxxxxxx"
+                      : "xxxx xxxx"
+                  }
                   dir="ltr"
-                  className={`w-full px-4 py-3 rounded-xl bg-obsidian-elevated border ${errors.phone ? "border-red-400/30" : "border-glass-border"} text-text-primary text-[14px] placeholder:text-text-faint focus:outline-none focus:border-gold/30 transition-colors`}
+                  className={`w-full px-4 py-3 rounded-xl border ${
+                    errors.phone
+                      ? "border-red-400 bg-red-50/50"
+                      : "border-brand-beige-dark"
+                  } bg-brand-white text-brand-black placeholder:text-brand-gray-light focus:outline-none focus:border-brand-gold transition-colors`}
                 />
-                {errors.phone && <p className="text-[11px] text-red-400/80 mt-1">{errors.phone}</p>}
+                {errors.phone && (
+                  <p className="text-xs text-red-500 mt-1">{errors.phone}</p>
+                )}
               </div>
 
-              <motion.button
-                type="submit" disabled={isSubmitting}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                className="w-full bg-gold text-obsidian text-[14px] font-bold py-3.5 rounded-xl hover:bg-gold-light transition-colors disabled:opacity-50"
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-brand-black text-brand-white text-base font-bold py-4 rounded-xl hover:bg-brand-gold transition-colors disabled:opacity-60"
               >
                 {isSubmitting ? "جاري التأكيد..." : "تأكيد الطلب — الدفع عند الاستلام"}
-              </motion.button>
+              </button>
 
-              <div className="flex items-center justify-center gap-5 text-[10px] text-text-faint">
-                <span className="flex items-center gap-1"><Lock className="w-3 h-3 text-gold/40" />بياناتك محمية</span>
-                <span className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-gold/40" />الدفع نقداً</span>
+              <div className="flex items-center justify-center gap-4 text-xs text-brand-gray">
+                <span>🔒 بياناتك محمية</span>
+                <span>✓ الدفع نقداً عند الاستلام</span>
               </div>
             </form>
           </div>
-        </motion.div>
+        </div>
       </div>
-    </AnimatePresence>
+    </>
   );
 }
