@@ -24,7 +24,8 @@ const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
 export const metadata: Metadata = {
   title: "نقاء للتجميل الفاخر | Naqa Beauty",
   description:
-    "تركيبات علمية بمكونات فعّالة بتركيزات حقيقية — مصممة لمناخ الخليج. توصيل مجاني. الدفع عند الاستلام.",
+    "تركيبات علمية بمكونات فعّالة — مصممة لمناخ الخليج. توصيل مجاني. الدفع عند الاستلام.",
+  metadataBase: new URL("https://naqabeauty.store"),
   keywords: [
     "نقاء",
     "Naqa Beauty",
