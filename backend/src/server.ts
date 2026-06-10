@@ -26,9 +26,29 @@ if (process.env.DATABASE_URL) {
   console.warn("[env] DATABASE_URL not set — orders cannot be saved");
 }
 
-const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3000")
+const PRODUCTION_ORIGINS = [
+  "https://naqabeauty.store",
+  "https://www.naqabeauty.store",
+];
+
+const DEV_ORIGINS = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:3001",
+];
+
+const envOrigins = (process.env.FRONTEND_URL || "")
   .split(",")
-  .map((u) => u.trim());
+  .map((u) => u.trim())
+  .filter(Boolean);
+
+const allowedOrigins = [
+  ...new Set([
+    ...envOrigins,
+    ...(isProduction ? PRODUCTION_ORIGINS : DEV_ORIGINS),
+  ]),
+];
 
 app.use(
   cors({
@@ -36,7 +56,8 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("CORS blocked"));
+        console.warn(`[cors] Blocked origin: ${origin}`);
+        callback(null, false);
       }
     },
     credentials: true,

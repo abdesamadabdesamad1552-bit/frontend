@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     cpus: 1,
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
