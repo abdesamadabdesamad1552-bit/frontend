@@ -25,8 +25,16 @@ orderRoutes.post("/", async (req: Request, res: Response) => {
   }
 
   const orderId = generateOrderId();
-  const db = getPool();
-  const client = await db.connect();
+  let client;
+
+  try {
+    const db = getPool();
+    client = await db.connect();
+  } catch (err) {
+    console.error("Database unavailable:", err);
+    res.status(503).json({ error: "Could not save order. Database unavailable." });
+    return;
+  }
 
   try {
     await client.query("BEGIN");
