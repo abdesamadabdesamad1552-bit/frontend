@@ -1,0 +1,10 @@
+# Monorepo root — used when Build Path is empty
+.git
+.cursor
+**/.env*
+**/.env.local
+**/node_modules
+**/.next
+**/dist
+**/*.md
+**/coverage
