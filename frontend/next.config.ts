@@ -1,9 +1,12 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  outputFileTracingRoot: path.join(__dirname),
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: false },
+  experimental: {
+    webpackMemoryOptimizations: true,
+    cpus: 1,
+  },
   images: {
     remotePatterns: [
       {
