@@ -28,8 +28,10 @@ jobs:
           context: .
           file: Dockerfile.frontend
           push: true
+          no-cache: true
           tags: |
             ghcr.io/abdesamadabdesamad1552-bit/naqa-frontend:latest
             ghcr.io/abdesamadabdesamad1552-bit/naqa-frontend:${{ github.sha }}
           build-args: |
             NEXT_PUBLIC_API_URL=https://api.naqabeauty.store
+            NEXT_PUBLIC_BUILD_SHA=${{ github.sha }}

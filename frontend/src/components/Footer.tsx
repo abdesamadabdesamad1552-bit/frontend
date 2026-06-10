@@ -100,7 +100,12 @@ export default function Footer() {
             <span>الدفع عند الاستلام</span>
             <span>توصيل لجميع دول الخليج</span>
           </div>
-          <p>© 2026 نقاء للتجميل الفاخر</p>
+            <p>© 2026 نقاء للتجميل الفاخر</p>
+            {process.env.NEXT_PUBLIC_BUILD_SHA && (
+              <p className="text-[10px] text-brand-white/20 mt-1 font-mono">
+                v{process.env.NEXT_PUBLIC_BUILD_SHA.slice(0, 7)}
+              </p>
+            )}
         </div>
       </div>
     </footer>
