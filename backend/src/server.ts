@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import { orderRoutes } from "./routes/orders.js";
 import { geoRoutes } from "./routes/geo.js";
-import { initDatabase, checkDatabase, closeDatabase } from "./db.js";
+import { initDatabase, checkDatabase, closeDatabase, getPool } from "./db.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
@@ -21,7 +21,14 @@ if (maxmindAccountId && maxmindLicenseKey) {
 }
 
 if (process.env.DATABASE_URL) {
-  console.log("[env] DATABASE_URL loaded");
+  try {
+    const parsed = new URL(process.env.DATABASE_URL.replace(/^postgresql:/, "http:"));
+    console.log(
+      `[env] DATABASE_URL → host=${parsed.hostname} database=${parsed.pathname.replace(/^\//, "")} user=${parsed.username}`
+    );
+  } catch {
+    console.log("[env] DATABASE_URL loaded");
+  }
 } else {
   console.warn("[env] DATABASE_URL not set — orders cannot be saved");
 }
@@ -75,11 +82,36 @@ if (!isProduction) {
 
 app.get("/api/health", async (_req, res) => {
   const dbOk = process.env.DATABASE_URL ? await checkDatabase() : false;
+  let dbHost: string | undefined;
+  let dbName: string | undefined;
+  let orderCount: number | null = null;
+
+  if (process.env.DATABASE_URL) {
+    try {
+      const parsed = new URL(process.env.DATABASE_URL.replace(/^postgresql:/, "http:"));
+      dbHost = parsed.hostname;
+      dbName = parsed.pathname.replace(/^\//, "");
+    } catch {
+      // ignore parse errors
+    }
+  }
+
+  if (dbOk) {
+    try {
+      const result = await getPool().query("SELECT COUNT(*)::int AS count FROM orders");
+      orderCount = result.rows[0].count;
+    } catch {
+      orderCount = null;
+    }
+  }
 
   res.json({
     status: dbOk ? "ok" : "degraded",
     env: isProduction ? "production" : "development",
     database: dbOk ? "connected" : "disconnected",
+    dbHost,
+    dbName,
+    orderCount,
     timestamp: new Date().toISOString(),
   });
 });
