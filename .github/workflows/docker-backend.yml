@@ -38,6 +38,7 @@ jobs:
             ghcr.io/abdesamadabdesamad1552-bit/naqa-backend:${{ github.sha }}
           build-args: |
             BUILD_SHA=${{ github.sha }}
+            CACHEBUST=${{ github.run_id }}
 
       - name: Make GHCR package public
         env:

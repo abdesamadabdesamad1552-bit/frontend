@@ -1,4 +1,5 @@
-# Easypanel: Build Path = (empty) | Dockerfile = Dockerfile.backend
+# Easypanel naqabackend — MUST use this file (NOT Dockerfile which is frontend)
+# Repo: abdesamadabdesamad1552-bit/frontend | Branch: main | Build path: (empty)
 
 FROM node:20-alpine AS deps
 WORKDIR /app
@@ -10,8 +11,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY backend/ .
 ARG BUILD_SHA=unknown
+ARG CACHEBUST=1
 ENV BUILD_SHA=$BUILD_SHA
-RUN echo "Building backend ${BUILD_SHA}" && npm run build
+RUN echo "Building backend ${BUILD_SHA} cache=${CACHEBUST}" && npm run build
 
 FROM node:20-alpine AS runner
 WORKDIR /app

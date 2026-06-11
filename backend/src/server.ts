@@ -132,12 +132,13 @@ async function start() {
   }
 
   const buildSha = process.env.BUILD_SHA || "dev";
+  const deployVersion = "2026-06-11-cors-fix-v2";
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log("=".repeat(56));
-    console.log(`[boot] Naqa backend ${buildSha}`);
+    console.log(`[boot] Naqa backend ${buildSha} (${deployVersion})`);
     console.log(`[boot] Backend running on http://0.0.0.0:${PORT} [${isProduction ? "production" : "development"}]`);
-    console.log(`[boot] CORS: open (allowed: ${allowedOrigins.join(", ")})`);
+    console.log(`[boot] CORS: open — no more "CORS blocked" errors`);
     console.log("=".repeat(56));
   });
 }
