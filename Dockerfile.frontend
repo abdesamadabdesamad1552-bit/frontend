@@ -1,4 +1,5 @@
-# Easypanel / GHCR: ghcr.io/abdesamadabdesamad1552-bit/naqa-frontend:latest
+# Easypanel frontend — Dockerfile.frontend | Build path: (empty)
+# Runtime env: DATABASE_URL (orders), NEXT_PUBLIC_API_URL (geo fallback)
 
 FROM node:20-alpine AS deps
 WORKDIR /app

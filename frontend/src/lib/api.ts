@@ -1,6 +1,6 @@
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
-// Browser: same-origin /api/* proxied by next.config rewrites (avoids CORS)
+// Browser: same-origin /api/orders saves directly to PostgreSQL (no backend CORS)
 function apiBase(): string {
   if (typeof window !== "undefined") return "";
   return BACKEND_URL;
