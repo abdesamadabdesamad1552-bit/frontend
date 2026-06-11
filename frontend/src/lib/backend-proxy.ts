@@ -31,3 +31,25 @@ export async function proxyToBackend(
     },
   });
 }
+
+/** Proxy when request body was already read as text. */
+export async function proxyToBackendWithBody(
+  path: string,
+  method: string,
+  bodyText: string
+): Promise<Response> {
+  const res = await fetch(`${BACKEND_URL}${path}`, {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body: bodyText,
+  });
+
+  const body = await res.text();
+
+  return new Response(body, {
+    status: res.status,
+    headers: {
+      "Content-Type": res.headers.get("Content-Type") || "application/json",
+    },
+  });
+}

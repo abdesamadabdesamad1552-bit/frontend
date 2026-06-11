@@ -5,6 +5,54 @@ const { Pool } = pg;
 let pool: pg.Pool | null = null;
 let schemaReady = false;
 
+/** Fix common Easypanel wrong DATABASE_URL (postgres DB / database host). */
+export function normalizeDatabaseUrl(raw: string): string {
+  try {
+    const parsed = new URL(raw.replace(/^postgresql:/, "http:"));
+
+    if (parsed.hostname === "database") {
+      parsed.hostname = "naqabeauty_database";
+    }
+
+    const dbName = parsed.pathname.replace(/^\//, "");
+    if (!dbName || dbName === "postgres") {
+      parsed.pathname = "/naqabeauty";
+    }
+
+    if (
+      !parsed.searchParams.has("sslmode") &&
+      (parsed.hostname.endsWith("_database") || parsed.hostname === "database")
+    ) {
+      parsed.searchParams.set("sslmode", "disable");
+    }
+
+    const user = decodeURIComponent(parsed.username);
+    const pass = decodeURIComponent(parsed.password);
+    const port = parsed.port || "5432";
+    const search = parsed.search ? parsed.search : "";
+
+    return `postgresql://${encodeURIComponent(user)}:${encodeURIComponent(pass)}@${parsed.hostname}:${port}${parsed.pathname}${search}`;
+  } catch {
+    return raw;
+  }
+}
+
+export function getDatabaseTarget(): { host?: string; name?: string } {
+  const url = process.env.DATABASE_URL;
+  if (!url) return {};
+
+  try {
+    const normalized = normalizeDatabaseUrl(url);
+    const parsed = new URL(normalized.replace(/^postgresql:/, "http:"));
+    return {
+      host: parsed.hostname,
+      name: parsed.pathname.replace(/^\//, ""),
+    };
+  } catch {
+    return {};
+  }
+}
+
 function poolSsl(connectionString: string): false | { rejectUnauthorized: boolean } {
   if (connectionString.includes("sslmode=disable")) return false;
 
@@ -34,13 +82,40 @@ export function getPool(): pg.Pool {
   }
 
   if (!pool) {
+    const connectionString = normalizeDatabaseUrl(url);
     pool = new Pool({
-      connectionString: url,
-      ssl: poolSsl(url),
+      connectionString,
+      ssl: poolSsl(connectionString),
     });
   }
 
   return pool;
+}
+
+export async function checkDatabase(): Promise<boolean> {
+  try {
+    await getPool().query("SELECT 1");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function getOrderStats(): Promise<{
+  count: number;
+  recent: { order_id: string; name: string; phone: string; created_at: string }[];
+}> {
+  const db = getPool();
+  const countResult = await db.query("SELECT COUNT(*)::int AS count FROM orders");
+  const recentResult = await db.query(
+    `SELECT order_id, name, phone, created_at::text
+     FROM orders ORDER BY created_at DESC LIMIT 5`
+  );
+
+  return {
+    count: countResult.rows[0].count,
+    recent: recentResult.rows,
+  };
 }
 
 async function ensureSchema(): Promise<void> {
@@ -109,6 +184,7 @@ export async function saveOrder(body: OrderInput): Promise<{ orderId: string }> 
   const orderId = generateOrderId();
   const db = getPool();
   const client = await db.connect();
+  const target = getDatabaseTarget();
 
   try {
     await client.query("BEGIN");
@@ -135,6 +211,9 @@ export async function saveOrder(body: OrderInput): Promise<{ orderId: string }> 
     }
 
     await client.query("COMMIT");
+    console.log(
+      `[orders] saved ${orderId} → db=${target.name} host=${target.host}`
+    );
   } catch (err) {
     await client.query("ROLLBACK");
     throw err;
