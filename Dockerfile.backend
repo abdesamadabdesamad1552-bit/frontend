@@ -1,5 +1,6 @@
-# Easypanel naqabackend — MUST use this file (NOT Dockerfile which is frontend)
+# Easypanel naqabackend service (NOT root Dockerfile which is frontend)
 # Repo: abdesamadabdesamad1552-bit/frontend | Branch: main | Build path: (empty)
+# Dockerfile field must be exactly: Dockerfile.backend (no spaces or tabs)
 
 FROM node:20-alpine AS deps
 WORKDIR /app

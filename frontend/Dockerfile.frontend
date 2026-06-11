@@ -1,4 +1,4 @@
-# Easypanel: Build Path = frontend | Dockerfile = Dockerfile.frontend
+# Easypanel frontend: Build path = frontend | Dockerfile = Dockerfile.frontend
 
 FROM node:20-alpine AS deps
 WORKDIR /app
