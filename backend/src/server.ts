@@ -59,14 +59,7 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.warn(`[cors] Blocked origin: ${origin}`);
-        callback(null, false);
-      }
-    },
+    origin: allowedOrigins,
     credentials: true,
   })
 );

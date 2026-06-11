@@ -15,6 +15,8 @@ function poolSsl(connectionString: string): false | { rejectUnauthorized: boolea
     // Easypanel / Docker internal Postgres — no SSL
     if (
       host === "database" ||
+      host === "naqabeauty_database" ||
+      host.endsWith("_database") ||
       host === "localhost" ||
       host === "127.0.0.1" ||
       host.endsWith(".internal")
