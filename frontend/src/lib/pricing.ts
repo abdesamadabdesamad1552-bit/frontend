@@ -140,9 +140,43 @@ export function getFlashUpsellPrice(country: CountryCode): number {
   return countries[country].flashUpsellPrice;
 }
 
+const ARABIC_INDIC_DIGITS = "٠١٢٣٤٥٦٧٨٩";
+const EXT_ARABIC_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
+
+const COUNTRY_CALLING_CODES: Record<CountryCode, string> = {
+  SA: "966",
+  AE: "971",
+  KW: "965",
+  QA: "974",
+  BH: "973",
+  OM: "968",
+};
+
+/** Normalize phone for GCC: Arabic digits, spaces, +966, etc. */
+export function normalizePhone(phone: string, country: CountryCode): string {
+  let digits = phone.trim().replace(/[\s\-().]/g, "");
+
+  digits = digits.replace(/[٠-٩]/g, (ch) => String(ARABIC_INDIC_DIGITS.indexOf(ch)));
+  digits = digits.replace(/[۰-۹]/g, (ch) => String(EXT_ARABIC_DIGITS.indexOf(ch)));
+  digits = digits.replace(/[^\d+]/g, "");
+
+  const callingCode = COUNTRY_CALLING_CODES[country];
+  if (digits.startsWith(`+${callingCode}`)) {
+    digits = digits.slice(callingCode.length + 1);
+  } else if (digits.startsWith(callingCode)) {
+    digits = digits.slice(callingCode.length);
+  }
+
+  if ((country === "SA" || country === "AE") && digits.length === 9 && !digits.startsWith("0")) {
+    digits = `0${digits}`;
+  }
+
+  return digits;
+}
+
 export function validatePhone(phone: string, country: CountryCode): boolean {
   const config = countries[country];
-  const digits = phone.replace(/\s/g, "");
+  const digits = normalizePhone(phone, country);
 
   if (digits.length !== config.phoneDigits) return false;
   if (!/^\d+$/.test(digits)) return false;

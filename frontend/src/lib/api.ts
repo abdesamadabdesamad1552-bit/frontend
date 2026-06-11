@@ -14,7 +14,11 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error((body as { error?: string }).error || `API error ${res.status}`);
+    const msg = (body as { error?: string }).error;
+    if (msg?.includes("Database unavailable")) {
+      throw new Error("تعذر حفظ الطلب. يرجى المحاولة بعد قليل.");
+    }
+    throw new Error(msg || `خطأ في الخادم (${res.status})`);
   }
 
   return res.json() as Promise<T>;

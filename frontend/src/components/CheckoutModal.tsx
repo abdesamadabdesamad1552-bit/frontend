@@ -8,6 +8,7 @@ import {
   getSinglePrice,
   formatPrice,
   validatePhone,
+  normalizePhone,
   getPhoneError,
   getFlashUpsellProductId,
   countries,
@@ -61,7 +62,7 @@ export default function CheckoutModal() {
     try {
       const result = await submitOrder({
         name: name.trim(),
-        phone: phone.trim(),
+        phone: normalizePhone(phone, country),
         country,
         items: state.items.map((i) => ({
           productId: i.productId,

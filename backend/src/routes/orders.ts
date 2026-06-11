@@ -60,12 +60,6 @@ orderRoutes.post("/", async (req: Request, res: Response) => {
       );
     }
 
-    await client.query(
-      `INSERT INTO tracking_events (order_id, event, metadata)
-       VALUES ($1, 'order_created', $2)`,
-      [orderId, JSON.stringify({ source: "website", country: body.country })]
-    );
-
     await client.query("COMMIT");
   } catch (err) {
     await client.query("ROLLBACK");
@@ -74,6 +68,16 @@ orderRoutes.post("/", async (req: Request, res: Response) => {
     return;
   } finally {
     client.release();
+  }
+
+  try {
+    await getPool().query(
+      `INSERT INTO tracking_events (order_id, event, metadata)
+       VALUES ($1, 'order_created', $2)`,
+      [orderId, JSON.stringify({ source: "website", country: body.country })]
+    );
+  } catch (err) {
+    console.warn("tracking_events insert skipped:", err);
   }
 
   const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
