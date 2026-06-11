@@ -57,12 +57,8 @@ const allowedOrigins = [
   ]),
 ];
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
+// Reflect any origin — avoids 500 "CORS blocked" on older deploy configs
+app.use(cors({ origin: true, credentials: true }));
 
 app.use(express.json({ limit: "1mb" }));
 
@@ -105,6 +101,7 @@ app.get("/api/health", async (_req, res) => {
     dbHost,
     dbName,
     orderCount,
+    buildSha: process.env.BUILD_SHA || "dev",
     timestamp: new Date().toISOString(),
   });
 });
@@ -134,9 +131,14 @@ async function start() {
     }
   }
 
+  const buildSha = process.env.BUILD_SHA || "dev";
+
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Backend running on http://localhost:${PORT} [${isProduction ? "production" : "development"}]`);
-    console.log(`[boot] CORS origins: ${allowedOrigins.join(", ")}`);
+    console.log("=".repeat(56));
+    console.log(`[boot] Naqa backend ${buildSha}`);
+    console.log(`[boot] Backend running on http://0.0.0.0:${PORT} [${isProduction ? "production" : "development"}]`);
+    console.log(`[boot] CORS: open (allowed: ${allowedOrigins.join(", ")})`);
+    console.log("=".repeat(56));
   });
 }
 

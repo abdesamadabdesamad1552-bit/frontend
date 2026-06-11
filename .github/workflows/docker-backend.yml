@@ -32,9 +32,12 @@ jobs:
           context: .
           file: Dockerfile.backend
           push: true
+          no-cache: true
           tags: |
             ghcr.io/abdesamadabdesamad1552-bit/naqa-backend:latest
             ghcr.io/abdesamadabdesamad1552-bit/naqa-backend:${{ github.sha }}
+          build-args: |
+            BUILD_SHA=${{ github.sha }}
 
       - name: Make GHCR package public
         env:
