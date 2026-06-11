@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "@/lib/cart-context";
 import { products } from "@/lib/products";
@@ -10,10 +11,12 @@ import {
   getSinglePrice,
   formatPrice,
 } from "@/lib/pricing";
+import { getThankYouPath, getLastOrderId } from "@/lib/order-redirect";
 
 const COUNTDOWN_SECONDS = 15;
 
 export default function FlashUpsell() {
+  const router = useRouter();
   const { state, addUpsell, closeUpsell, clearCart, cartProductIds } = useCart();
   const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
 
@@ -22,10 +25,16 @@ export default function FlashUpsell() {
     ? products.find((p) => p.id === upsellProductId)
     : null;
 
-  const handleDecline = useCallback(() => {
+  const goToThankYou = useCallback(() => {
+    const orderId = getLastOrderId();
     closeUpsell();
     clearCart();
-  }, [closeUpsell, clearCart]);
+    router.push(orderId ? getThankYouPath(orderId) : "/thank-you");
+  }, [closeUpsell, clearCart, router]);
+
+  const handleDecline = useCallback(() => {
+    goToThankYou();
+  }, [goToThankYou]);
 
   useEffect(() => {
     if (!state.isUpsellOpen) {
@@ -55,7 +64,7 @@ export default function FlashUpsell() {
 
   function handleAccept() {
     addUpsell(upsellProduct!.id);
-    clearCart();
+    goToThankYou();
   }
 
   return (

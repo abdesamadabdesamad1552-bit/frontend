@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { products } from "@/lib/products";
 import {
@@ -14,16 +15,16 @@ import {
   countries,
 } from "@/lib/pricing";
 import { submitOrder } from "@/lib/api";
+import { getThankYouPath, storeLastOrderId } from "@/lib/order-redirect";
 
 export default function CheckoutModal() {
+  const router = useRouter();
   const { state, closeCheckout, openUpsell, clearCart, totalItems, cartProductIds } =
     useCart();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [orderId, setOrderId] = useState("");
   const [apiError, setApiError] = useState("");
 
   if (!state.isCheckoutOpen) return null;
@@ -73,18 +74,15 @@ export default function CheckoutModal() {
         currency: countryConfig.currency,
       });
 
-      setOrderId(result.orderId);
+      storeLastOrderId(result.orderId);
+      closeCheckout();
 
       const upsellProductId = getFlashUpsellProductId(cartProductIds);
       if (upsellProductId) {
         openUpsell();
       } else {
-        setIsSuccess(true);
-        setTimeout(() => {
-          clearCart();
-          setIsSuccess(false);
-          closeCheckout();
-        }, 4000);
+        clearCart();
+        router.push(getThankYouPath(result.orderId));
       }
     } catch (err) {
       setApiError(
@@ -93,26 +91,6 @@ export default function CheckoutModal() {
     } finally {
       setIsSubmitting(false);
     }
-  }
-
-  if (isSuccess) {
-    return (
-      <>
-        <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm" />
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div className="bg-brand-white rounded-2xl max-w-md w-full p-8 text-center border border-brand-beige-dark shadow-xl">
-            <span className="text-5xl block mb-4">✅</span>
-            <h2 className="text-2xl font-bold text-brand-black mb-2">
-              تم تأكيد طلبك بنجاح!
-            </h2>
-            {orderId && (
-              <p className="text-sm text-brand-gold mb-2">رقم الطلب: {orderId}</p>
-            )}
-            <p className="text-brand-gray">سنتواصل معك قريباً لتأكيد التوصيل</p>
-          </div>
-        </div>
-      </>
-    );
   }
 
   return (
