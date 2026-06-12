@@ -93,6 +93,45 @@ export function buildSheetPayload(
   };
 }
 
+export async function testWebhookReachability(): Promise<{
+  reachable: boolean;
+  httpStatus?: number;
+  hint: string;
+}> {
+  const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
+  if (!webhookUrl) {
+    return { reachable: false, hint: "GOOGLE_SHEETS_WEBHOOK_URL not set" };
+  }
+
+  try {
+    const response = await fetch(webhookUrl, { redirect: "follow" });
+    const body = await response.text();
+
+    if (body.includes('"status":"ok"')) {
+      return { reachable: true, httpStatus: response.status, hint: "public access ok" };
+    }
+
+    if (body.includes("Sign in") || body.includes("signin")) {
+      return {
+        reachable: false,
+        httpStatus: response.status,
+        hint: "Google login required — redeploy Apps Script with Accès = Tout le monde (Anyone)",
+      };
+    }
+
+    return {
+      reachable: false,
+      httpStatus: response.status,
+      hint: body.slice(0, 120),
+    };
+  } catch (err) {
+    return {
+      reachable: false,
+      hint: err instanceof Error ? err.message : "webhook fetch failed",
+    };
+  }
+}
+
 export async function sendOrderWebhook(payload: SheetOrderPayload): Promise<void> {
   const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
   if (!webhookUrl) {

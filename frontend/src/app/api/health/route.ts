@@ -3,6 +3,7 @@ import {
   getDatabaseTarget,
   getOrderStats,
 } from "@/lib/db";
+import { testWebhookReachability } from "@/lib/sheet-webhook";
 
 export async function GET() {
   const target = getDatabaseTarget();
@@ -29,6 +30,7 @@ export async function GET() {
 
   try {
     const stats = await getOrderStats();
+    const webhookCheck = await testWebhookReachability();
     return Response.json({
       status: "ok",
       database: "connected",
@@ -37,6 +39,8 @@ export async function GET() {
       orderCount: stats.count,
       recentOrders: stats.recent,
       webhook: process.env.GOOGLE_SHEETS_WEBHOOK_URL ? "configured" : "missing",
+      webhookReachable: webhookCheck.reachable,
+      webhookHint: webhookCheck.hint,
     });
   } catch (err) {
     return Response.json({
