@@ -105,6 +105,29 @@ export function getCountry(code: CountryCode): CountryConfig {
   return countries[code];
 }
 
+export interface CartLineItem {
+  productId: number;
+  quantity: number;
+  isUpsell?: boolean;
+}
+
+export function calculateItemsTotal(
+  items: CartLineItem[],
+  country: CountryCode
+): number {
+  const regularCount = items
+    .filter((i) => !i.isUpsell)
+    .reduce((sum, i) => sum + i.quantity, 0);
+  const regularTotal = calculateCartTotal(regularCount, country);
+  const upsellTotal = items
+    .filter((i) => i.isUpsell)
+    .reduce(
+      (sum, i) => sum + getFlashUpsellPrice(country) * i.quantity,
+      0
+    );
+  return regularTotal + upsellTotal;
+}
+
 export function calculateCartTotal(
   itemCount: number,
   country: CountryCode

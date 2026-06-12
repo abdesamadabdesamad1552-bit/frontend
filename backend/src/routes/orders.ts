@@ -1,5 +1,6 @@
 import { Router, type Request, type Response } from "express";
 import { getPool } from "../db.js";
+import { buildSheetPayload, sendOrderWebhook } from "../sheet-webhook.js";
 
 export const orderRoutes = Router();
 
@@ -80,27 +81,23 @@ orderRoutes.post("/", async (req: Request, res: Response) => {
     console.warn("tracking_events insert skipped:", err);
   }
 
-  const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-  if (webhookUrl) {
-    try {
-      await fetch(webhookUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          orderId,
-          name: body.name,
-          phone: body.phone,
-          country: body.country,
-          items: body.items
-            .map((i) => `#${i.productId} x${i.quantity}${i.isUpsell ? " (upsell)" : ""}`)
-            .join(", "),
-          total: `${body.total} ${body.currency}`,
-        }),
-      });
-    } catch (err) {
-      console.error("Webhook failed:", err);
-    }
+  try {
+    const sheetPayload = buildSheetPayload(
+      orderId,
+      body.name,
+      body.phone,
+      body.country,
+      body.items,
+      body.total,
+      body.currency
+    );
+    await sendOrderWebhook(sheetPayload);
+    console.log(`[orders] webhook sent ${orderId}`);
+  } catch (err) {
+    console.error(
+      `[orders] webhook failed ${orderId}:`,
+      err instanceof Error ? err.message : err
+    );
   }
 
   res.json({

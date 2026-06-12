@@ -36,6 +36,7 @@ export async function GET() {
       dbName: target.name,
       orderCount: stats.count,
       recentOrders: stats.recent,
+      webhook: process.env.GOOGLE_SHEETS_WEBHOOK_URL ? "configured" : "missing",
     });
   } catch (err) {
     return Response.json({

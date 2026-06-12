@@ -231,23 +231,24 @@ export async function saveOrder(body: OrderInput): Promise<{ orderId: string }> 
     // non-fatal
   }
 
-  const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-  if (webhookUrl) {
-    fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        timestamp: new Date().toISOString(),
-        orderId,
-        name: body.name,
-        phone: body.phone,
-        country: body.country,
-        items: body.items
-          .map((i) => `#${i.productId} x${i.quantity}${i.isUpsell ? " (upsell)" : ""}`)
-          .join(", "),
-        total: `${body.total} ${body.currency}`,
-      }),
-    }).catch(() => {});
+  try {
+    const { buildSheetPayload, sendOrderWebhook } = await import("./sheet-webhook");
+    const sheetPayload = buildSheetPayload(
+      orderId,
+      body.name,
+      body.phone,
+      body.country as import("./pricing").CountryCode,
+      body.items,
+      body.total,
+      body.currency
+    );
+    await sendOrderWebhook(sheetPayload);
+    console.log(`[orders] webhook sent ${orderId}`);
+  } catch (err) {
+    console.error(
+      `[orders] webhook failed ${orderId}:`,
+      err instanceof Error ? err.message : err
+    );
   }
 
   return { orderId };

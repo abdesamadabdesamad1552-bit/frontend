@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+import BundleCard from "@/components/BundleCard";
 import { products } from "@/lib/products";
+import { bundles } from "@/lib/bundles";
 
 export const metadata: Metadata = {
   title: "تسوقي | نقاء للتجميل الفاخر",
@@ -26,9 +28,27 @@ export default function ShopPage() {
         </div>
       </section>
 
+      <section className="py-12 md:py-16 bg-brand-beige border-t border-brand-beige-dark">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-brand-black mb-3">
+              باقات نقاء الحصرية
+            </h2>
+            <p className="text-brand-gray max-w-lg mx-auto">
+              مجموعات متكاملة — وفّري أكثر واختاري الحل الشامل لمشكلتك
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {bundles.map((bundle) => (
+              <BundleCard key={bundle.id} bundle={bundle} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-12 md:py-16 bg-brand-white">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 min-w-0">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

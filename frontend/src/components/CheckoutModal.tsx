@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { products } from "@/lib/products";
 import {
-  calculateCartTotal,
   getSinglePrice,
   formatPrice,
   validatePhone,
@@ -14,13 +13,21 @@ import {
   getFlashUpsellProductId,
   countries,
 } from "@/lib/pricing";
-import { submitOrder } from "@/lib/api";
+import { placeOrder } from "@/lib/checkout-flow";
 import { getThankYouPath, storeLastOrderId } from "@/lib/order-redirect";
 
 export default function CheckoutModal() {
   const router = useRouter();
-  const { state, closeCheckout, openUpsell, clearCart, totalItems, cartProductIds } =
-    useCart();
+  const {
+    state,
+    closeCheckout,
+    openCheckout,
+    openUpsell,
+    resetFlow,
+    setPendingCheckout,
+    clearPendingCheckout,
+    cartProductIds,
+  } = useCart();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
@@ -36,10 +43,31 @@ export default function CheckoutModal() {
     }))
     .filter((item) => item.product);
 
-  const total = calculateCartTotal(totalItems, state.country);
-  const singlePrice = getSinglePrice(state.country);
+  const total = cartProducts.reduce((sum, { quantity, isUpsell }) => {
+    const unit = isUpsell
+      ? countries[state.country].flashUpsellPrice
+      : getSinglePrice(state.country);
+    return sum + unit * quantity;
+  }, 0);
+
   const country = state.country;
   const countryConfig = countries[country];
+
+  async function finalizeOrder(
+    customerName: string,
+    customerPhone: string,
+    items = state.items
+  ) {
+    const orderId = await placeOrder(
+      customerName,
+      customerPhone,
+      country,
+      items
+    );
+    storeLastOrderId(orderId);
+    resetFlow();
+    router.push(getThankYouPath(orderId));
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -60,31 +88,22 @@ export default function CheckoutModal() {
     setErrors({});
     setIsSubmitting(true);
 
-    try {
-      const result = await submitOrder({
-        name: name.trim(),
-        phone: normalizePhone(phone, country),
-        country,
-        items: state.items.map((i) => ({
-          productId: i.productId,
-          quantity: i.quantity,
-          isUpsell: i.isUpsell,
-        })),
-        total,
-        currency: countryConfig.currency,
-      });
+    const normalizedPhone = normalizePhone(phone, country);
+    const customerName = name.trim();
 
-      storeLastOrderId(result.orderId);
+    try {
+      const upsellProductId = getFlashUpsellProductId(cartProductIds);
+      setPendingCheckout({ name: customerName, phone: normalizedPhone });
       closeCheckout();
 
-      const upsellProductId = getFlashUpsellProductId(cartProductIds);
       if (upsellProductId) {
         openUpsell();
       } else {
-        clearCart();
-        router.push(getThankYouPath(result.orderId));
+        await finalizeOrder(customerName, normalizedPhone);
       }
     } catch (err) {
+      clearPendingCheckout();
+      openCheckout();
       setApiError(
         err instanceof Error ? err.message : "حدث خطأ، يرجى المحاولة مرة أخرى"
       );
@@ -99,8 +118,8 @@ export default function CheckoutModal() {
         className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm"
         onClick={closeCheckout}
       />
-      <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-        <div className="bg-brand-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-brand-beige-dark shadow-xl">
+      <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 pointer-events-none">
+        <div className="bg-brand-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-brand-beige-dark shadow-xl pointer-events-auto">
           <div className="flex items-center justify-between px-6 py-4 border-b border-brand-beige-dark">
             <h2 className="text-lg font-bold text-brand-black">إتمام الطلب</h2>
             <button
@@ -115,16 +134,21 @@ export default function CheckoutModal() {
             <div>
               <p className="text-sm font-bold text-brand-black mb-3">── ملخص الطلب ──</p>
               <div className="space-y-2">
-                {cartProducts.map(({ product, quantity }) => (
+                {cartProducts.map(({ product, quantity, isUpsell }) => (
                   <div
                     key={product.id}
-                    className="flex items-center justify-between text-sm"
+                    className="flex items-center justify-between text-sm gap-3"
                   >
-                    <span className="text-brand-black">
+                    <span className="text-brand-black min-w-0 break-words">
                       {product.name} × {quantity}
                     </span>
-                    <span className="font-semibold text-brand-black">
-                      {formatPrice(singlePrice * quantity, country)}
+                    <span className="font-semibold text-brand-black flex-shrink-0">
+                      {formatPrice(
+                        (isUpsell
+                          ? countryConfig.flashUpsellPrice
+                          : getSinglePrice(state.country)) * quantity,
+                        country
+                      )}
                     </span>
                   </div>
                 ))}
@@ -149,7 +173,7 @@ export default function CheckoutModal() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               <p className="text-sm font-bold text-brand-black">── بيانات التوصيل ──</p>
 
               <div>
@@ -163,7 +187,10 @@ export default function CheckoutModal() {
                   id="checkout-name"
                   type="text"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+                  }}
                   placeholder="مثال: محمد أحمد"
                   className={`w-full px-4 py-3 rounded-xl border ${
                     errors.name
@@ -187,7 +214,10 @@ export default function CheckoutModal() {
                   id="checkout-phone"
                   type="tel"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    if (errors.phone) setErrors((prev) => ({ ...prev, phone: undefined }));
+                  }}
                   placeholder={
                     state.country === "SA" || state.country === "AE"
                       ? "05xxxxxxxx"

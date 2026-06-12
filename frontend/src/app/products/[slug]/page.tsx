@@ -42,11 +42,11 @@ function CrossSellCard({ product }: { product: Product }) {
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </div>
-      <div className="p-4">
-        <h3 className="text-sm font-semibold text-brand-black group-hover:text-brand-gold transition-colors mb-1">
+      <div className="p-4 min-w-0">
+        <h3 className="text-sm font-semibold text-brand-black group-hover:text-brand-gold transition-colors mb-1 break-words">
           {product.name}
         </h3>
-        <p className="text-xs text-brand-gray mb-2">{product.subtitle}</p>
+        <p className="text-xs text-brand-gray mb-2 break-words">{product.subtitle}</p>
         <span className="text-xs text-brand-gold font-medium">عرض المنتج</span>
       </div>
     </Link>
@@ -82,11 +82,22 @@ export default async function ProductPage({ params }: PageProps) {
               />
             </div>
 
-            <div className="flex flex-col">
-              <p className="text-sm text-brand-gold font-medium mb-2">{product.subtitle}</p>
-              <h1 className="text-2xl md:text-3xl font-bold text-brand-black mb-3">
+            <div className="flex flex-col min-w-0">
+              <p className="text-sm text-brand-gold font-medium mb-2 break-words">{product.subtitle}</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-brand-black mb-3 break-words">
                 {product.name}
               </h1>
+
+              <p className="text-base font-semibold text-brand-black/90 leading-relaxed mb-4 border-r-4 border-brand-gold pr-4 break-words">
+                {product.hook}
+              </p>
+
+              <div className="inline-flex items-center gap-2 bg-brand-beige border border-brand-beige-dark rounded-full px-4 py-2 mb-5">
+                <span className="text-xs text-brand-gray">المكون البطل</span>
+                <span className="text-xs font-bold text-brand-black" dir="ltr">
+                  {product.heroIngredient}
+                </span>
+              </div>
 
               <div className="flex items-center gap-2 mb-5">
                 <div className="flex gap-0.5">
@@ -97,7 +108,7 @@ export default async function ProductPage({ params }: PageProps) {
                 <span className="text-xs text-brand-gray">(247 تقييم)</span>
               </div>
 
-              <p className="text-sm text-brand-black/80 leading-relaxed mb-7">
+              <p className="text-sm text-brand-black/80 leading-relaxed mb-7 break-words">
                 {product.longDescription}
               </p>
 
@@ -210,7 +221,7 @@ export default async function ProductPage({ params }: PageProps) {
           <h2 className="text-lg font-bold text-brand-black mb-8 text-center">
             منتجات قد تعجبك
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 min-w-0">
             {crossSells.map((p) => (
               <CrossSellCard key={p.id} product={p} />
             ))}

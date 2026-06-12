@@ -5,10 +5,10 @@ import type { Product } from "@/lib/products";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="group bg-brand-white rounded-2xl border border-brand-beige-dark hover:border-brand-gold/40 transition-all duration-300 hover:shadow-lg hover:shadow-brand-gold/5 overflow-hidden flex flex-col">
+    <div className="group bg-brand-white rounded-2xl border border-brand-beige-dark hover:border-brand-gold/40 transition-all duration-300 hover:shadow-lg hover:shadow-brand-gold/5 flex flex-col min-w-0">
       <Link
         href={`/products/${product.slug}`}
-        className="relative aspect-square overflow-hidden block"
+        className="relative aspect-square overflow-hidden block rounded-t-2xl"
       >
         <span
           className={`absolute top-4 right-4 z-10 text-xs font-semibold px-3 py-1 rounded-full ${product.badgeBg}`}
@@ -25,23 +25,26 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className={`absolute inset-0 bg-gradient-to-t ${product.gradient} opacity-30`} />
       </Link>
 
-      <div className="p-6 flex flex-col flex-1">
-        <Link href={`/products/${product.slug}`}>
-          <h3 className="text-lg font-bold text-brand-black mb-1 group-hover:text-brand-gold transition-colors">
+      <div className="p-4 sm:p-6 flex flex-col flex-1 min-w-0">
+        <Link href={`/products/${product.slug}`} className="min-w-0">
+          <h3 className="text-base sm:text-lg font-bold text-brand-black mb-1 group-hover:text-brand-gold transition-colors break-words">
             {product.name}
           </h3>
         </Link>
-        <p className="text-sm text-brand-gray mb-2">{product.subtitle}</p>
-        <p className="text-sm text-brand-black/70 mb-4 leading-relaxed flex-1">
+        <p className="text-sm font-medium text-brand-gold mb-2 leading-snug break-words">
+          {product.hook}
+        </p>
+        <p className="text-sm text-brand-gray mb-2 break-words">{product.subtitle}</p>
+        <p className="text-sm text-brand-black/70 mb-4 leading-relaxed flex-1 break-words">
           {product.description}
         </p>
 
-        <div className="mb-4">
+        <div className="mb-4 min-w-0">
           <div className="flex flex-wrap gap-1.5">
             {product.ingredients.slice(0, 3).map((ing) => (
               <span
                 key={ing.name}
-                className="inline-flex items-center gap-1 text-xs bg-brand-beige text-brand-black/80 px-2.5 py-1 rounded-full"
+                className="inline-flex items-center gap-1 text-xs bg-brand-beige text-brand-black/80 px-2.5 py-1 rounded-full max-w-full break-words"
               >
                 {ing.name}
                 {ing.concentration && (
@@ -54,10 +57,10 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-brand-beige">
+        <div className="flex items-center justify-between gap-2 pt-4 border-t border-brand-beige min-w-0">
           <Link
             href={`/products/${product.slug}`}
-            className="text-xs text-brand-gold font-semibold hover:underline"
+            className="text-xs text-brand-gold font-semibold hover:underline flex-shrink-0"
           >
             التفاصيل
           </Link>
@@ -66,7 +69,7 @@ export default function ProductCard({ product }: { product: Product }) {
             label="أضف للسلة"
             variant="accent"
             accentBg={product.accentBg}
-            className="text-sm px-5 py-2.5"
+            className="text-sm px-4 sm:px-5 py-2.5 flex-shrink-0"
           />
         </div>
       </div>

@@ -5,10 +5,13 @@ export interface Ingredient {
 
 export interface Product {
   id: number;
+  sku: string;
   name: string;
   slug: string;
   subtitle: string;
   tagline: string;
+  hook: string;
+  heroIngredient: string;
   description: string;
   longDescription: string;
   problem: string;
@@ -29,10 +32,13 @@ export interface Product {
 export const products: Product[] = [
   {
     id: 1,
+    sku: "NQ-RAD-001",
     name: "نقاء سيروم الإشراق",
     slug: "radiance-serum",
     subtitle: "سيروم فيتامين سي والنياسيناميد",
     tagline: "توحيد لون البشرة وإزالة التصبغات",
+    hook: "تصبّغات الصيف ما ترجعش — لون بشرتك يوحّد من أول زجاجة",
+    heroIngredient: "Ethyl Ascorbic Acid 15%",
     description: "لتوحيد لون البشرة وإزالة التصبغات والبقع الداكنة",
     longDescription:
       "سيروم مائي خفيف بتركيبة علمية متقدمة تستهدف التصبغات والبقع الداكنة وعدم توحد لون البشرة. فيتامين سي مستقر (Ethyl Ascorbic Acid) لا يتأكسد في حرارة الخليج — مصمم خصيصاً لمناخك.",
@@ -63,10 +69,13 @@ export const products: Product[] = [
   },
   {
     id: 2,
+    sku: "NQ-MSK-002",
     name: "نقاء قناع النضارة الذهبي",
     slug: "glow-mask",
     subtitle: "قناع الببتيدات وحمض الهيالورونيك",
     tagline: "نضارة فورية ومكافحة علامات التقدم",
+    hook: "حطّيه قبل النوم — صبّحي ببشرة مختلفة",
+    heroIngredient: "Copper Peptide GHK-Cu + Multi-Weight HA",
     description: "للنضارة الفورية ومكافحة علامات التقدم في السن",
     longDescription:
       "قناع ليلي فاخر بببتيدات الجيل الثالث و3 أوزان من حمض الهيالورونيك. حطيه قبل النوم — صبّحي ببشرة مختلفة. نتائج مرئية من أول استخدام.",
@@ -97,10 +106,13 @@ export const products: Product[] = [
   },
   {
     id: 3,
+    sku: "NQ-HRS-003",
     name: "نقاء سيروم تكثيف الشعر",
     slug: "hair-density-serum",
     subtitle: "سيروم الريدنسيل والكافيين",
     tagline: "وقف التساقط وتعزيز الكثافة",
+    hook: "97% لاحظوا فرق في كثافة الشعر خلال 90 يوم — بدون زيت",
+    heroIngredient: "Redensyl 3% + AnaGain™",
     description: "لوقف التساقط وتعزيز كثافة الشعر وتقوية البصيلات",
     longDescription:
       "سيروم مائي خفيف بتركيبة ريدنسيل 3% + كافيين — المكونات اللي أثبتت الدراسات فعاليتها. مو زيت دهني. يُمتص بسرعة بدون بقايا. 97% لاحظوا تحسن في الحجم خلال 90 يوم.",
@@ -131,10 +143,13 @@ export const products: Product[] = [
   },
   {
     id: 4,
+    sku: "NQ-EYE-004",
     name: "نقاء كريم العيون بالريتينول",
     slug: "eye-retinol-cream",
     subtitle: "كريم الريتينول والكافيين",
     tagline: "للهالات السوداء والانتفاخ وخطوط العين",
+    hook: "الفرق يبان من أول تطبيق — رأس معدني بارد يقلّل الانتفاخ فوراً",
+    heroIngredient: "Retinaldehyde 0.05% + Caffeine 3%",
     description: "للهالات السوداء والانتفاخ وخطوط محيط العين",
     longDescription:
       "تركيبة خماسية متخصصة لمحيط العين: ريتينالديهايد + كافيين 3% + هالوكسيل 2% + فيتامين ك + ببتيد Eyeseryl. مع رأس تطبيق معدني بارد — تحسين الفرق من أول مرة.",
@@ -165,10 +180,13 @@ export const products: Product[] = [
   },
   {
     id: 5,
+    sku: "NQ-CLR-005",
     name: "نقاء جل الصفاء",
     slug: "clarity-gel",
     subtitle: "جل حمض الساليسيليك والزنك",
     tagline: "تنقية المسام ومكافحة الشوائب",
+    hook: "بشرة أصفى من أول أسبوع — ينظّف المسام من الداخل بدون ما يجفّف",
+    heroIngredient: "Salicylic Acid 2% + Niacinamide 4%",
     description: "لتنقية المسام ومكافحة الشوائب والتحكم بالدهون",
     longDescription:
       "جل خفيف شفاف بحمض الساليسيليك 2% + زنك PCA — ينقي المسام من الداخل ويقلل الإفرازات الدهنية بدون ما يجفف بشرتك. يُمتص بثوانٍ — بدون لمعان. بشرة أصفى من أول أسبوع.",

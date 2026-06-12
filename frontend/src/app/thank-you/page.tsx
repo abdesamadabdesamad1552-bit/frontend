@@ -1,15 +1,21 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useCart } from "@/lib/cart-context";
 import { getLastOrderId } from "@/lib/order-redirect";
 
 function ThankYouContent() {
+  const { resetFlow } = useCart();
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId") || getLastOrderId();
+
+  useEffect(() => {
+    resetFlow();
+  }, [resetFlow]);
 
   return (
     <main className="bg-brand-beige min-h-[60vh] py-16 md:py-24">

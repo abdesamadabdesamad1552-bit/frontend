@@ -11,30 +11,76 @@ import {
   getSinglePrice,
   formatPrice,
 } from "@/lib/pricing";
-import { getThankYouPath, getLastOrderId } from "@/lib/order-redirect";
+import { placeOrder } from "@/lib/checkout-flow";
+import { getThankYouPath, storeLastOrderId } from "@/lib/order-redirect";
 
 const COUNTDOWN_SECONDS = 15;
 
 export default function FlashUpsell() {
   const router = useRouter();
-  const { state, addUpsell, closeUpsell, clearCart, cartProductIds } = useCart();
+  const { state, closeUpsell, resetFlow, cartProductIds } = useCart();
   const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiError, setApiError] = useState("");
 
   const upsellProductId = getFlashUpsellProductId(cartProductIds);
   const upsellProduct = upsellProductId
     ? products.find((p) => p.id === upsellProductId)
     : null;
 
-  const goToThankYou = useCallback(() => {
-    const orderId = getLastOrderId();
-    closeUpsell();
-    clearCart();
-    router.push(orderId ? getThankYouPath(orderId) : "/thank-you");
-  }, [closeUpsell, clearCart, router]);
+  const completeOrder = useCallback(
+    async (includeUpsell: boolean) => {
+      const pending = state.pendingCheckout;
+      if (!pending || isSubmitting) return;
+
+      setIsSubmitting(true);
+      setApiError("");
+
+      let items = [...state.items];
+      if (
+        includeUpsell &&
+        upsellProductId &&
+        !items.some((i) => i.productId === upsellProductId)
+      ) {
+        items = [
+          ...items,
+          { productId: upsellProductId, quantity: 1, isUpsell: true },
+        ];
+      }
+
+      try {
+        const orderId = await placeOrder(
+          pending.name,
+          pending.phone,
+          state.country,
+          items
+        );
+        storeLastOrderId(orderId);
+        closeUpsell();
+        resetFlow();
+        router.push(getThankYouPath(orderId));
+      } catch (err) {
+        setApiError(
+          err instanceof Error ? err.message : "حدث خطأ، يرجى المحاولة مرة أخرى"
+        );
+        setIsSubmitting(false);
+      }
+    },
+    [
+      state.pendingCheckout,
+      state.items,
+      state.country,
+      upsellProductId,
+      isSubmitting,
+      closeUpsell,
+      resetFlow,
+      router,
+    ]
+  );
 
   const handleDecline = useCallback(() => {
-    goToThankYou();
-  }, [goToThankYou]);
+    completeOrder(false);
+  }, [completeOrder]);
 
   useEffect(() => {
     if (!state.isUpsellOpen) {
@@ -62,16 +108,11 @@ export default function FlashUpsell() {
   const upsellPrice = getFlashUpsellPrice(state.country);
   const savings = originalPrice - upsellPrice;
 
-  function handleAccept() {
-    addUpsell(upsellProduct!.id);
-    goToThankYou();
-  }
-
   return (
     <>
       <div className="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm" />
-      <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
-        <div className="bg-brand-white rounded-2xl max-w-md w-full overflow-hidden animate-bounce-in border border-brand-beige-dark shadow-2xl">
+      <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
+        <div className="bg-brand-white rounded-2xl max-w-md w-full overflow-hidden animate-bounce-in border border-brand-beige-dark shadow-2xl pointer-events-auto">
           <div className="bg-brand-gold px-6 py-4 text-center">
             <p className="text-brand-white font-bold text-lg">⚡ عرض خاص لك فقط!</p>
             <div className="mt-2 inline-flex items-center gap-2 bg-brand-white/20 rounded-full px-4 py-1">
@@ -114,16 +155,26 @@ export default function FlashUpsell() {
               هذا العرض ينتهي خلال ثوانٍ ولن يتكرر مرة أخرى
             </p>
 
+            {apiError && (
+              <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-600 mb-4">
+                {apiError}
+              </div>
+            )}
+
             <button
-              onClick={handleAccept}
-              className="w-full bg-brand-gold text-brand-black text-base font-bold py-4 rounded-xl hover:bg-brand-gold-light transition-colors mb-3"
+              onClick={() => completeOrder(true)}
+              disabled={isSubmitting}
+              className="w-full bg-brand-gold text-brand-black text-base font-bold py-4 rounded-xl hover:bg-brand-gold-light transition-colors mb-3 disabled:opacity-60"
             >
-              أضيفي لطلبي بـ {formatPrice(upsellPrice, state.country)} فقط!
+              {isSubmitting
+                ? "جاري التأكيد..."
+                : `أضيفي لطلبي بـ ${formatPrice(upsellPrice, state.country)} فقط!`}
             </button>
 
             <button
               onClick={handleDecline}
-              className="w-full text-sm text-brand-gray hover:text-brand-black transition-colors py-2"
+              disabled={isSubmitting}
+              className="w-full text-sm text-brand-gray hover:text-brand-black transition-colors py-2 disabled:opacity-60"
             >
               لا شكراً، أكملي طلبي ←
             </button>

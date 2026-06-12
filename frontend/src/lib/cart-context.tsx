@@ -17,12 +17,18 @@ export interface CartItem {
   isUpsell?: boolean;
 }
 
+interface PendingCheckout {
+  name: string;
+  phone: string;
+}
+
 interface CartState {
   items: CartItem[];
   country: CountryCode;
   isDrawerOpen: boolean;
   isCheckoutOpen: boolean;
   isUpsellOpen: boolean;
+  pendingCheckout: PendingCheckout | null;
 }
 
 type CartAction =
@@ -31,6 +37,7 @@ type CartAction =
   | { type: "INCREMENT"; productId: number }
   | { type: "DECREMENT"; productId: number }
   | { type: "ADD_UPSELL"; productId: number }
+  | { type: "ADD_BUNDLE"; productIds: number[] }
   | { type: "SET_COUNTRY"; country: CountryCode }
   | { type: "OPEN_DRAWER" }
   | { type: "CLOSE_DRAWER" }
@@ -38,7 +45,10 @@ type CartAction =
   | { type: "CLOSE_CHECKOUT" }
   | { type: "OPEN_UPSELL" }
   | { type: "CLOSE_UPSELL" }
-  | { type: "CLEAR_CART" };
+  | { type: "SET_PENDING_CHECKOUT"; checkout: PendingCheckout }
+  | { type: "CLEAR_PENDING_CHECKOUT" }
+  | { type: "CLEAR_CART" }
+  | { type: "RESET_FLOW" };
 
 const GCC_CODES = new Set(["SA", "AE", "KW", "QA", "BH", "OM"]);
 
@@ -48,6 +58,7 @@ const initialState: CartState = {
   isDrawerOpen: false,
   isCheckoutOpen: false,
   isUpsellOpen: false,
+  pendingCheckout: null,
 };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
@@ -118,6 +129,20 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         isUpsellOpen: false,
       };
     }
+    case "ADD_BUNDLE": {
+      let items = [...state.items];
+      for (const productId of action.productIds) {
+        const existing = items.find((i) => i.productId === productId);
+        if (existing) {
+          items = items.map((i) =>
+            i.productId === productId ? { ...i, quantity: i.quantity + 1 } : i
+          );
+        } else {
+          items = [...items, { productId, quantity: 1 }];
+        }
+      }
+      return { ...state, items, isDrawerOpen: true };
+    }
     case "SET_COUNTRY":
       return { ...state, country: action.country };
     case "OPEN_DRAWER":
@@ -132,8 +157,28 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return { ...state, isUpsellOpen: true, isCheckoutOpen: false };
     case "CLOSE_UPSELL":
       return { ...state, isUpsellOpen: false };
+    case "SET_PENDING_CHECKOUT":
+      return { ...state, pendingCheckout: action.checkout };
+    case "CLEAR_PENDING_CHECKOUT":
+      return { ...state, pendingCheckout: null };
     case "CLEAR_CART":
-      return { ...state, items: [], isDrawerOpen: false };
+      return {
+        ...state,
+        items: [],
+        isDrawerOpen: false,
+        isCheckoutOpen: false,
+        isUpsellOpen: false,
+        pendingCheckout: null,
+      };
+    case "RESET_FLOW":
+      return {
+        ...state,
+        items: [],
+        isDrawerOpen: false,
+        isCheckoutOpen: false,
+        isUpsellOpen: false,
+        pendingCheckout: null,
+      };
     default:
       return state;
   }
@@ -146,6 +191,7 @@ interface CartContextValue {
   increment: (productId: number) => void;
   decrement: (productId: number) => void;
   addUpsell: (productId: number) => void;
+  addBundle: (productIds: number[]) => void;
   setCountry: (country: CountryCode) => void;
   openDrawer: () => void;
   closeDrawer: () => void;
@@ -153,7 +199,10 @@ interface CartContextValue {
   closeCheckout: () => void;
   openUpsell: () => void;
   closeUpsell: () => void;
+  setPendingCheckout: (checkout: PendingCheckout) => void;
+  clearPendingCheckout: () => void;
   clearCart: () => void;
+  resetFlow: () => void;
   totalItems: number;
   cartProductIds: number[];
 }
@@ -193,6 +242,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     (productId: number) => dispatch({ type: "ADD_UPSELL", productId }),
     []
   );
+  const addBundle = useCallback(
+    (productIds: number[]) => dispatch({ type: "ADD_BUNDLE", productIds }),
+    []
+  );
   const setCountry = useCallback(
     (country: CountryCode) => dispatch({ type: "SET_COUNTRY", country }),
     []
@@ -215,7 +268,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
     () => dispatch({ type: "CLOSE_UPSELL" }),
     []
   );
+  const setPendingCheckout = useCallback(
+    (checkout: PendingCheckout) =>
+      dispatch({ type: "SET_PENDING_CHECKOUT", checkout }),
+    []
+  );
+  const clearPendingCheckout = useCallback(
+    () => dispatch({ type: "CLEAR_PENDING_CHECKOUT" }),
+    []
+  );
   const clearCart = useCallback(() => dispatch({ type: "CLEAR_CART" }), []);
+  const resetFlow = useCallback(() => dispatch({ type: "RESET_FLOW" }), []);
 
   const totalItems = state.items.reduce((sum, i) => sum + i.quantity, 0);
   const cartProductIds = state.items.map((i) => i.productId);
@@ -229,6 +292,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         increment,
         decrement,
         addUpsell,
+        addBundle,
         setCountry,
         openDrawer,
         closeDrawer,
@@ -236,7 +300,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         closeCheckout,
         openUpsell,
         closeUpsell,
+        setPendingCheckout,
+        clearPendingCheckout,
         clearCart,
+        resetFlow,
         totalItems,
         cartProductIds,
       }}
