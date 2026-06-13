@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCart } from "@/lib/cart-context";
-import { products } from "@/lib/products";
+import { products, getPrimaryImage } from "@/lib/products";
 import {
   calculateCartTotal,
   getSinglePrice,
@@ -83,7 +83,7 @@ export default function CartDrawer() {
                 >
                   <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
                     <Image
-                      src={product.image}
+                      src={getPrimaryImage(product)}
                       alt={product.name}
                       fill
                       sizes="64px"
@@ -145,7 +145,7 @@ export default function CartDrawer() {
                       >
                         <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
                           <Image
-                            src={product.image}
+                            src={getPrimaryImage(product)}
                             alt={product.name}
                             fill
                             sizes="48px"

@@ -5,9 +5,10 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AddToCartButton from "@/components/AddToCartButton";
-import { products, getProductBySlug, getCrossSells } from "@/lib/products";
+import ProductGallery from "@/components/ProductGallery";
+import { products, getProductBySlug, getCrossSells, getPrimaryImage, getFallbackImage } from "@/lib/products";
 import type { Product } from "@/lib/products";
-import { Star, Truck, CreditCard, ShieldCheck } from "lucide-react";
+import { Star, Truck, CreditCard, ShieldCheck, Sparkles } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -35,7 +36,7 @@ function CrossSellCard({ product }: { product: Product }) {
     >
       <div className="relative aspect-square overflow-hidden">
         <Image
-          src={product.image}
+          src={getPrimaryImage(product)}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
@@ -66,27 +67,20 @@ export default async function ProductPage({ params }: PageProps) {
       <section className="pt-8 pb-10 md:pt-12 md:pb-16 bg-brand-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
-            <div className="relative aspect-square rounded-2xl overflow-hidden border border-brand-beige-dark">
-              <span
-                className={`absolute top-5 right-5 z-10 text-xs font-semibold px-3 py-1.5 rounded-full ${product.badgeBg}`}
-              >
-                {product.badge}
-              </span>
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-                className="object-cover"
-              />
-            </div>
+            <ProductGallery
+              images={product.images}
+              productName={product.name}
+              fallbackSrc={getFallbackImage(product.slug)}
+              badge={product.badge}
+              badgeBg={product.badgeBg}
+            />
 
             <div className="flex flex-col min-w-0">
-              <p className="text-sm text-brand-gold font-medium mb-2 break-words">{product.subtitle}</p>
-              <h1 className="text-2xl md:text-3xl font-bold text-brand-black mb-3 break-words">
+              <p className="text-sm text-brand-gold font-medium mb-1 break-words">{product.subtitle}</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-brand-black mb-2 break-words">
                 {product.name}
               </h1>
+              <p className="text-sm text-brand-gray mb-4 break-words">{product.tagline}</p>
 
               <p className="text-base font-semibold text-brand-black/90 leading-relaxed mb-4 border-r-4 border-brand-gold pr-4 break-words">
                 {product.hook}
@@ -108,9 +102,29 @@ export default async function ProductPage({ params }: PageProps) {
                 <span className="text-xs text-brand-gray">(247 تقييم)</span>
               </div>
 
-              <p className="text-sm text-brand-black/80 leading-relaxed mb-7 break-words">
+              <p className="text-sm text-brand-black/80 leading-relaxed mb-6 break-words">
                 {product.longDescription}
               </p>
+
+              {product.benefits.length > 0 && (
+                <div className="mb-7">
+                  <h2 className="text-sm font-bold text-brand-black mb-4 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-brand-gold" />
+                    فوائد المنتج
+                  </h2>
+                  <div className="space-y-3">
+                    {product.benefits.map((benefit) => (
+                      <div
+                        key={benefit.title}
+                        className="p-4 rounded-xl bg-brand-beige border border-brand-beige-dark"
+                      >
+                        <h3 className="text-sm font-bold text-brand-black mb-1">{benefit.title}</h3>
+                        <p className="text-xs text-brand-gray leading-relaxed">{benefit.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <AddToCartButton
                 productId={product.id}

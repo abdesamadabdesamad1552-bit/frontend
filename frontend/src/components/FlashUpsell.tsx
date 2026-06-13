@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "@/lib/cart-context";
-import { products } from "@/lib/products";
+import { products, getPrimaryImage } from "@/lib/products";
 import {
   getFlashUpsellProductId,
   getFlashUpsellPrice,
@@ -126,7 +126,7 @@ export default function FlashUpsell() {
           <div className="p-6 text-center">
             <div className="relative w-40 h-40 mx-auto rounded-xl overflow-hidden mb-4 border border-brand-beige-dark">
               <Image
-                src={upsellProduct.image}
+                src={getPrimaryImage(upsellProduct)}
                 alt={upsellProduct.name}
                 fill
                 sizes="160px"

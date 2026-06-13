@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import AddToCartButton from "@/components/AddToCartButton";
 import type { Product } from "@/lib/products";
+import { getPrimaryImage } from "@/lib/products";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
@@ -16,7 +17,7 @@ export default function ProductCard({ product }: { product: Product }) {
           {product.badge}
         </span>
         <Image
-          src={product.image}
+          src={getPrimaryImage(product)}
           alt={product.name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
