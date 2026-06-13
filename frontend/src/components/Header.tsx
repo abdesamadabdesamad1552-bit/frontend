@@ -111,13 +111,13 @@ export default function Header() {
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
         >
           <div className="flex items-center gap-2.5 sm:gap-3">
-            <div className="relative h-11 w-11 sm:h-14 sm:w-14 shrink-0">
+            <div className="relative h-12 w-12 sm:h-16 sm:w-16 shrink-0">
               <Image
                 src="/header-icon.png"
                 alt="Naqa Beauty"
                 fill
-                sizes="(max-width: 640px) 44px, 56px"
-                className="object-contain drop-shadow-sm"
+                sizes="(max-width: 640px) 48px, 64px"
+                className="object-contain drop-shadow-md"
                 priority
               />
             </div>
