@@ -66,17 +66,13 @@ export function buildLocalImages(raw: { slug: string; name: string }): ProductIm
 
 function enrichProduct(raw: any): Product {
   const media = (productsMedia as ProductsMediaMap)[raw.slug];
-  
-  // Use images from media JSON if available, otherwise auto-build local paths
-  const images = media?.images?.length
-    ? media.images
-    : buildLocalImages(raw);
-    
-  // Use benefits from media JSON if available, otherwise use empty array
+  const images = buildLocalImages(raw);
   const benefits = media?.benefits ?? [];
+  const primaryImage = images[0]?.src ?? raw.image;
 
   return {
     ...raw,
+    image: primaryImage,
     images,
     benefits,
   };
@@ -93,11 +89,9 @@ export function getCrossSells(currentSlug: string): Product[] {
 }
 
 export function getPrimaryImage(product: Product): string {
-  // If local images exist (not placeholders), use the first one, otherwise use the unsplash fallback
-  return product.images[0]?.src ?? product.image;
+  return product.images[0]?.src ?? `/images/${product.slug}/1-hero.webp`;
 }
 
 export function getFallbackImage(slug: string): string {
-  const raw = (rawProducts as any[]).find((p) => p.slug === slug);
-  return raw?.image ?? "";
+  return `/images/${slug}/1-hero.webp`;
 }

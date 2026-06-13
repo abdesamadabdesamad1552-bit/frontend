@@ -11,7 +11,7 @@
     "description": "لتوحيد لون البشرة وإزالة التصبغات والبقع الداكنة",
     "longDescription": "سيروم مائي خفيف بتركيبة علمية متقدمة تستهدف التصبغات والبقع الداكنة وعدم توحد لون البشرة. فيتامين سي مستقر (Ethyl Ascorbic Acid) لا يتأكسد في حرارة الخليج — مصمم خصيصاً لمناخك.",
     "problem": "تعبتِ من التصبغات اللي ما تروح؟",
-    "image": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&h=800&fit=crop&q=80",
+    "image": "/images/radiance-serum/1-hero.webp",
     "ingredients": [
       { "name": "فيتامين سي مستقر", "concentration": "10%" },
       { "name": "نياسيناميد", "concentration": "5%" },
@@ -46,7 +46,7 @@
     "description": "للنضارة الفورية ومكافحة علامات التقدم في السن",
     "longDescription": "قناع ليلي فاخر بببتيدات الجيل الثالث و3 أوزان من حمض الهيالورونيك. حطيه قبل النوم — صبّحي ببشرة مختلفة. نتائج مرئية من أول استخدام.",
     "problem": "بشرتك فقدت نضارتها؟",
-    "image": "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&h=800&fit=crop&q=80",
+    "image": "/images/glow-mask/1-hero.webp",
     "ingredients": [
       { "name": "ببتيدات الجيل الثالث", "concentration": "" },
       { "name": "حمض الهيالورونيك", "concentration": "3 أوزان" },
@@ -81,7 +81,7 @@
     "description": "لوقف التساقط وتعزيز كثافة الشعر وتقوية البصيلات",
     "longDescription": "سيروم مائي خفيف بتركيبة ريدنسيل 3% + كافيين — المكونات اللي أثبتت الدراسات فعاليتها. مو زيت دهني. يُمتص بسرعة بدون بقايا. 97% لاحظوا تحسن في الحجم خلال 90 يوم.",
     "problem": "شعرك يتساقط أكثر من المعتاد؟",
-    "image": "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=800&h=800&fit=crop&q=80",
+    "image": "/images/hair-density-serum/1-hero.webp",
     "ingredients": [
       { "name": "ريدنسيل", "concentration": "3%" },
       { "name": "كافيين", "concentration": "2%" },
@@ -116,7 +116,7 @@
     "description": "للهالات السوداء والانتفاخ وخطوط محيط العين",
     "longDescription": "تركيبة خماسية متخصصة لمحيط العين: ريتينالديهايد + كافيين 3% + هالوكسيل 2% + فيتامين ك + ببتيد Eyeseryl. مع رأس تطبيق معدني بارد — تحسين الفرق من أول مرة.",
     "problem": "الهالات السوداء ما تروح بالكونسيلر؟",
-    "image": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=800&fit=crop&q=80",
+    "image": "/images/eye-retinol-cream/1-hero.webp",
     "ingredients": [
       { "name": "ريتينالديهايد", "concentration": "0.05%" },
       { "name": "كافيين", "concentration": "3%" },
@@ -151,7 +151,7 @@
     "description": "لتنقية المسام ومكافحة الشوائب والتحكم بالدهون",
     "longDescription": "جل خفيف شفاف بحمض الساليسيليك 2% + زنك PCA — ينقي المسام من الداخل ويقلل الإفرازات الدهنية بدون ما يجفف بشرتك. يُمتص بثوانٍ — بدون لمعان. بشرة أصفى من أول أسبوع.",
     "problem": "بشرتك دهنية ومساماتك واسعة؟",
-    "image": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=800&h=800&fit=crop&q=80",
+    "image": "/images/clarity-gel/1-hero.webp",
     "ingredients": [
       { "name": "حمض الساليسيليك", "concentration": "2%" },
       { "name": "زنك PCA", "concentration": "1%" },
