@@ -10,9 +10,9 @@ const countryList = Object.values(countries);
 
 function AnnouncementBar() {
   return (
-    <div className="bg-brand-black text-brand-white text-center text-xs sm:text-sm py-2 px-3 sm:px-4">
+    <div className="bg-brand-gold-dark text-brand-white text-center text-[11px] sm:text-xs py-1.5 px-3 sm:px-4 font-medium tracking-wide">
       <span className="hidden sm:inline">توصيل مجاني لجميع دول الخليج 🚚 | الدفع عند الاستلام</span>
-      <span className="sm:hidden">توصيل مجاني 🚚 | COD</span>
+      <span className="sm:hidden">توصيل مجاني 🚚 | الدفع عند الاستلام</span>
     </div>
   );
 }
@@ -23,9 +23,9 @@ export default function Header() {
   const currentCountry = countries[state.country];
 
   return (
-    <header className="sticky top-0 z-50 bg-brand-white/95 backdrop-blur-md border-b border-brand-beige-dark">
+    <header className="sticky top-0 z-50 bg-brand-white/95 backdrop-blur-md border-b border-brand-beige-dark shadow-sm">
       <AnnouncementBar />
-      <div className="relative max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
+      <div className="relative max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-2 sm:py-2.5">
         {/* Country selector */}
         <div className="relative z-[60] min-w-[44px]">
           <button
@@ -34,16 +34,16 @@ export default function Header() {
             aria-expanded={showCountryPicker}
             aria-haspopup="listbox"
             aria-label={`الدولة: ${currentCountry.nameAr}`}
-            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-brand-beige-dark bg-brand-beige px-2.5 sm:px-3.5 py-2 text-brand-black shadow-sm transition-all hover:border-brand-gold hover:bg-brand-white hover:shadow-md active:scale-[0.98]"
+            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-brand-gold/40 bg-brand-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-brand-black shadow-sm transition-all hover:border-brand-gold hover:shadow-md active:scale-[0.98]"
           >
-            <span className="text-lg sm:text-xl leading-none" aria-hidden>
+            <span className="text-base sm:text-lg leading-none" aria-hidden>
               {currentCountry.flag}
             </span>
-            <span className="hidden min-[380px]:inline text-xs sm:text-sm font-bold text-brand-black max-w-[4.5rem] sm:max-w-none truncate">
+            <span className="text-xs sm:text-sm font-bold text-brand-black truncate">
               {currentCountry.nameAr}
             </span>
             <svg
-              className={`w-4 h-4 shrink-0 text-brand-gold transition-transform duration-200 ${
+              className={`w-3.5 h-3.5 shrink-0 text-brand-gold transition-transform duration-200 ${
                 showCountryPicker ? "rotate-180" : ""
               }`}
               fill="none"
@@ -110,22 +110,22 @@ export default function Header() {
           href="/"
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
         >
-          <div className="flex items-center gap-2.5 sm:gap-3">
-            <div className="relative h-12 w-12 sm:h-16 sm:w-16 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="relative h-9 w-9 sm:h-11 sm:w-11 shrink-0">
               <Image
                 src="/header-icon.png"
                 alt="Naqa Beauty"
                 fill
-                sizes="(max-width: 640px) 48px, 64px"
-                className="object-contain drop-shadow-md"
+                sizes="(max-width: 640px) 36px, 44px"
+                className="object-contain"
                 priority
               />
             </div>
             <div className="flex flex-col items-start leading-none">
-              <span className="text-2xl sm:text-[1.75rem] font-bold text-brand-black tracking-tight">
+              <span className="text-xl sm:text-2xl font-bold text-brand-black tracking-tight">
                 نقاء
               </span>
-              <span className="mt-1 text-[9px] sm:text-[10px] tracking-[0.25em] sm:tracking-[0.3em] text-brand-gold font-semibold uppercase">
+              <span className="mt-0.5 text-[8px] sm:text-[10px] tracking-[0.25em] sm:tracking-[0.3em] text-brand-gold font-semibold uppercase">
                 NAQA BEAUTY
               </span>
             </div>
@@ -133,10 +133,10 @@ export default function Header() {
         </Link>
 
         {/* Nav + cart */}
-        <div className="flex items-center gap-3 sm:gap-6">
+        <div className="flex items-center gap-3 sm:gap-5">
           <Link
             href="/shop"
-            className="text-sm font-medium text-brand-black hover:text-brand-gold transition-colors"
+            className="text-sm font-semibold text-brand-gold hover:text-brand-gold-dark transition-colors"
           >
             تسوق
           </Link>
