@@ -2,7 +2,7 @@
  * Naqa Beauty — Google Sheets Order Webhook
  *
  * Setup:
- * 1. Row 1 headers (Feuille 2):
+ * 1. Row 1 headers (Feuille 1):
  *    Date | orderId | country | name | phone | product | sku | quantity | totalPrice | currency | status
  * 2. Extensions → Apps Script → paste this file
  * 3. Deploy → New deployment → Web app
@@ -11,7 +11,7 @@
  * 4. Copy the deployment URL into GOOGLE_SHEETS_WEBHOOK_URL on frontend (Easypanel)
  */
 
-const SHEET_NAME = "Feuille 2";
+const SHEET_NAME = "Feuille 1";
 
 function doPost(e) {
   try {
