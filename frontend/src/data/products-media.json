@@ -1,5 +1,23 @@
 {
   "radiance-serum": {
+    "images": [
+      {
+        "src": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء سيروم الإشراق — عبوة سيروم فاخرة"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء سيروم الإشراق — استخدام السيروم للعناية بالبشرة"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء سيروم الإشراق — مكونات فيتامين سي للعناية بالبشرة"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء سيروم الإشراق — حجم العبوة"
+      }
+    ],
     "benefits": [
       {
         "title": "إشراقة فورية",
@@ -16,6 +34,24 @@
     ]
   },
   "glow-mask": {
+    "images": [
+      {
+        "src": "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء قناع النضارة الذهبي — قناع عناية فاخر"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء قناع النضارة الذهبي — تطبيق القناع على البشرة"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء قناع النضارة الذهبي — ترطيب ونضارة"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء قناع النضارة الذهبي — حجم العبوة"
+      }
+    ],
     "benefits": [
       {
         "title": "ترطيب عميق مضاعف",
@@ -32,6 +68,24 @@
     ]
   },
   "hair-density-serum": {
+    "images": [
+      {
+        "src": "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء سيروم تكثيف الشعر — سيروم فروة الرأس"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء سيروم تكثيف الشعر — استخدام السيروم للشعر"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء سيروم تكثيف الشعر — كثافة ولمعان الشعر"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء سيروم تكثيف الشعر — حجم العبوة"
+      }
+    ],
     "benefits": [
       {
         "title": "كثافة ملحوظة",
@@ -48,6 +102,24 @@
     ]
   },
   "eye-retinol-cream": {
+    "images": [
+      {
+        "src": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء كريم العيون بالريتينول — كريم عيون فاخر"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء كريم العيون بالريتينول — تطبيق كريم محيط العين"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء كريم العيون بالريتينول — عناية بمنطقة العين"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1580870069867-74c57ee1bb07?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء كريم العيون بالريتينول — حجم العبوة"
+      }
+    ],
     "benefits": [
       {
         "title": "تفتيح الهالات",
@@ -64,6 +136,24 @@
     ]
   },
   "clarity-gel": {
+    "images": [
+      {
+        "src": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء جل الصفاء — جل تنقية البشرة"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء جل الصفاء — استخدام الجل للبشرة الدهنية"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء جل الصفاء — بشرة صافية ومكونات عناية"
+      },
+      {
+        "src": "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=1000&h=1000&fit=crop&q=85",
+        "alt": "نقاء جل الصفاء — حجم العبوة"
+      }
+    ],
     "benefits": [
       {
         "title": "مسام نظيفة تماماً",
