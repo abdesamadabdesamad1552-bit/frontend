@@ -62,11 +62,14 @@ export default function Header() {
           )}
         </div>
 
-        <Link href="/" className="text-center">
-          <span className="text-2xl font-bold text-brand-black tracking-tight block">
-            نقاء
-          </span>
-          <span className="text-[10px] tracking-[0.3em] text-brand-gold font-medium uppercase">
+        <Link href="/" className="text-center flex flex-col items-center">
+          <div className="flex items-center gap-2">
+            <img src="/header-icon.png" alt="Naqa" className="w-6 h-6 object-contain" />
+            <span className="text-2xl font-bold text-brand-black tracking-tight">
+              نقاء
+            </span>
+          </div>
+          <span className="text-[10px] tracking-[0.3em] text-brand-gold font-medium uppercase mt-0.5">
             NAQA BEAUTY
           </span>
         </Link>
