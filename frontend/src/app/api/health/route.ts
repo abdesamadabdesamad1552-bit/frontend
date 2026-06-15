@@ -33,7 +33,7 @@ export async function GET() {
     const webhookCheck = await testWebhookReachability();
     return Response.json({
       status: "ok",
-      buildSha: process.env.NEXT_PUBLIC_BUILD_SHA?.slice(0, 7) ?? "unknown",
+      buildSha: process.env.NEXT_PUBLIC_BUILD_SHA?.slice(0, 7) || "unknown",
       database: "connected",
       dbHost: target.host,
       dbName: target.name,
