@@ -19,6 +19,9 @@ frontend/.env.local
 .DS_Store
 *.pem
 
+# local ad/creative assets — not needed for production deploy
+creatives/
+
 # cursor
 .cursor/
 
