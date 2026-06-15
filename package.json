@@ -12,6 +12,7 @@
     "start:frontend": "npm run start --prefix frontend",
     "start:backend": "npm run start --prefix backend",
     "lint": "npm run lint --prefix frontend",
-    "install:all": "cd frontend && npm install && cd ../backend && npm install"
+    "install:all": "cd frontend && npm install && cd ../backend && npm install",
+    "images:download": "node scripts/download-product-images.mjs"
   }
 }

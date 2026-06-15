@@ -54,9 +54,10 @@ const GALLERY_SLOTS = [
   { file: "2-usage.webp", label: "طريقة الاستخدام" },
   { file: "3-results.webp", label: "النتائج" },
   { file: "4-size.webp", label: "حجم العبوة" },
+  { file: "5-packaging.webp", label: "التغليف والتفاصيل" },
 ] as const;
 
-/** Auto paths: public/images/{slug}/1-hero.webp … 4-size.webp */
+/** Auto paths: public/images/{slug}/1-hero.webp … 5-packaging.webp */
 export function buildLocalImages(raw: { slug: string; name: string }): ProductImage[] {
   return GALLERY_SLOTS.map(({ file, label }) => ({
     src: `/images/${raw.slug}/${file}`,
