@@ -10,7 +10,6 @@ import {
   validatePhone,
   normalizePhone,
   getPhoneError,
-  getFlashUpsellProductId,
   countries,
 } from "@/lib/pricing";
 import { placeOrder } from "@/lib/checkout-flow";
@@ -22,11 +21,7 @@ export default function CheckoutModal() {
     state,
     closeCheckout,
     openCheckout,
-    openUpsell,
     resetFlow,
-    setPendingCheckout,
-    clearPendingCheckout,
-    cartProductIds,
   } = useCart();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -92,17 +87,9 @@ export default function CheckoutModal() {
     const customerName = name.trim();
 
     try {
-      const upsellProductId = getFlashUpsellProductId(cartProductIds);
-      setPendingCheckout({ name: customerName, phone: normalizedPhone });
       closeCheckout();
-
-      if (upsellProductId) {
-        openUpsell();
-      } else {
-        await finalizeOrder(customerName, normalizedPhone);
-      }
+      await finalizeOrder(customerName, normalizedPhone);
     } catch (err) {
-      clearPendingCheckout();
       openCheckout();
       setApiError(
         err instanceof Error ? err.message : "حدث خطأ، يرجى المحاولة مرة أخرى"

@@ -4,7 +4,6 @@ import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import CartDrawer from "@/components/CartDrawer";
 import CheckoutModal from "@/components/CheckoutModal";
-import FlashUpsell from "@/components/FlashUpsell";
 import AnalyticsPixels from "@/components/AnalyticsPixels";
 
 const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
@@ -59,7 +58,6 @@ export default function RootLayout({
           {children}
           <CartDrawer />
           <CheckoutModal />
-          <FlashUpsell />
         </CartProvider>
         <AnalyticsPixels />
       </body>
