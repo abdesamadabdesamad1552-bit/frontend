@@ -12,10 +12,10 @@ const PRODUCTS = {
     url: "https://www.alibaba.co.uk/product-detail/_1601356738984.html",
     maxImages: 4,
     fallback: [
-      "https://sc04.alicdn.com/kf/He182af72bc8048ceb1fd9225b5bb7b4fw.jpg",
-      "https://sc04.alicdn.com/kf/Hf297c28c749240f49a4a23dcb3a4a08aD.jpg",
-      "https://sc04.alicdn.com/kf/H29fc416014c540ce95a302a852ad7216p.jpg",
-      "https://sc04.alicdn.com/kf/H596fa95f8dce4324937be4818826d3568.jpg",
+      "https://sc04.alicdn.com/kf/H49ec962d47664072b4f19c0df3b3c63dX.jpg",
+      "https://sc04.alicdn.com/kf/H810a4f8ea01a41ec9b284e1027e29e898.jpg",
+      "https://sc04.alicdn.com/kf/H7b174caa1db4409fa8491df8a7a37dd4W.png",
+      "https://sc04.alicdn.com/kf/H7917ae6215e149aea0c223cab2ac5a20y.png",
     ],
   },
   "glow-mask": {

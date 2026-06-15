@@ -1,6 +1,11 @@
 {
   "radiance-serum": {
-    "skipSlots": ["5-packaging.webp"],
+    "images": [
+      { "src": "/images/radiance-serum/1-hero.webp", "alt": "نقاء سيروم الإشراق — المنتج على خلفية بيضاء" },
+      { "src": "/images/radiance-serum/2-usage.webp", "alt": "نقاء سيروم الإشراق — طريقة الاستخدام" },
+      { "src": "/images/radiance-serum/3-results.webp", "alt": "نقاء سيروم الإشراق — النتائج" },
+      { "src": "/images/radiance-serum/4-size.webp", "alt": "نقاء سيروم الإشراق — حجم العبوة" }
+    ],
     "benefits": [
       {
         "title": "إشراقة فورية",
@@ -33,7 +38,12 @@
     ]
   },
   "hair-density-serum": {
-    "skipSlots": ["5-packaging.webp"],
+    "images": [
+      { "src": "/images/hair-density-serum/1-hero.webp", "alt": "نقاء سيروم تكثيف الشعر — المنتج على خلفية بيضاء" },
+      { "src": "/images/hair-density-serum/2-usage.webp", "alt": "نقاء سيروم تكثيف الشعر — طريقة الاستخدام" },
+      { "src": "/images/hair-density-serum/3-results.webp", "alt": "نقاء سيروم تكثيف الشعر — النتائج" },
+      { "src": "/images/hair-density-serum/4-size.webp", "alt": "نقاء سيروم تكثيف الشعر — حجم العبوة" }
+    ],
     "benefits": [
       {
         "title": "كثافة ملحوظة",
@@ -50,7 +60,12 @@
     ]
   },
   "eye-retinol-cream": {
-    "skipSlots": ["5-packaging.webp"],
+    "images": [
+      { "src": "/images/eye-retinol-cream/1-hero.webp", "alt": "نقاء كريم العيون بالريتينول — المنتج على خلفية بيضاء" },
+      { "src": "/images/eye-retinol-cream/2-usage.webp", "alt": "نقاء كريم العيون بالريتينول — طريقة الاستخدام" },
+      { "src": "/images/eye-retinol-cream/3-results.webp", "alt": "نقاء كريم العيون بالريتينول — النتائج" },
+      { "src": "/images/eye-retinol-cream/4-size.webp", "alt": "نقاء كريم العيون بالريتينول — حجم العبوة" }
+    ],
     "benefits": [
       {
         "title": "تفتيح الهالات",
@@ -67,7 +82,12 @@
     ]
   },
   "clarity-gel": {
-    "skipSlots": ["5-packaging.webp"],
+    "images": [
+      { "src": "/images/clarity-gel/1-hero.webp", "alt": "نقاء جل الصفاء — المنتج على خلفية بيضاء" },
+      { "src": "/images/clarity-gel/2-usage.webp", "alt": "نقاء جل الصفاء — طريقة الاستخدام" },
+      { "src": "/images/clarity-gel/3-results.webp", "alt": "نقاء جل الصفاء — النتائج" },
+      { "src": "/images/clarity-gel/4-size.webp", "alt": "نقاء جل الصفاء — حجم العبوة" }
+    ],
     "benefits": [
       {
         "title": "مسام نظيفة تماماً",
