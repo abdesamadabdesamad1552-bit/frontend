@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1080px; height: 1920px;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(212,165,90,0.22) 0%, transparent 42%),
+        radial-gradient(circle at 20% 80%, rgba(180,83,9,0.12) 0%, transparent 35%),
+        linear-gradient(165deg, #120c08 0%, #1a120b 45%, #0d0907 100%);
+      color: #fff7ed; overflow: hidden; position: relative;
+    }
+    body::after {
+      content: ""; position: absolute; inset: 48px;
+      border: 1px solid rgba(212,165,90,0.18); border-radius: 32px; pointer-events: none;
+    }
+    .brand { position: absolute; top: 88px; left: 0; right: 0; text-align: center;
+      font-size: 30px; letter-spacing: 4px; color: #d4a55a; font-weight: 700; z-index: 10; }
+    .stage { display: flex; width: 100%; height: 100%; padding: 96px 72px; position: relative; }
+    .content { display: flex; flex-direction: column; z-index: 2; }
+    .hook { font-size: 36px; color: #f0c987; margin-bottom: 16px; font-weight: 600; }
+    .main { line-height: 1.18; font-weight: 800; text-shadow: 0 8px 32px rgba(0,0,0,0.45); }
+    .sub { margin-top: 20px; font-size: 38px; line-height: 1.4; color: rgba(255,247,237,0.78); }
+    .avatar-wrap { filter: drop-shadow(0 20px 50px rgba(212,165,90,0.25)); }
+    .avatar-svg { display: block; }
+    .product { width: 480px; height: auto; filter: drop-shadow(0 28px 60px rgba(212,165,90,0.35)); }
+    .badge { margin-top: 20px; background: rgba(212,165,90,0.12); color: #f0c987;
+      border: 1px solid rgba(212,165,90,0.35); padding: 14px 30px; border-radius: 999px;
+      font-size: 30px; font-weight: 700; display: inline-block; }
+    .badge.cta { background: linear-gradient(135deg, #b45309, #d97706); color: white; border: none;
+      box-shadow: 0 12px 40px rgba(180,83,9,0.35); }
+    .ingredients { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; width: 100%; }
+    .pill { background: rgba(255,255,255,0.06); border: 1px solid rgba(212,165,90,0.22);
+      border-radius: 20px; padding: 18px 22px; font-size: 34px; font-weight: 700; text-align: center; }
+    .ba-wrap { display: flex; width: 100%; max-width: 860px; height: 280px; margin: 16px 0 8px;
+      border-radius: 24px; overflow: hidden; border: 1px solid rgba(212,165,90,0.35); }
+    .ba-panel { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; }
+    .ba-panel.before { background: rgba(0,0,0,0.25); }
+    .ba-panel.after { background: rgba(212,165,90,0.08); }
+    .ba-label { position: absolute; top: 12px; font-size: 24px; font-weight: 700; color: #f0c987;
+      background: rgba(0,0,0,0.45); padding: 4px 14px; border-radius: 999px; }
+    .ba-skin { width: 140px; height: 140px; border-radius: 50%; margin-top: 20px; }
+    .ba-skin.uneven { background:
+      radial-gradient(circle at 35% 40%, rgba(90,55,30,0.55) 0%, transparent 28%),
+      linear-gradient(145deg, #c4956a, #8b6344); filter: saturate(0.85); }
+    .ba-skin.even { background: linear-gradient(145deg, #d4a574, #b8875e);
+      box-shadow: 0 0 40px rgba(212,165,90,0.35); }
+    .ba-divider { width: 3px; background: linear-gradient(180deg, transparent, #d4a55a, transparent); }
+    .ba-disclaimer { font-size: 20px; color: rgba(255,247,237,0.45); }
+    
+      .stage { flex-direction: column; justify-content: center; padding-bottom: 80px; }
+      .avatar-wrap { position: absolute; bottom: 120px; left: 72px; z-index: 5; }
+      .content { text-align: center; align-items: center; margin-bottom: 180px; }
+      .main { font-size: 72px; }
+      .ingredients { max-width: 780px; }
+      .pill { font-size: 30px; padding: 16px 20px; }
+  </style>
+</head>
+<body>
+  <div class="brand">نقاء · Naqa Beauty</div>
+  <div class="stage">
+    
+    <div class="content">
+      <div class="hook">تركيزات حقيقية</div>
+      <div class="main">10% · 5% · 2%</div>
+      <div class="sub">Vit C · Niacinamide · Alpha Arbutin</div>
+      
+      
+      <div class="ingredients">
+        <div class="pill">Ethyl Ascorbic Acid 10%</div>
+        <div class="pill">Niacinamide 5%</div>
+        <div class="pill">Alpha Arbutin 2%</div>
+        <div class="pill">Hyaluronic Acid</div>
+      </div>
+      
+    </div>
+    <div class="avatar-wrap size-pip-bl">
+  <svg class="avatar-svg" viewBox="0 0 400 520" width="187.00000000000003" height="243.10000000000002" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="glow" cx="50%" cy="30%" r="60%">
+        <stop offset="0%" stop-color="rgba(212,165,90,0.35)"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </radialGradient>
+      <linearGradient id="skin" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#d4a574"/>
+        <stop offset="100%" stop-color="#b8875e"/>
+      </linearGradient>
+      <linearGradient id="hijab" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#f5efe6"/>
+        <stop offset="100%" stop-color="#d9cfc0"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="200" cy="260" rx="170" ry="200" fill="url(#glow)"/>
+    <!-- abaya -->
+    <path d="M 60 340 Q 200 300 340 340 L 360 520 L 40 520 Z" fill="#1a1510"/>
+    <path d="M 100 340 Q 200 320 300 340 L 310 480 L 90 480 Z" fill="#2a2218"/>
+    <!-- hijab -->
+    <ellipse cx="200" cy="175" rx="115" ry="120" fill="url(#hijab)"/>
+    <path d="M 85 175 Q 200 90 315 175 L 330 280 Q 200 250 70 280 Z" fill="#ebe3d6"/>
+    <!-- face -->
+    <ellipse cx="200" cy="195" rx="72" ry="82" fill="url(#skin)"/>
+    <!-- eyes -->
+    <ellipse cx="172" cy="188" rx="14" ry="10" fill="#3d2a1f"/>
+    <ellipse cx="228" cy="188" rx="14" ry="10" fill="#3d2a1f"/>
+    <circle cx="175" cy="185" r="4" fill="#fff"/>
+    <circle cx="231" cy="185" r="4" fill="#fff"/>
+    <!-- brows -->
+    <path d="M 155 168 Q 172 160 188 168" stroke="#6b4423" stroke-width="3" fill="none"/>
+    <path d="M 212 168 Q 228 160 245 168" stroke="#6b4423" stroke-width="3" fill="none"/>
+    <!-- nose -->
+    <path d="M 200 195 L 195 215 L 205 215" stroke="#a67c52" stroke-width="2" fill="none"/>
+    <!-- mouth (animated via JS) -->
+    <g class="avatar-mouth" transform-origin="200 235">
+      <ellipse cx="200" cy="235" rx="22" ry="10" fill="#c4756a"/>
+      <ellipse cx="200" cy="232" rx="18" ry="5" fill="#d4847a" opacity="0.6"/>
+    </g>
+    <!-- subtle smile lines -->
+    <path d="M 168 248 Q 200 258 232 248" stroke="#a67c52" stroke-width="2" fill="none" opacity="0.5"/>
+    <text x="250" y="400" font-size="42" fill="#d4a55a" font-weight="700">3</text>
+  </svg></div>
+  </div>
+</body>
+</html>

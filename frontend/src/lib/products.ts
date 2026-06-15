@@ -16,6 +16,24 @@ export interface ProductBenefit {
   description: string;
 }
 
+export interface ProductLanding {
+  subheadline: string;
+  reviews: { quote: string; author: string }[];
+  imageWithText: { headline: string; paragraph: string };
+  threeColumns: { title: string; desc: string; icon: string }[];
+  comparison: {
+    title: string;
+    subtitle: string;
+    features: { name: string; us: boolean; others: boolean }[];
+  };
+  testimonials: {
+    headline: string;
+    paragraph: string;
+    stats: { percent: string; text: string }[];
+  };
+  faq: { q: string; a: string }[];
+}
+
 export interface Product {
   id: number;
   sku: string;
@@ -42,11 +60,12 @@ export interface Product {
   badgeBg: string;
   howToUse: string[];
   freeFrom: string[];
+  landing?: ProductLanding;
 }
 
 type ProductsMediaMap = Record<
   string,
-  { images?: ProductImage[]; benefits?: ProductBenefit[]; skipSlots?: string[] }
+  { images?: ProductImage[]; benefits?: ProductBenefit[]; skipSlots?: string[]; landing?: ProductLanding }
 >;
 
 const GALLERY_SLOTS = [
@@ -73,12 +92,14 @@ function enrichProduct(raw: any): Product {
     buildLocalImages(raw).filter((img) => !skip.has(img.src.split("/").at(-1) ?? ""));
   const benefits = media?.benefits ?? [];
   const primaryImage = images[0]?.src ?? raw.image;
+  const landing = media?.landing;
 
   return {
     ...raw,
     image: primaryImage,
     images,
     benefits,
+    landing,
   };
 }
 

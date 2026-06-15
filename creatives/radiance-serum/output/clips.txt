@@ -1,0 +1,7 @@
+file 'C:/Users/Baha/Desktop/ai ecom/creatives/radiance-serum/output/clip-00.mp4'
+file 'C:/Users/Baha/Desktop/ai ecom/creatives/radiance-serum/output/clip-01.mp4'
+file 'C:/Users/Baha/Desktop/ai ecom/creatives/radiance-serum/output/clip-02.mp4'
+file 'C:/Users/Baha/Desktop/ai ecom/creatives/radiance-serum/output/clip-03.mp4'
+file 'C:/Users/Baha/Desktop/ai ecom/creatives/radiance-serum/output/clip-04.mp4'
+file 'C:/Users/Baha/Desktop/ai ecom/creatives/radiance-serum/output/clip-05.mp4'
+file 'C:/Users/Baha/Desktop/ai ecom/creatives/radiance-serum/output/clip-06.mp4'

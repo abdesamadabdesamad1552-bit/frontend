@@ -1,0 +1,17 @@
+{
+  "avatar-hook.mp4": {
+    "duration": "5s",
+    "script": "قسم بالله… كنت أعاني من التصبّغات. كل صباح نفس السؤال: ليش لون بشرتي مو موحّد؟",
+    "notes": "HeyGen Avatar V · expressiveness: medium · 9:16"
+  },
+  "avatar-cta.mp4": {
+    "duration": "10s",
+    "script": "199 ريال وتوصيل مجاني — اطلبي دابا من naqabeauty.store. جربيه وقولي لي وش رأيك.",
+    "notes": "HeyGen Avatar V · warm CTA · point down subtly"
+  },
+  "broll-voiceover.mp3": {
+    "duration": "15s",
+    "script": "نقاء سيروم الإشراق غيّر لي كل شي. فيتامين سي عشرة بالمئة ونياسيناميد خمسة — تركيزات حقيقية. خفيف، ما يدهن، ويُمتَص بسرعة. شوفي الفرق بنفسك.",
+    "notes": "Voiceover only — يتشغّل فوق B-roll تلقائياً"
+  }
+}

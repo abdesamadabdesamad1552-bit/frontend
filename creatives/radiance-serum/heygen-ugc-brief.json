@@ -1,0 +1,85 @@
+{
+  "title": "نقاء سيروم الإشراق — UGC Ad (HeyGen)",
+  "format": "9:16",
+  "engine": { "type": "avatar_v" },
+  "avatar_notes": {
+    "type": "Gulf female, 28-35, hijab, natural makeup, home vanity background",
+    "expressiveness": "medium",
+    "motion_prompt": "Casual UGC selfie style. Natural hand gestures while talking. Friendly eye contact. Slight head movements. Not overly polished — authentic influencer vibe.",
+    "voice": "Arabic (Saudi/Gulf) — warm, conversational, like talking to a friend"
+  },
+  "production_pattern": "Alternate AVATAR segments with B-ROLL (product close-ups). Use hard cuts, no transitions.",
+  "segments": [
+    {
+      "id": 1,
+      "type": "avatar",
+      "duration_target": "9s",
+      "script": "قسم بالله… كنت أعاني من التصبّغات. كل صباح أشوف في المرآة ونفس المشكلة.",
+      "avatar_actions": "Empathetic expression, slight head tilt, casual tone"
+    },
+    {
+      "id": 2,
+      "type": "broll",
+      "duration_target": "6s",
+      "visual": "Product on vanity table, natural window light, slow push-in",
+      "voiceover": "بقع من الشمس، لون مو موحّد — تعبت منها صراحة."
+    },
+    {
+      "id": 3,
+      "type": "avatar",
+      "duration_target": "5s",
+      "script": "جربت كريمات كثير… والله ما في شيء أثبت معي.",
+      "avatar_actions": "Frustrated but relatable, small hand gesture"
+    },
+    {
+      "id": 4,
+      "type": "broll",
+      "duration_target": "6s",
+      "visual": "Dropper close-up, golden serum drops, product label visible",
+      "voiceover": "لحد ما جربت نقاء سيروم الإشراق — وفرق معي."
+    },
+    {
+      "id": 5,
+      "type": "avatar",
+      "duration_target": "6s",
+      "script": "يعني… بشرتي صارت أوضح وأكثر توحّداً. حسيت فرق حقيقي.",
+      "avatar_actions": "Genuine smile, brighter energy"
+    },
+    {
+      "id": 6,
+      "type": "broll",
+      "duration_target": "8s",
+      "visual": "Ingredient pills overlay: Vit C 10%, Niacinamide 5%, Alpha Arbutin 2%",
+      "voiceover": "فيتامين سي عشرة بالمئة، نياسيناميد خمسة — تركيزات حقيقية مو بس كلام."
+    },
+    {
+      "id": 7,
+      "type": "avatar",
+      "duration_target": "5s",
+      "script": "خفيف، ما يدهن، ثلاث قطرات صباح ومساء — بسيط.",
+      "avatar_actions": "Show three fingers casually"
+    },
+    {
+      "id": 8,
+      "type": "broll",
+      "duration_target": "5s",
+      "visual": "Serum texture on skin, fast absorption",
+      "voiceover": "يُمتَص بسرعة… وما يحسس بشرتك."
+    },
+    {
+      "id": 9,
+      "type": "avatar",
+      "duration_target": "8s",
+      "script": "199 ريال وتوصيل مجاني — جربيه وقولي لي وش رأيك. أنا عن نفسي مبسوطة.",
+      "avatar_actions": "Warm CTA, point down subtly, authentic recommendation"
+    }
+  ],
+  "anti_ai_tips": [
+    "Use jump cuts between avatar and B-roll (no crossfades)",
+    "Keep expressiveness at medium — not robotic high energy",
+    "Add room tone under voice (-20dB)",
+    "Avoid perfect studio lighting on avatar — use home/natural setting",
+    "B-roll should have slight handheld micro-movement",
+    "Do NOT use corporate music — subtle ambient or no music"
+  ]
+}
