@@ -2,6 +2,7 @@
 # Repo: abdesamadabdesamad1552-bit/frontend | Branch: main | Build path: (empty)
 # Dockerfile field must be exactly: Dockerfile.frontend (no spaces or tabs)
 # Runtime env: DATABASE_URL, NEXT_PUBLIC_API_URL
+# Deploy marker: 53ce90e
 
 FROM node:20-alpine AS deps
 WORKDIR /app
