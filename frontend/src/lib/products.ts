@@ -46,7 +46,7 @@ export interface Product {
 
 type ProductsMediaMap = Record<
   string,
-  { images?: ProductImage[]; benefits?: ProductBenefit[] }
+  { images?: ProductImage[]; benefits?: ProductBenefit[]; skipSlots?: string[] }
 >;
 
 const GALLERY_SLOTS = [
@@ -67,7 +67,10 @@ export function buildLocalImages(raw: { slug: string; name: string }): ProductIm
 
 function enrichProduct(raw: any): Product {
   const media = (productsMedia as ProductsMediaMap)[raw.slug];
-  const images = buildLocalImages(raw);
+  const skip = new Set(media?.skipSlots ?? []);
+  const images =
+    media?.images ??
+    buildLocalImages(raw).filter((img) => !skip.has(img.src.split("/").at(-1) ?? ""));
   const benefits = media?.benefits ?? [];
   const primaryImage = images[0]?.src ?? raw.image;
 

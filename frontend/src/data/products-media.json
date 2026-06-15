@@ -1,5 +1,6 @@
 {
   "radiance-serum": {
+    "skipSlots": ["5-packaging.webp"],
     "benefits": [
       {
         "title": "إشراقة فورية",
@@ -48,6 +49,7 @@
     ]
   },
   "eye-retinol-cream": {
+    "skipSlots": ["5-packaging.webp"],
     "benefits": [
       {
         "title": "تفتيح الهالات",
@@ -64,6 +66,7 @@
     ]
   },
   "clarity-gel": {
+    "skipSlots": ["5-packaging.webp"],
     "benefits": [
       {
         "title": "مسام نظيفة تماماً",

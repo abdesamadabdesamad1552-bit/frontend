@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
@@ -27,11 +27,31 @@ export default function ProductGallery({
 }: ProductGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
+  const [brokenSrcs, setBrokenSrcs] = useState<Set<string>>(() => new Set());
 
-  // Use fallback if no images provided
-  const displayImages = images.length > 0 
-    ? images 
-    : [{ src: fallbackSrc || "/placeholder.png", alt: productName }];
+  const markBroken = (src: string) => {
+    setBrokenSrcs((prev) => {
+      if (prev.has(src)) return prev;
+      const next = new Set(prev);
+      next.add(src);
+      return next;
+    });
+  };
+
+  const displayImages = useMemo(() => {
+    const valid = images.filter((img) => !brokenSrcs.has(img.src));
+    if (valid.length > 0) return valid;
+    if (fallbackSrc && !brokenSrcs.has(fallbackSrc)) {
+      return [{ src: fallbackSrc, alt: productName }];
+    }
+    return [{ src: "/placeholder.png", alt: productName }];
+  }, [images, brokenSrcs, fallbackSrc, productName]);
+
+  useEffect(() => {
+    if (currentIndex >= displayImages.length) {
+      setCurrentIndex(0);
+    }
+  }, [currentIndex, displayImages.length]);
 
   const nextImage = () => {
     setCurrentIndex((prev) => (prev + 1) % displayImages.length);
@@ -53,7 +73,7 @@ export default function ProductGallery({
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentIndex}
+            key={displayImages[currentIndex]?.src ?? currentIndex}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -76,6 +96,7 @@ export default function ProductGallery({
                 priority
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
+                onError={() => markBroken(displayImages[currentIndex].src)}
               />
             </motion.div>
           </motion.div>
@@ -112,7 +133,7 @@ export default function ProductGallery({
         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
           {displayImages.map((img, idx) => (
             <button
-              key={idx}
+              key={img.src}
               onClick={() => setCurrentIndex(idx)}
               className={`relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
                 currentIndex === idx ? "border-brand-gold" : "border-transparent opacity-60 hover:opacity-100"
@@ -124,6 +145,7 @@ export default function ProductGallery({
                 fill
                 className="object-cover"
                 sizes="80px"
+                onError={() => markBroken(img.src)}
               />
             </button>
           ))}

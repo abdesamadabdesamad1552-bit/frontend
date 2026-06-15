@@ -10,6 +10,7 @@ const OUT = path.join(__dirname, "..", "frontend", "public", "images");
 const PRODUCTS = {
   "radiance-serum": {
     url: "https://www.alibaba.co.uk/product-detail/_1601356738984.html",
+    maxImages: 4,
     fallback: [
       "https://sc04.alicdn.com/kf/He182af72bc8048ceb1fd9225b5bb7b4fw.jpg",
       "https://sc04.alicdn.com/kf/Hf297c28c749240f49a4a23dcb3a4a08aD.jpg",
@@ -37,6 +38,7 @@ const PRODUCTS = {
   },
   "eye-retinol-cream": {
     url: "https://www.alibaba.co.uk/product-detail/_1601585717811.html",
+    maxImages: 4,
     fallback: [
       "https://sc04.alicdn.com/kf/H781f11938a4148e797ed1f91e9bdd8b3N.jpg",
       "https://sc04.alicdn.com/kf/Hdba07aa500db4d94bcea928357cbb066j.jpg",
@@ -46,9 +48,9 @@ const PRODUCTS = {
   },
   "clarity-gel": {
     url: "https://www.alibaba.co.th/product-detail/Deep-Cleansing-Serum-with-2-Percent_10000030442030.html",
+    maxImages: 4,
     fallback: [
       "https://sc04.alicdn.com/kf/Aaea393836d9b483fa5149c022ef813d3d.png",
-      "https://sc01.alicdn.com/kf/H36976abd62fb46ef8ed67f86ae2ccff1s.png",
       "https://sc04.alicdn.com/kf/Aff5e3fef5c234baa97d25b2f799eb688N.png",
       "https://sc04.alicdn.com/kf/A3ae92469441f4c06a293c2f47c380de7p.png",
       "https://sc04.alicdn.com/kf/A3a3e4d3a6df34477ba15b8e9b90e6959J.png",
@@ -115,38 +117,49 @@ async function download(url, dest) {
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage();
 
-for (const [slug, { url, fallback }] of Object.entries(PRODUCTS)) {
+for (const [slug, { url, fallback, maxImages = MAX_IMAGES }] of Object.entries(PRODUCTS)) {
   const dir = path.join(OUT, slug);
   fs.mkdirSync(dir, { recursive: true });
   console.log(`\n${slug}:`);
 
   let gallery = [];
-  try {
-    gallery = await scrapeGallery(page, url);
-    console.log(`  scraped ${gallery.length} images`);
-  } catch (e) {
-    console.log(`  scrape failed: ${e.message}`);
+  if (maxImages > fallback.length) {
+    try {
+      gallery = await scrapeGallery(page, url);
+      console.log(`  scraped ${gallery.length} images`);
+    } catch (e) {
+      console.log(`  scrape failed: ${e.message}`);
+    }
   }
 
   const pool = [...new Set([...fallback, ...gallery])];
   let poolIdx = 0;
+  const slots = SLOTS.slice(0, maxImages);
 
-  for (let i = 0; i < SLOTS.length; i++) {
-    const dest = path.join(dir, `${SLOTS[i]}.webp`);
+  for (const slot of SLOTS.slice(maxImages)) {
+    const extra = path.join(dir, `${slot}.webp`);
+    if (fs.existsSync(extra)) {
+      fs.unlinkSync(extra);
+      console.log(`  - removed ${slot}.webp`);
+    }
+  }
+
+  for (let i = 0; i < slots.length; i++) {
+    const dest = path.join(dir, `${slots[i]}.webp`);
     let saved = false;
 
     while (poolIdx < pool.length && !saved) {
       const imageUrl = pool[poolIdx++];
       try {
         const bytes = await download(imageUrl, dest);
-        console.log(`  ✓ ${SLOTS[i]}.webp (${bytes} bytes)`);
+        console.log(`  ✓ ${slots[i]}.webp (${bytes} bytes)`);
         saved = true;
       } catch (e) {
         console.log(`  · skip ${imageUrl.split("/").pop()}: ${e.message}`);
       }
     }
 
-    if (!saved) console.log(`  ✗ ${SLOTS[i]}: no valid image found`);
+    if (!saved) console.log(`  ✗ ${slots[i]}: no valid image found`);
   }
 }
 
