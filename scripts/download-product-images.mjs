@@ -29,6 +29,7 @@ const PRODUCTS = {
   },
   "hair-density-serum": {
     url: "https://www.alibaba.co.uk/product-detail/_1601709360545.html",
+    maxImages: 4,
     fallback: [
       "https://sc04.alicdn.com/kf/Hed62e121bc184d26a26974d588a54b12n.jpg",
       "https://sc04.alicdn.com/kf/H6f743512dea04ac68cba2a6062f1507eO.jpg",

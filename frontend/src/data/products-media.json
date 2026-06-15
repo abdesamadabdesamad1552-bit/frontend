@@ -33,6 +33,7 @@
     ]
   },
   "hair-density-serum": {
+    "skipSlots": ["5-packaging.webp"],
     "benefits": [
       {
         "title": "كثافة ملحوظة",
