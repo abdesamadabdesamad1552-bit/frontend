@@ -22,6 +22,12 @@
     ]
   },
   "glow-mask": {
+    "images": [
+      { "src": "/images/glow-mask/1-hero.webp", "alt": "نقاء قناع النضارة الذهبي — المنتج على خلفية بيضاء" },
+      { "src": "/images/glow-mask/2-usage.webp", "alt": "نقاء قناع النضارة الذهبي — طريقة الاستخدام" },
+      { "src": "/images/glow-mask/3-results.webp", "alt": "نقاء قناع النضارة الذهبي — النتائج" },
+      { "src": "/images/glow-mask/4-size.webp", "alt": "نقاء قناع النضارة الذهبي — التغليف والتفاصيل" }
+    ],
     "benefits": [
       {
         "title": "ترطيب عميق مضاعف",

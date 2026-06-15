@@ -19,12 +19,13 @@ const PRODUCTS = {
     ],
   },
   "glow-mask": {
-    url: "https://www.alibaba.co.uk/product-detail/_1601632943825.html",
+    "url": "https://www.alibaba.co.uk/product-detail/_1601632943825.html",
+    maxImages: 4,
     fallback: [
       "https://sc04.alicdn.com/kf/H8ac1ada36e7c42d5abc31d6c78b7c2bb6.jpg",
       "https://sc04.alicdn.com/kf/H891385baf5874b8eb013017bfa13d5a99.jpg",
       "https://sc04.alicdn.com/kf/Hca9b51921ad042e7b90b6276816156bdX.jpg",
-      "https://sc04.alicdn.com/kf/Hca73df83943d4b2c9dd44890d555c179V.jpg",
+      "https://sc04.alicdn.com/kf/Hb5ab38c5dcdf44ef9f0ff24b885d4920C.jpg",
     ],
   },
   "hair-density-serum": {
