@@ -7,7 +7,6 @@ import {
   calculateCartTotal,
   getSinglePrice,
   formatPrice,
-  getFlashUpsellPrice,
 } from "@/lib/pricing";
 
 export default function CartDrawer() {
@@ -35,7 +34,6 @@ export default function CartDrawer() {
   const crossSells = products.filter((p) => !cartProductIds.includes(p.id));
   const total = calculateCartTotal(totalItems, state.country);
   const singlePrice = getSinglePrice(state.country);
-  const upsellPrice = getFlashUpsellPrice(state.country);
 
   return (
     <>
@@ -76,7 +74,7 @@ export default function CartDrawer() {
             </div>
           ) : (
             <div className="px-6 py-4 space-y-4">
-              {cartProducts.map(({ product, quantity, isUpsell }) => (
+              {cartProducts.map(({ product, quantity }) => (
                 <div
                   key={product.id}
                   className="flex gap-4 p-3 rounded-xl bg-brand-beige/50 border border-brand-beige-dark"
@@ -97,12 +95,7 @@ export default function CartDrawer() {
                     <p className="text-xs text-brand-gray">{product.subtitle}</p>
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-sm font-bold text-brand-black">
-                        {isUpsell
-                          ? formatPrice(upsellPrice, state.country)
-                          : formatPrice(singlePrice, state.country)}
-                        {isUpsell && (
-                          <span className="text-xs text-red-500 mr-1">عرض خاص</span>
-                        )}
+                        {formatPrice(singlePrice, state.country)}
                       </span>
                       <div className="flex items-center gap-2">
                         <button

@@ -15,7 +15,6 @@ export interface CountryConfig {
     double: number;
     triple: number;
   };
-  flashUpsellPrice: number;
 }
 
 export const countries: Record<CountryCode, CountryConfig> = {
@@ -30,7 +29,6 @@ export const countries: Record<CountryCode, CountryConfig> = {
     phoneDigits: 10,
     phonePrefixes: ["05"],
     pricing: { single: 199, double: 279, triple: 349 },
-    flashUpsellPrice: 99,
   },
   AE: {
     code: "AE",
@@ -43,7 +41,6 @@ export const countries: Record<CountryCode, CountryConfig> = {
     phoneDigits: 10,
     phonePrefixes: ["05"],
     pricing: { single: 195, double: 275, triple: 340 },
-    flashUpsellPrice: 95,
   },
   KW: {
     code: "KW",
@@ -56,7 +53,6 @@ export const countries: Record<CountryCode, CountryConfig> = {
     phoneDigits: 8,
     phonePrefixes: ["5", "6", "9"],
     pricing: { single: 16, double: 22, triple: 28 },
-    flashUpsellPrice: 8,
   },
   QA: {
     code: "QA",
@@ -69,7 +65,6 @@ export const countries: Record<CountryCode, CountryConfig> = {
     phoneDigits: 8,
     phonePrefixes: ["3", "5", "6", "7"],
     pricing: { single: 195, double: 275, triple: 340 },
-    flashUpsellPrice: 95,
   },
   BH: {
     code: "BH",
@@ -82,7 +77,6 @@ export const countries: Record<CountryCode, CountryConfig> = {
     phoneDigits: 8,
     phonePrefixes: ["3"],
     pricing: { single: 20, double: 28, triple: 35 },
-    flashUpsellPrice: 10,
   },
   OM: {
     code: "OM",
@@ -95,7 +89,6 @@ export const countries: Record<CountryCode, CountryConfig> = {
     phoneDigits: 8,
     phonePrefixes: ["7", "9"],
     pricing: { single: 20, double: 28, triple: 35 },
-    flashUpsellPrice: 10,
   },
 };
 
@@ -115,17 +108,8 @@ export function calculateItemsTotal(
   items: CartLineItem[],
   country: CountryCode
 ): number {
-  const regularCount = items
-    .filter((i) => !i.isUpsell)
-    .reduce((sum, i) => sum + i.quantity, 0);
-  const regularTotal = calculateCartTotal(regularCount, country);
-  const upsellTotal = items
-    .filter((i) => i.isUpsell)
-    .reduce(
-      (sum, i) => sum + getFlashUpsellPrice(country) * i.quantity,
-      0
-    );
-  return regularTotal + upsellTotal;
+  const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
+  return calculateCartTotal(itemCount, country);
 }
 
 export function calculateCartTotal(
@@ -157,10 +141,6 @@ export function calculateCartTotal(
 
 export function getSinglePrice(country: CountryCode): number {
   return countries[country].pricing.single;
-}
-
-export function getFlashUpsellPrice(country: CountryCode): number {
-  return countries[country].flashUpsellPrice;
 }
 
 const ARABIC_INDIC_DIGITS = "٠١٢٣٤٥٦٧٨٩";
@@ -211,39 +191,6 @@ export function getPhoneError(country: CountryCode): string {
   const config = countries[country];
   const prefixes = config.phonePrefixes.join(" أو ");
   return `الرجاء إدخال رقم جوال صحيح يبدأ بـ ${prefixes} (مثال: ${config.phoneExample})`;
-}
-
-/**
- * Determines which product to show in the Flash Upsell based on cart contents.
- * Uses the priority ranking from the strategy: 1 > 4 > 2 > 5 > 3
- */
-export function getFlashUpsellProductId(cartProductIds: number[]): number | null {
-  if (cartProductIds.length >= 5) return null;
-
-  const upsellPriority = [1, 4, 2, 5, 3];
-
-  const upsellRules: Record<string, number> = {
-    "1": 4,
-    "2": 1,
-    "3": 1,
-    "4": 1,
-    "5": 1,
-    "1,2": 4,
-    "1,3": 4,
-    "1,4": 2,
-    "3,5": 1,
-  };
-
-  const sorted = [...cartProductIds].sort((a, b) => a - b);
-  const key = sorted.join(",");
-
-  if (upsellRules[key]) return upsellRules[key];
-
-  for (const id of upsellPriority) {
-    if (!cartProductIds.includes(id)) return id;
-  }
-
-  return null;
 }
 
 export function formatPrice(amount: number, country: CountryCode): string {

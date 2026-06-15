@@ -1,0 +1,26 @@
+[
+  {
+    "id": "concentration",
+    "image": "/images/why-naqa/concentration.svg",
+    "title": "تركيزات حقيقية",
+    "description": "نسب دقيقة لكل مكون — مو بس \"يحتوي على\""
+  },
+  {
+    "id": "gcc-climate",
+    "image": "/images/why-naqa/gcc-climate.svg",
+    "title": "مصمم للخليج",
+    "description": "تركيبات مستقرة في الحرارة العالية والرطوبة"
+  },
+  {
+    "id": "transparency",
+    "image": "/images/why-naqa/transparency.svg",
+    "title": "شفافية كاملة",
+    "description": "قائمة مكونات واضحة مع شرح لكل مكون"
+  },
+  {
+    "id": "results",
+    "image": "/images/why-naqa/results.svg",
+    "title": "نتائج مرئية",
+    "description": "مكونات مثبتة بدراسات سريرية — مو وعود فارغة"
+  }
+]

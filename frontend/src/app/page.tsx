@@ -2,30 +2,8 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+import WhyNaqaSection from "@/components/WhyNaqaSection";
 import { products } from "@/lib/products";
-
-const trustPillars = [
-  {
-    icon: "🧪",
-    title: "تركيزات حقيقية",
-    description: 'نسب دقيقة لكل مكون — مو بس "يحتوي على"',
-  },
-  {
-    icon: "☀️",
-    title: "مصمم للخليج",
-    description: "تركيبات مستقرة في الحرارة العالية والرطوبة",
-  },
-  {
-    icon: "🔍",
-    title: "شفافية كاملة",
-    description: "قائمة مكونات واضحة مع شرح لكل مكون",
-  },
-  {
-    icon: "✅",
-    title: "نتائج مرئية",
-    description: "مكونات مثبتة بدراسات سريرية — مو وعود فارغة",
-  },
-];
 
 const testimonials = [
   {
@@ -114,30 +92,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Why Naqa */}
-        <section className="py-16 md:py-24 bg-brand-beige">
-          <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-black text-center mb-12">
-              لماذا نقاء؟
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {trustPillars.map((pillar) => (
-                <div
-                  key={pillar.title}
-                  className="bg-brand-white rounded-2xl border border-brand-beige-dark p-6 text-center"
-                >
-                  <span className="text-3xl block mb-4">{pillar.icon}</span>
-                  <h3 className="text-lg font-bold text-brand-black mb-2">
-                    {pillar.title}
-                  </h3>
-                  <p className="text-sm text-brand-gray leading-relaxed">
-                    {pillar.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <WhyNaqaSection />
 
         {/* Testimonials */}
         <section className="py-16 md:py-24 bg-brand-white">

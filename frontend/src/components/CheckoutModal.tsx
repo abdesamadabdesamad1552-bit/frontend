@@ -10,7 +10,6 @@ import {
   validatePhone,
   normalizePhone,
   getPhoneError,
-  countries,
 } from "@/lib/pricing";
 import { placeOrder } from "@/lib/checkout-flow";
 import { getThankYouPath, storeLastOrderId } from "@/lib/order-redirect";
@@ -38,15 +37,12 @@ export default function CheckoutModal() {
     }))
     .filter((item) => item.product);
 
-  const total = cartProducts.reduce((sum, { quantity, isUpsell }) => {
-    const unit = isUpsell
-      ? countries[state.country].flashUpsellPrice
-      : getSinglePrice(state.country);
-    return sum + unit * quantity;
-  }, 0);
+  const total = cartProducts.reduce(
+    (sum, { quantity }) => sum + getSinglePrice(state.country) * quantity,
+    0
+  );
 
   const country = state.country;
-  const countryConfig = countries[country];
 
   async function finalizeOrder(
     customerName: string,
@@ -121,7 +117,7 @@ export default function CheckoutModal() {
             <div>
               <p className="text-sm font-bold text-brand-black mb-3">── ملخص الطلب ──</p>
               <div className="space-y-2">
-                {cartProducts.map(({ product, quantity, isUpsell }) => (
+                {cartProducts.map(({ product, quantity }) => (
                   <div
                     key={product.id}
                     className="flex items-center justify-between text-sm gap-3"
@@ -130,12 +126,7 @@ export default function CheckoutModal() {
                       {product.name} × {quantity}
                     </span>
                     <span className="font-semibold text-brand-black flex-shrink-0">
-                      {formatPrice(
-                        (isUpsell
-                          ? countryConfig.flashUpsellPrice
-                          : getSinglePrice(state.country)) * quantity,
-                        country
-                      )}
+                      {formatPrice(getSinglePrice(state.country) * quantity, country)}
                     </span>
                   </div>
                 ))}
