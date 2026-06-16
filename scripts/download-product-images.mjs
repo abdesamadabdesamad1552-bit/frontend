@@ -16,43 +16,31 @@ const PRODUCTS = {
     ],
   },
   "glow-mask": {
-    "url": "https://www.alibaba.co.uk/product-detail/_1601632943825.html",
-    maxImages: 4,
+    url: "https://www.alibaba.co.uk/product-detail/_1601632943825.html",
+    maxImages: 1,
     fallback: [
       "https://sc04.alicdn.com/kf/H8ac1ada36e7c42d5abc31d6c78b7c2bb6.jpg",
-      "https://sc04.alicdn.com/kf/H891385baf5874b8eb013017bfa13d5a99.jpg",
-      "https://sc04.alicdn.com/kf/Hca9b51921ad042e7b90b6276816156bdX.jpg",
-      "https://sc04.alicdn.com/kf/Hb5ab38c5dcdf44ef9f0ff24b885d4920C.jpg",
     ],
   },
   "hair-density-serum": {
     url: "https://www.alibaba.co.uk/product-detail/_1601709360545.html",
-    maxImages: 4,
+    maxImages: 1,
     fallback: [
       "https://sc04.alicdn.com/kf/Hed62e121bc184d26a26974d588a54b12n.jpg",
-      "https://sc04.alicdn.com/kf/H6f743512dea04ac68cba2a6062f1507eO.jpg",
-      "https://sc04.alicdn.com/kf/H0ea90cbc429148db938f397852665a5cZ.jpg",
-      "https://sc04.alicdn.com/kf/Hc5738c2533594b678a430b9b3eeb903bV.jpg",
     ],
   },
   "eye-retinol-cream": {
     url: "https://www.alibaba.co.uk/product-detail/_1601585717811.html",
-    maxImages: 4,
+    maxImages: 1,
     fallback: [
       "https://sc04.alicdn.com/kf/H781f11938a4148e797ed1f91e9bdd8b3N.jpg",
-      "https://sc04.alicdn.com/kf/Hdba07aa500db4d94bcea928357cbb066j.jpg",
-      "https://sc04.alicdn.com/kf/Hbf5f3bee486a4bb19aed2572e3bf5d2f5.jpg",
-      "https://sc04.alicdn.com/kf/H48d5252160324b098fbf5e9001047436v.jpg",
     ],
   },
   "clarity-gel": {
     url: "https://www.alibaba.co.th/product-detail/Deep-Cleansing-Serum-with-2-Percent_10000030442030.html",
-    maxImages: 4,
+    maxImages: 1,
     fallback: [
       "https://sc04.alicdn.com/kf/Aaea393836d9b483fa5149c022ef813d3d.png",
-      "https://sc04.alicdn.com/kf/Aff5e3fef5c234baa97d25b2f799eb688N.png",
-      "https://sc04.alicdn.com/kf/A3ae92469441f4c06a293c2f47c380de7p.png",
-      "https://sc04.alicdn.com/kf/A3a3e4d3a6df34477ba15b8e9b90e6959J.png",
     ],
   },
 };

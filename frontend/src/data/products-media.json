@@ -144,15 +144,11 @@
       },
       {
         "src": "/images/glow-mask/2-usage.webp",
-        "alt": "نقاء قناع النضارة الذهبي — طريقة الاستخدام"
+        "alt": "نقاء قناع النضارة الذهبي — تطبيق القناع الليلي"
       },
       {
         "src": "/images/glow-mask/3-results.webp",
-        "alt": "نقاء قناع النضارة الذهبي — النتائج"
-      },
-      {
-        "src": "/images/glow-mask/4-size.webp",
-        "alt": "نقاء قناع النضارة الذهبي — التغليف والتفاصيل"
+        "alt": "نقاء قناع النضارة الذهبي — قبل وبعد مع فوائد النضارة"
       }
     ],
     "benefits": [
@@ -271,7 +267,11 @@
           "a": "نعم، يرطب بعمق بدون ما يسد المسام أو يزيد الإفرازات."
         }
       ]
-    }
+    },
+    "skipSlots": [
+      "4-size.webp",
+      "5-packaging.webp"
+    ]
   },
   "hair-density-serum": {
     "images": [
@@ -281,15 +281,11 @@
       },
       {
         "src": "/images/hair-density-serum/2-usage.webp",
-        "alt": "نقاء سيروم تكثيف الشعر — طريقة الاستخدام"
+        "alt": "نقاء سيروم تكثيف الشعر — تطبيق على فروة الرأس"
       },
       {
         "src": "/images/hair-density-serum/3-results.webp",
-        "alt": "نقاء سيروم تكثيف الشعر — النتائج"
-      },
-      {
-        "src": "/images/hair-density-serum/4-size.webp",
-        "alt": "نقاء سيروم تكثيف الشعر — حجم العبوة"
+        "alt": "نقاء سيروم تكثيف الشعر — قبل وبعد الكثافة"
       }
     ],
     "benefits": [
@@ -408,7 +404,11 @@
           "a": "لا، لأنه خالي من المينوكسيديل، النتائج اللي تحصلين عليها تدوم."
         }
       ]
-    }
+    },
+    "skipSlots": [
+      "4-size.webp",
+      "5-packaging.webp"
+    ]
   },
   "eye-retinol-cream": {
     "images": [
@@ -418,15 +418,11 @@
       },
       {
         "src": "/images/eye-retinol-cream/2-usage.webp",
-        "alt": "نقاء كريم العيون بالريتينول — طريقة الاستخدام"
+        "alt": "نقاء كريم العيون بالريتينول — تطبيق بالرأس المعدني"
       },
       {
         "src": "/images/eye-retinol-cream/3-results.webp",
-        "alt": "نقاء كريم العيون بالريتينول — النتائج"
-      },
-      {
-        "src": "/images/eye-retinol-cream/4-size.webp",
-        "alt": "نقاء كريم العيون بالريتينول — حجم العبوة"
+        "alt": "نقاء كريم العيون بالريتينول — قبل وبعد الهالات"
       }
     ],
     "benefits": [
@@ -545,7 +541,11 @@
           "a": "امسحيه بمنديل نظيف وجاف بعد كل استخدام."
         }
       ]
-    }
+    },
+    "skipSlots": [
+      "4-size.webp",
+      "5-packaging.webp"
+    ]
   },
   "clarity-gel": {
     "images": [
@@ -555,15 +555,11 @@
       },
       {
         "src": "/images/clarity-gel/2-usage.webp",
-        "alt": "نقاء جل الصفاء — طريقة الاستخدام"
+        "alt": "نقاء جل الصفاء — تطبيق على مناطق المسام"
       },
       {
         "src": "/images/clarity-gel/3-results.webp",
-        "alt": "نقاء جل الصفاء — النتائج"
-      },
-      {
-        "src": "/images/clarity-gel/4-size.webp",
-        "alt": "نقاء جل الصفاء — حجم العبوة"
+        "alt": "نقاء جل الصفاء — قبل وبعد مع فوائد التنقية"
       }
     ],
     "benefits": [
@@ -682,6 +678,10 @@
           "a": "مثالي جداً للبشرة الدهنية والمختلطة للتحكم في منطقة T-zone."
         }
       ]
-    }
+    },
+    "skipSlots": [
+      "4-size.webp",
+      "5-packaging.webp"
+    ]
   }
 }
