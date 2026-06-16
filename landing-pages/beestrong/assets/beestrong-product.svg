@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5d060"/>
+      <stop offset="100%" stop-color="#8b6914"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="400" height="520" fill="url(#bg)" rx="20"/>
+  <!-- Inhaler body -->
+  <rect x="155" y="80" width="90" height="280" rx="12" fill="#111" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="165" y="100" width="70" height="40" rx="6" fill="url(#gold)" opacity="0.9"/>
+  <text x="200" y="125" text-anchor="middle" fill="#0a0a0a" font-family="Arial,sans-serif" font-weight="bold" font-size="11">BEESTRONG</text>
+  <!-- Nozzle -->
+  <rect x="185" y="60" width="30" height="25" rx="4" fill="#222" stroke="url(#gold)" stroke-width="1.5"/>
+  <!-- Cap -->
+  <rect x="170" y="360" width="60" height="50" rx="8" fill="#111" stroke="url(#gold)" stroke-width="2"/>
+  <!-- Gold accent lines -->
+  <line x1="160" y1="180" x2="240" y2="180" stroke="url(#gold)" stroke-width="1" opacity="0.5"/>
+  <line x1="160" y1="250" x2="240" y2="250" stroke="url(#gold)" stroke-width="1" opacity="0.5"/>
+  <!-- Brand text -->
+  <text x="200" y="440" text-anchor="middle" fill="url(#gold)" font-family="Arial,sans-serif" font-weight="bold" font-size="28" filter="url(#glow)">BEESTRONG</text>
+  <text x="200" y="470" text-anchor="middle" fill="#a0a0a0" font-family="Arial,sans-serif" font-size="13">Prostate Health Inhaler</text>
+  <text x="200" y="495" text-anchor="middle" fill="#d4af37" font-family="Arial,sans-serif" font-size="11">Premium Black &amp; Gold Edition</text>
+  <!-- Benefit icons row -->
+  <circle cx="80" cy="380" r="22" fill="none" stroke="url(#gold)" stroke-width="1.5"/>
+  <text x="80" y="385" text-anchor="middle" font-size="18">=á</text>
+  <circle cx="200" cy="380" r="22" fill="none" stroke="url(#gold)" stroke-width="1.5"/>
+  <text x="200" y="385" text-anchor="middle" font-size="18">=§</text>
+  <circle cx="320" cy="380" r="22" fill="none" stroke="url(#gold)" stroke-width="1.5"/>
+  <text x="320" y="385" text-anchor="middle" font-size="18"><?</text>
+</svg>

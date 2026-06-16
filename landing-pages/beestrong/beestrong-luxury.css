@@ -1,0 +1,417 @@
+/* ================================================================
+   BEESTRONG Luxury — Smart Micro-interactions
+   YouCan → Theme → Custom CSS (paste entire file)
+   Rules: GPU-only transforms, no layout shift, prefers-reduced-motion
+   ================================================================ */
+
+:root {
+  --lux-black: #080808;
+  --lux-charcoal: #121218;
+  --lux-gold: #c9a84c;
+  --lux-gold-soft: #e8d5a3;
+  --lux-gold-deep: #7a6020;
+  --lux-white: #f4f4f4;
+  --lux-muted: #8a8a8a;
+  --lux-line: rgba(201, 168, 76, 0.18);
+  --lux-glow: rgba(201, 168, 76, 0.14);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Clean canvas — المنتج هو البطل */
+body {
+  background: var(--lux-black) !important;
+  color: var(--lux-white);
+  font-family: "Cairo", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+header.site-header,
+footer.site-footer,
+.yc-header,
+.yc-footer { display: none !important; }
+
+/* ── Trust strip ── */
+.lux-trust {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lux-gold-soft);
+  border-bottom: 1px solid var(--lux-line);
+  letter-spacing: 0.02em;
+}
+
+/* ── Reveal on scroll (zero layout shift) ── */
+.lux-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  will-change: opacity, transform;
+}
+.lux-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lux-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .lux-cta-glow::after,
+  .lux-product-float { animation: none !important; }
+}
+
+/* ── Hero — clean, product-first ── */
+.lux-hero {
+  padding: 36px 20px 44px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, var(--lux-glow) 0%, transparent 70%),
+    var(--lux-black);
+}
+
+.lux-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lux-gold);
+  border: 1px solid var(--lux-line);
+  padding: 6px 14px;
+  border-radius: 100px;
+  margin-bottom: 18px;
+}
+
+.lux-h1 {
+  font-size: clamp(1.65rem, 5.5vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--lux-white);
+  margin: 0 0 12px;
+}
+.lux-h1 em {
+  font-style: normal;
+  color: var(--lux-gold);
+}
+
+.lux-lead {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--lux-muted);
+  max-width: 420px;
+  margin: 0 auto 28px;
+}
+
+/* Product — reserved space = no CLS */
+.lux-product-stage {
+  position: relative;
+  width: min(280px, 72vw);
+  aspect-ratio: 3 / 4;
+  margin: 0 auto 28px;
+}
+
+.lux-product-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.6));
+}
+
+/* Subtle float — premium, not circus */
+.lux-product-float {
+  animation: lux-float 5s var(--ease-out) infinite alternate;
+}
+@keyframes lux-float {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-6px); }
+}
+
+.lux-product-ring {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 1px solid var(--lux-line);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ── Benefit pills ── */
+.lux-pills {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto 28px;
+}
+
+.lux-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--lux-charcoal);
+  border: 1px solid var(--lux-line);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lux-white);
+  transition: border-color 0.3s var(--ease-out);
+}
+.lux-pill:hover { border-color: var(--lux-gold); }
+
+.lux-pill-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-deep));
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* ── CTA — irresistible but elegant ── */
+.lux-cta-wrap {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.lux-cta {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 18px 20px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--lux-gold) 0%, var(--lux-gold-deep) 100%);
+  color: var(--lux-black) !important;
+  font-size: 17px;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none !important;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+  box-shadow: 0 8px 32px rgba(201, 168, 76, 0.28);
+}
+
+.lux-cta:active { transform: scale(0.98); }
+
+.lux-cta-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  animation: lux-shine 4s var(--ease-out) infinite;
+}
+@keyframes lux-shine {
+  0%, 70% { transform: translateX(-120%); }
+  100%     { transform: translateX(120%); }
+}
+
+.lux-cta-sub {
+  display: block;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--lux-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ── Section rhythm ── */
+.lux-section {
+  padding: 48px 20px;
+}
+.lux-section--alt {
+  background: var(--lux-charcoal);
+}
+
+.lux-h2 {
+  font-size: clamp(1.35rem, 4.5vw, 1.75rem);
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 8px;
+  color: var(--lux-white);
+}
+.lux-h2 span { color: var(--lux-gold); }
+
+.lux-sub {
+  text-align: center;
+  color: var(--lux-muted);
+  font-size: 14px;
+  margin: 0 0 28px;
+  line-height: 1.65;
+}
+
+/* ── Guarantee — strategic trust anchor ── */
+.lux-guarantee {
+  max-width: 440px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.lux-guarantee-frame {
+  position: relative;
+  padding: 3px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-deep));
+}
+
+.lux-guarantee-frame img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 11px;
+  display: block;
+}
+
+.lux-guarantee-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--lux-gold);
+  color: var(--lux-black);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 100px;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(201, 168, 76, 0.4);
+}
+
+.lux-guarantee-copy {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--lux-muted);
+}
+.lux-guarantee-copy strong { color: var(--lux-gold-soft); }
+
+/* ── Inline guarantee mini (for hero / near CTA) ── */
+.lux-trust-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(201, 168, 76, 0.06);
+  border: 1px solid var(--lux-line);
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--lux-gold-soft);
+}
+.lux-trust-inline img {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* ── Sticky CTA — mobile Morocco-first ── */
+.lux-sticky {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  background: rgba(8, 8, 8, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--lux-line);
+  transform: translateY(100%);
+  transition: transform 0.4s var(--ease-out);
+}
+.lux-sticky.is-shown { transform: translateY(0); }
+
+.lux-sticky-price {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--lux-gold);
+  white-space: nowrap;
+}
+
+.lux-sticky .lux-cta {
+  flex: 1;
+  padding: 14px 16px;
+  font-size: 14px;
+}
+
+body { padding-bottom: 80px !important; }
+
+/* ── Problem cards — minimal ── */
+.lux-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.lux-card {
+  padding: 16px 12px;
+  background: var(--lux-black);
+  border: 1px solid var(--lux-line);
+  border-radius: 12px;
+  text-align: center;
+  transition: border-color 0.3s;
+}
+.lux-card:hover { border-color: rgba(201, 168, 76, 0.45); }
+.lux-card-icon { font-size: 22px; margin-bottom: 6px; }
+.lux-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lux-gold);
+  margin: 0 0 4px;
+}
+.lux-card p {
+  font-size: 11px;
+  color: var(--lux-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── FAQ — native, zero JS weight ── */
+.lux-faq { max-width: 440px; margin: 0 auto; }
+.lux-faq details {
+  border-bottom: 1px solid var(--lux-line);
+  padding: 14px 0;
+}
+.lux-faq summary {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--lux-white);
+  cursor: pointer;
+  list-style: none;
+}
+.lux-faq summary::-webkit-details-marker { display: none; }
+.lux-faq p {
+  font-size: 13px;
+  color: var(--lux-muted);
+  line-height: 1.7;
+  margin: 8px 0 0;
+}
+
+/* ── Performance helpers ── */
+img { max-width: 100%; height: auto; }
+.lux-hero img,
+.lux-guarantee-frame img { content-visibility: auto; }
