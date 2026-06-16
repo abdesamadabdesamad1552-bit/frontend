@@ -10,9 +10,12 @@ import {
   validatePhone,
   normalizePhone,
   getPhoneError,
+  calculateItemsTotal,
+  countries,
 } from "@/lib/pricing";
 import { placeOrder } from "@/lib/checkout-flow";
 import { getThankYouPath, storeLastOrderId } from "@/lib/order-redirect";
+import { storeOrderSnapshot } from "@/lib/order-snapshot";
 
 export default function CheckoutModal() {
   const router = useRouter();
@@ -55,6 +58,17 @@ export default function CheckoutModal() {
       country,
       items
     );
+    const countryConfig = countries[country];
+    storeOrderSnapshot({
+      orderId,
+      name: customerName,
+      phone: customerPhone,
+      country,
+      items,
+      total: calculateItemsTotal(items, country),
+      currency: countryConfig.currency,
+      createdAt: new Date().toISOString(),
+    });
     storeLastOrderId(orderId);
     resetFlow();
     router.push(getThankYouPath(orderId));
@@ -116,18 +130,21 @@ export default function CheckoutModal() {
           <div className="px-6 py-5 space-y-5">
             <div>
               <p className="text-sm font-bold text-brand-black mb-3">── ملخص الطلب ──</p>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {cartProducts.map(({ product, quantity }) => (
                   <div
                     key={product.id}
-                    className="flex items-center justify-between text-sm gap-3"
+                    className="flex items-start justify-between gap-4 py-2 border-b border-brand-beige-dark/60 last:border-0"
                   >
-                    <span className="text-brand-black min-w-0 break-words">
-                      {product.name} × {quantity}
-                    </span>
-                    <span className="font-semibold text-brand-black flex-shrink-0">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-brand-black leading-snug break-words">
+                        {product.name}
+                      </p>
+                      <p className="text-xs text-brand-gray mt-0.5">الكمية: {quantity}</p>
+                    </div>
+                    <p className="text-sm font-bold text-brand-black flex-shrink-0 tabular-nums">
                       {formatPrice(getSinglePrice(state.country) * quantity, country)}
-                    </span>
+                    </p>
                   </div>
                 ))}
               </div>
