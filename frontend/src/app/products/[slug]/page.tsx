@@ -8,7 +8,23 @@ import AddToCartButton from "@/components/AddToCartButton";
 import ProductGallery from "@/components/ProductGallery";
 import { products, getProductBySlug, getCrossSells, getPrimaryImage, getFallbackImage } from "@/lib/products";
 import type { Product } from "@/lib/products";
-import { Star, Truck, CreditCard, ShieldCheck, Sparkles, Droplets, CheckCircle2, XCircle, ChevronDown } from "lucide-react";
+import {
+  Star,
+  Truck,
+  CreditCard,
+  ShieldCheck,
+  Sparkles,
+  Droplets,
+  CheckCircle2,
+  XCircle,
+  ChevronDown,
+  Sun,
+  Eye,
+  Sprout,
+  Snowflake,
+  ScanFace,
+  Gem,
+} from "lucide-react";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -75,9 +91,15 @@ export default async function ProductPage({ params }: PageProps) {
   }
 
   const iconMap: Record<string, React.ElementType> = {
-    Droplets: Droplets,
-    ShieldCheck: ShieldCheck,
-    Sparkles: Sparkles,
+    Droplets,
+    ShieldCheck,
+    Sparkles,
+    Sun,
+    Eye,
+    Sprout,
+    Snowflake,
+    ScanFace,
+    Gem,
   };
 
   return (
@@ -113,14 +135,15 @@ export default async function ProductPage({ params }: PageProps) {
                 <span className="text-sm text-brand-gray">(+2000 تقييم)</span>
               </div>
 
-              {/* 3 Emoji Bullet Benefits */}
               <div className="space-y-3 mb-8">
                 {product.benefits.slice(0, 3).map((benefit, i) => {
-                  const emojis = ["✨", "🛡️", "💧"];
+                  const Icon = iconMap[benefit.icon ?? ""] || Sparkles;
                   return (
-                    <div key={i} className="flex items-start gap-3">
-                      <span className="text-lg">{emojis[i % emojis.length]}</span>
-                      <p className="text-sm font-medium text-brand-black pt-0.5">{benefit.title}</p>
+                    <div key={i} className="flex items-center gap-3">
+                      <div className="flex-shrink-0 w-9 h-9 rounded-full bg-brand-beige border border-brand-beige-dark flex items-center justify-center shadow-sm">
+                        <Icon className="w-4 h-4 text-brand-gold" strokeWidth={2.25} />
+                      </div>
+                      <p className="text-sm font-semibold text-brand-black">{benefit.title}</p>
                     </div>
                   );
                 })}

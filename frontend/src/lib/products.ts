@@ -14,6 +14,7 @@ export interface ProductImage {
 export interface ProductBenefit {
   title: string;
   description: string;
+  icon?: string;
 }
 
 export interface ProductLanding {
