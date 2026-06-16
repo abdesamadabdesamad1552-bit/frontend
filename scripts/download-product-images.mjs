@@ -10,12 +10,9 @@ const OUT = path.join(__dirname, "..", "frontend", "public", "images");
 const PRODUCTS = {
   "radiance-serum": {
     url: "https://www.alibaba.co.uk/product-detail/_1601356738984.html",
-    maxImages: 4,
+    maxImages: 1,
     fallback: [
       "https://sc04.alicdn.com/kf/H49ec962d47664072b4f19c0df3b3c63dX.jpg",
-      "https://sc04.alicdn.com/kf/H810a4f8ea01a41ec9b284e1027e29e898.jpg",
-      "https://sc04.alicdn.com/kf/H7b174caa1db4409fa8491df8a7a37dd4W.png",
-      "https://sc04.alicdn.com/kf/H7917ae6215e149aea0c223cab2ac5a20y.png",
     ],
   },
   "glow-mask": {
