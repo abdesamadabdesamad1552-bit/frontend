@@ -297,19 +297,40 @@ export default function ThankYouContent() {
             ))}
           </section>
 
-          <div className="bg-brand-white rounded-xl border border-brand-beige-dark p-4 flex gap-3">
-            <div className="flex gap-0.5 flex-shrink-0 pt-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="w-3 h-3 fill-brand-gold text-brand-gold" />
-              ))}
-            </div>
-            <p className="text-xs text-brand-gray leading-relaxed italic">
-              &ldquo;رديت على الاتصال ووصل الطلب بسرعة — المنتج فعلاً يستاهل.&rdquo;
-              <span className="block not-italic text-brand-black/70 mt-1 font-medium">
-                — سارة، الرياض
-              </span>
-            </p>
-          </div>
+          <section className="space-y-3">
+            <h2 className="text-sm font-bold text-brand-black text-center">آراء عميلاتنا</h2>
+            {[
+              {
+                quote: "ما عرفت الرقم، بس رديت — أكّدوا العنوان ووصل خلال 3 أيام.",
+                author: "منيرة، أبها",
+              },
+              {
+                quote: "التوصيل مجاني والباكجينج فخم. أكّدت الطلب من أول مكالمة.",
+                author: "نورة، جدة",
+              },
+              {
+                quote: "خفت التصبغات بعد 3 أسابيع — أحلى سيروم جربته للجو الحار.",
+                author: "ريم، الدمام",
+              },
+            ].map(({ quote, author }) => (
+              <div
+                key={author}
+                className="bg-brand-white rounded-xl border border-brand-beige-dark p-4 flex gap-3"
+              >
+                <div className="flex gap-0.5 flex-shrink-0 pt-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-3 h-3 fill-brand-gold text-brand-gold" />
+                  ))}
+                </div>
+                <p className="text-xs text-brand-gray leading-relaxed italic min-w-0">
+                  &ldquo;{quote}&rdquo;
+                  <span className="block not-italic text-brand-black/70 mt-1 font-medium">
+                    — {author}
+                  </span>
+                </p>
+              </div>
+            ))}
+          </section>
 
           {/* Bundle upsell */}
           {suggestedBundle && (
