@@ -27,7 +27,7 @@ function localHour(date: Date, country: CountryCode): number {
   return parseInt(formatted, 10);
 }
 
-/** COD confirmation calls: 9:00–21:00 local GCC time. */
+/** COD confirmation calls: within 10 min from 9:00–21:00; otherwise at 9:00 next morning slot. */
 export function getCallWindowMessage(
   country: CountryCode,
   orderDate = new Date()
@@ -45,11 +45,16 @@ export function getCallWindowMessage(
     };
   }
 
+  const morningHeadline =
+    hour < 9
+      ? "سنتصل بكِ اليوم الساعة 9 صباحاً"
+      : "سنتصل بكِ غداً الساعة 9 صباحاً";
+
   return {
     urgency: "morning",
-    headline: "ستتلقين اتصالنا صباح الغد",
+    headline: morningHeadline,
     subline:
-      "بين 9:00 و 10:00 صباحاً (توقيت بلدك) — نؤكد طلبك وعنوان التوصيل قبل الشحن.",
-    banner: "📞 طلبك مسجّل — انتظر اتصالنا صباح الغد (9–10 ص)",
+      "فريق نقاء يتصل الساعة 9 صباحاً (توقيت بلدك) — الرجاء الرد لتأكيد عنوانك قبل الشحن.",
+    banner: "📞 طلبك مسجّل — انتظر اتصالنا الساعة 9 صباحاً",
   };
 }

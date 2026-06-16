@@ -222,7 +222,10 @@ export default function ThankYouContent() {
               {[
                 {
                   icon: Phone,
-                  title: callMsg.urgency === "now" ? "اتصال خلال 10 دقائق" : "اتصال صباح الغد",
+                  title:
+                    callMsg.urgency === "now"
+                      ? "اتصال خلال 10 دقائق"
+                      : "اتصال الساعة 9 صباحاً",
                   desc: "نؤكد اسمك، عنوانك، وموعد التوصيل المناسب.",
                 },
                 {
