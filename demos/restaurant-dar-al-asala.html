@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>مطعم دار الأصالة — الدار البيضاء</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand: #9a3412; --brand-dark: #7c2d12; --cream: #fffbeb; --ink: #1c1917; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Cairo", sans-serif; background: var(--cream); color: var(--ink); }
+    header {
+      background: var(--brand-dark);
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    header .logo { font-weight: 800; font-size: 1.1rem; }
+    header .logo span { font-family: Inter; font-size: 0.72rem; opacity: 0.8; display: block; }
+    header a {
+      background: #fff;
+      color: var(--brand-dark);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .hero {
+      min-height: 340px;
+      background: linear-gradient(to top, rgba(28,25,23,0.85), rgba(28,25,23,0.2)),
+        url("https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80") center/cover;
+      display: flex;
+      align-items: flex-end;
+      padding: 32px 20px;
+      color: #fff;
+    }
+    .hero h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); font-weight: 800; }
+    .hero p { opacity: 0.9; margin-top: 8px; font-size: 0.95rem; }
+    .hero .fr { font-family: Inter; font-size: 0.82rem; opacity: 0.75; direction: ltr; text-align: left; margin-top: 4px; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 32px 16px 48px; }
+    .grid { display: grid; gap: 24px; }
+    @media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid #fde68a;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .card h2 { font-size: 1rem; color: var(--brand); margin-bottom: 12px; }
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed #e7e5e4;
+      font-size: 0.9rem;
+    }
+    .menu-item span:last-child { font-weight: 700; color: var(--brand); }
+    .maps-card { grid-column: 1 / -1; padding: 0; overflow: hidden; }
+    .maps-card .info {
+      padding: 18px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .maps-card .addr { font-size: 0.88rem; line-height: 1.5; }
+    .maps-card .addr strong { display: block; font-size: 1rem; margin-bottom: 4px; }
+    .maps-card a {
+      color: var(--brand);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      font-family: Inter;
+    }
+    .maps-card iframe { width: 100%; height: 280px; border: 0; display: block; }
+    .hours { font-size: 0.85rem; color: #57534e; margin-top: 8px; }
+    footer { text-align: center; padding: 20px; font-size: 0.78rem; color: #78716c; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      مطعم دار الأصالة
+      <span>Dar Al Asala · Casablanca</span>
+    </div>
+    <a href="https://wa.me/212614097237?text=%D8%A8%D8%BA%D9%8A%D8%AA%20%D9%86%D8%AD%D8%AC%D8%B2%20%D9%81%D9%8A%20%D9%85%D8%B7%D8%B9%D9%85%20%D8%AF%D8%A7%D8%B1%20%D8%A7%D9%84%D8%A3%D8%B5%D8%A7%D9%84%D8%A9">احجز طاولة</a>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>مأكولات مغربية أصيلة</h1>
+      <p>طاجين، كسكس، مشاوي — في قلب المعاريف</p>
+      <p class="fr">Cuisine marocaine authentique · Maarif, Casablanca</p>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="grid">
+      <div class="card">
+        <h2>🍽 أطباقنا المميزة</h2>
+        <div class="menu-item"><span>طاجين لحم بالبرقوق</span><span>95 د.م</span></div>
+        <div class="menu-item"><span>كسكس سبعة خضار</span><span>75 د.م</span></div>
+        <div class="menu-item"><span>مشاوي مشكلة</span><span>120 د.م</span></div>
+        <div class="menu-item"><span>حريرة + بيصارة</span><span>35 د.م</span></div>
+      </div>
+      <div class="card">
+        <h2>⭐ علاش يختارونا</h2>
+        <p style="font-size:0.88rem;line-height:1.7;color:#44403c">
+          موقع واضح فـ Google Maps، منيو بالصور، وحجز واتساب مباشر.
+          الزبون كيلقى العنوان وكيوصل بلا ما يتعذب.
+        </p>
+        <p class="hours">⏰ مفتوح: 11:00 – 23:00 · 7 أيام/7</p>
+      </div>
+
+      <div class="card maps-card">
+        <div class="info">
+          <div class="addr">
+            <strong>📍 موقعنا — Google Maps</strong>
+            شارع بير أنزران، المعاريف<br />
+            الدار البيضاء 20100، المغرب
+          </div>
+          <a href="https://maps.google.com/?q=33.5852,-7.6328" target="_blank" rel="noopener">
+            افتح فـ Google Maps →
+          </a>
+        </div>
+        <iframe
+          title="موقع مطعم دار الأصالة"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=33.5852,-7.6328&hl=ar&z=16&output=embed">
+        </iframe>
+      </div>
+    </div>
+  </main>
+
+  <footer>Démo portfolio — مطعم محلي بالدار البيضاء</footer>
+
+</body>
+</html>

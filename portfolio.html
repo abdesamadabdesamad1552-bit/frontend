@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio — أعمالي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #0f172a;
+      --accent-light: #0ea5e9;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --bg: #f1f5f9;
+      --card: #fff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Cairo", sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0c4a6e 100%);
+      color: #fff;
+      padding: 48px 20px 52px;
+      text-align: center;
+    }
+    .hero h1 { font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 800; margin-bottom: 10px; }
+    .hero p { font-size: 0.95rem; opacity: 0.9; max-width: 520px; margin: 0 auto 18px; }
+    .hero .fr { font-family: "Inter", sans-serif; font-size: 0.86rem; opacity: 0.8; direction: ltr; }
+    .hero-cta {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(90deg, #0ea5e9, #06b6d4);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.92rem;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 32px 16px 48px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 22px; text-align: center; }
+    .section-title .fr { font-family: "Inter", sans-serif; font-size: 0.82rem; color: var(--muted); display: block; margin-top: 4px; }
+    .grid { display: grid; gap: 24px; }
+    @media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .project {
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 24px rgba(15,23,42,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .project:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(15,23,42,0.1); }
+    .project .thumb { height: 210px; overflow: hidden; position: relative; }
+    .project .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .project .tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.95);
+      color: var(--ink);
+    }
+    .project-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+    .badge { display: inline-block; font-size: 0.65rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; margin-bottom: 8px; }
+    .badge.live { background: #dcfce7; color: #166534; }
+    .badge.demo { background: #fef3c7; color: #92400e; }
+    .project h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+    .project .desc { font-size: 0.84rem; color: var(--muted); margin-bottom: 10px; }
+    .project .why {
+      font-size: 0.8rem;
+      background: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border-right: 3px solid var(--accent-light);
+      margin-bottom: 14px;
+      flex: 1;
+    }
+    .project .why .fr { font-family: "Inter", sans-serif; font-size: 0.75rem; color: var(--muted); display: block; margin-top: 4px; direction: ltr; text-align: left; }
+    .project a.btn {
+      display: inline-block;
+      padding: 10px 18px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.84rem;
+      border-radius: 8px;
+      text-decoration: none;
+      align-self: flex-start;
+    }
+    .project a.btn:hover { background: #1e293b; }
+    .contact-bar {
+      margin-top: 36px;
+      padding: 24px;
+      background: var(--card);
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+    }
+    .contact-bar h3 { font-size: 1.02rem; margin-bottom: 8px; }
+    .contact-bar p { font-size: 0.86rem; color: var(--muted); margin-bottom: 16px; }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .contact-links a { padding: 10px 16px; border-radius: 8px; font-size: 0.84rem; font-weight: 600; text-decoration: none; }
+    .contact-links .wa { background: #25d366; color: #fff; }
+    .contact-links .mail { background: #f1f5f9; color: var(--ink); }
+    .contact-links .cta { background: var(--accent); color: #fff; }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <h1>أعمالي — مواقع live</h1>
+    <p>مشاريع حقيقية خدامين. نفس الجودة لمحلّك أو عيادتك.</p>
+    <p class="fr">Projets en ligne — la même qualité pour votre activité.</p>
+    <a class="hero-cta" href="https://wa.me/212614097237?text=%D8%A8%D8%BA%D9%8A%D8%AA%20%D9%85%D9%88%D9%82%D8%B9%20%D8%AF%D9%8A%D8%A7%D9%84%D9%8A%20%D9%88%D8%A7%D8%AC%D8%AF%20%D9%81%D9%8A%204%20%D8%A3%D9%8A%D8%A7%D9%85">
+      الموقع واجد فـ 4 أيام · Site en 4 jours
+    </a>
+  </header>
+
+  <main class="wrap">
+    <h2 class="section-title">
+      نماذج من أعمالي
+      <span class="fr">Réalisations</span>
+    </h2>
+
+    <div class="grid">
+
+      <article class="project">
+        <div class="thumb">
+          <span class="tag">GCC · الخليج</span>
+          <img src="https://naqabeauty.store/images/radiance-serum/1-hero.webp" alt="نقاء للتجميل الفاخر" />
+        </div>
+        <div class="project-body">
+          <span class="badge live">● Live</span>
+          <h2>نقاء للتجميل الفاخر</h2>
+          <p class="desc">متجر تجميل فاخر — 6 دول خليجية، دفع عند الاستلام، توصيل مجاني.</p>
+          <div class="why">
+            علاش خدم: الزبون كيشري من التيليفون فـ 3 نقرات والأسعار كتبدّل حسب البلد أوتوماتيكياً.
+            <span class="fr">Achat mobile, prix par pays, conversion optimisée.</span>
+          </div>
+          <a class="btn" href="https://naqabeauty.store" target="_blank" rel="noopener">شوف الموقع →</a>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="thumb">
+          <span class="tag">عيادة · Clinique</span>
+          <img src="assets/clinic-hero.jpg" alt="عيادة نور" />
+        </div>
+        <div class="project-body">
+          <span class="badge demo">● Démo</span>
+          <h2>عيادة نور — Clinique Noor</h2>
+          <p class="desc">موقع عيادة تجميل طبي: خدمات، أسعار، حجز واتساب، عربي/فرنسي.</p>
+          <div class="why">
+            علاش خدم: المريض كيشوف الخدمات ويحجز مباشرة — بلا ما يعيط 10 مرات.
+            <span class="fr">Services, prix et réservation WhatsApp en un clic.</span>
+          </div>
+          <a class="btn" href="https://wa.me/212614097237?text=%D8%A8%D8%BA%D9%8A%D8%AA%20%D9%86%D8%B4%D9%88%D9%81%20%D9%85%D9%88%D9%82%D8%B9%20%D8%B9%D9%8A%D8%A7%D8%AF%D8%A9%20%D9%86%D9%88%D8%B1">طلب عرض حي →</a>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="thumb">
+          <span class="tag">مطعم · Casa</span>
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80" alt="مطعم دار الأصالة" />
+        </div>
+        <div class="project-body">
+          <span class="badge demo">● Démo · Maps</span>
+          <h2>مطعم دار الأصالة</h2>
+          <p class="desc">مطعم مغربي بالدار البيضاء — منيو، حجز واتساب، وموقع حقيقي على Google Maps (المعاريف).</p>
+          <div class="why">
+            علاش خدم: الزبون كيطلع الموقع، كيشوف المنيو وكيوصل للمطعم بنقرة من Google Maps.
+            <span class="fr">Menu, réservation et localisation Google Maps intégrée.</span>
+          </div>
+          <a class="btn" href="demos/restaurant-dar-al-asala.html" target="_blank" rel="noopener">شوف الموقع →</a>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="thumb">
+          <span class="tag">صالون · Rabat</span>
+          <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80" alt="صالون لمسة" />
+        </div>
+        <div class="project-body">
+          <span class="badge demo">● Démo · Maps</span>
+          <h2>صالون لمسة — Lamsa Beauty</h2>
+          <p class="desc">صالون تجميل بالرباط — خدمات، أسعار، حجز، وGoogle Maps (أكدال).</p>
+          <div class="why">
+            علاش خدم: نفس المبدأ — الزبونة كتلقى كلشي فالتيليفون وكتوصل بسهولة.
+            <span class="fr">Services, tarifs, réservation et carte Google Maps.</span>
+          </div>
+          <a class="btn" href="demos/salon-lamsa.html" target="_blank" rel="noopener">شوف الموقع →</a>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="contact-bar">
+      <h3>بغيتي نفس المستوى؟</h3>
+      <p>الموقع ديالك واجد فـ 4 أيام — عيادة، مطعم، محل، أو صالون.</p>
+      <div class="contact-links">
+        <a class="wa" href="https://wa.me/212614097237">واتساب</a>
+        <a class="mail" href="mailto:abdesamadabdesamad1552@gmail.com">abdesamadabdesamad1552@gmail.com</a>
+        <a class="cta" href="https://wa.me/212614097237?text=%D8%A8%D8%BA%D9%8A%D8%AA%20%D9%85%D9%88%D9%82%D8%B9%20%D8%AF%D9%8A%D8%A7%D9%84%D9%8A%20%D9%88%D8%A7%D8%AC%D8%AF%20%D9%81%D9%8A%204%20%D8%A3%D9%8A%D8%A7%D9%85">موقع فـ 4 أيام</a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

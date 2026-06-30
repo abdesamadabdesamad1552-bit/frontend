@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carte de Visite — Web Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --card-w: 510px;
+      --card-h: 330px;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --accent: #0ea5e9;
+      --accent-2: #06b6d4;
+      --glow: rgba(14, 165, 233, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Cairo", Tahoma, sans-serif;
+      background: #cbd5e1;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+      color: var(--ink);
+    }
+
+    .top-bar {
+      max-width: 1060px;
+      margin: 0 auto 24px;
+      padding: 14px 18px;
+      background: #fff;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #555;
+      border: 1px solid #e2e8f0;
+    }
+
+    .top-bar button {
+      margin-top: 8px;
+      margin-left: 6px;
+      padding: 9px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--ink);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .preview-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .preview-col { text-align: center; }
+
+    .preview-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      width: var(--card-w);
+      height: var(--card-h);
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.22),
+        0 0 0 1px rgba(255,255,255,0.06) inset;
+    }
+
+    /* ═══ الوجه الأمامي — premium dark ═══ */
+    .side-front {
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px 32px 24px;
+    }
+
+    .side-front .mesh {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 85% 15%, var(--glow), transparent 55%),
+        radial-gradient(ellipse 50% 45% at 10% 90%, rgba(6, 182, 212, 0.2), transparent 50%);
+      pointer-events: none;
+    }
+
+    .side-front .grid-lines {
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image:
+        linear-gradient(#fff 1px, transparent 1px),
+        linear-gradient(90deg, #fff 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+
+    .side-front .top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .side-front .pill {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #e2e8f0;
+    }
+
+    .side-front .badge-live {
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: #34d399;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .side-front .badge-live::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 8px #34d399;
+    }
+
+    .side-front .hook {
+      position: relative;
+      z-index: 1;
+      margin: auto 0;
+      padding: 8px 0;
+    }
+
+    .side-front .hook h1 {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      max-width: 400px;
+    }
+
+    .side-front .hook h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, #38bdf8, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .side-front .hook .fr {
+      font-family: "Inter", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #94a3b8;
+      margin-top: 12px;
+      line-height: 1.45;
+      direction: ltr;
+      text-align: left;
+      max-width: 380px;
+    }
+
+    .side-front .bottom {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 14px;
+    }
+
+    .side-front .sectors {
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    .side-front .sectors .fr {
+      font-family: "Inter", sans-serif;
+      font-size: 9px;
+      display: block;
+      direction: ltr;
+      text-align: left;
+      margin-top: 2px;
+    }
+
+    .side-front .flip-hint {
+      font-size: 9px;
+      font-weight: 600;
+      color: #64748b;
+      text-align: left;
+      direction: ltr;
+      font-family: "Inter", sans-serif;
+    }
+
+    .side-front .flip-hint span {
+      display: block;
+      font-family: "Cairo", sans-serif;
+      direction: rtl;
+      text-align: right;
+      color: #94a3b8;
+      margin-bottom: 2px;
+    }
+
+    /* ═══ الوجه الخلفي — clean white ═══ */
+    .side-back {
+      background: #ffffff;
+      padding: 22px 26px 20px;
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 8px 16px;
+      direction: rtl;
+    }
+
+    .side-back .promise {
+      grid-column: 1 / -1;
+      background: linear-gradient(90deg, #0f172a, #1e293b);
+      color: #fff;
+      text-align: center;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.3;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+    }
+
+    .side-back .promise .fr {
+      font-family: "Inter", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      display: block;
+      direction: ltr;
+      color: #94a3b8;
+      margin-top: 3px;
+    }
+
+    .side-back .promise strong {
+      color: #38bdf8;
+      font-weight: 800;
+    }
+
+    .side-back .qr-col {
+      grid-row: 2 / 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .side-back .qr-lbl {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 5px;
+      text-align: center;
+      line-height: 1.25;
+    }
+
+    .side-back .qr-lbl .fr {
+      font-family: "Inter", sans-serif;
+      font-size: 8px;
+      color: var(--muted);
+      display: block;
+      direction: ltr;
+    }
+
+    .side-back .qr-box {
+      width: 104px;
+      height: 104px;
+      padding: 5px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .side-back .qr-box img { width: 100%; height: 100%; display: block; border-radius: 6px; }
+
+    .side-back .content {
+      grid-row: 2 / 4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .side-back .benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .side-back .benefit .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .side-back .benefit .fr {
+      font-family: "Inter", sans-serif;
+      font-size: 9.5px;
+      font-weight: 500;
+      color: var(--muted);
+      display: block;
+      direction: ltr;
+      text-align: left;
+      margin-top: 1px;
+    }
+
+    .side-back .contact {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 10px;
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--ink);
+      direction: ltr;
+    }
+
+    .side-back .contact .sep { color: #cbd5e1; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .top-bar { display: none !important; }
+      :root { --card-w: 85mm; --card-h: 55mm; }
+      .preview-wrap { display: block; }
+      .preview-label { display: none; }
+      .card {
+        border-radius: 0;
+        box-shadow: none;
+        page-break-after: always;
+        break-after: page;
+        margin: 0 auto;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .preview-col:last-child .card { page-break-after: auto; break-after: auto; }
+
+      .side-front { padding: 4.5mm 5.5mm 4mm; }
+      .side-front .pill { font-size: 5.5pt; padding: 1.2mm 2.5mm; }
+      .side-front .badge-live { font-size: 5.5pt; }
+      .side-front .badge-live::before { width: 1.5mm; height: 1.5mm; }
+      .side-front .hook h1 { font-size: 13pt; max-width: 68mm; }
+      .side-front .hook .fr { font-size: 7pt; margin-top: 2mm; }
+      .side-front .bottom { padding-top: 2.5mm; }
+      .side-front .sectors { font-size: 5.5pt; }
+      .side-front .sectors .fr { font-size: 5pt; }
+      .side-front .flip-hint { font-size: 5pt; }
+
+      .side-back { padding: 3.5mm 4.5mm 3mm; gap: 1.5mm 2.5mm; }
+      .side-back .promise { font-size: 7.5pt; padding: 1.8mm 2.5mm; border-radius: 1.5mm; }
+      .side-back .promise .fr { font-size: 6pt; }
+      .side-back .qr-box { width: 20mm; height: 20mm; padding: 1mm; }
+      .side-back .qr-lbl { font-size: 5pt; }
+      .side-back .benefit { font-size: 6.5pt; gap: 1.5mm; }
+      .side-back .benefit .fr { font-size: 5.5pt; }
+      .side-back .contact { font-size: 5.5pt; padding-top: 1.5mm; }
+
+      @page { size: 85mm 55mm; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <strong>بطاقة عمل Web Pro</strong> — وجه أمامي: اللقطة · وجه خلفي: المعلومات + QR.<br />
+    Ctrl+P للطباعة · Chrome/Edge
+    <br />
+    <button type="button" onclick="window.print()">طباعة</button>
+    <button type="button" onclick="window.open('portfolio.html','_blank')" style="background:#475569">Portfolio</button>
+  </div>
+
+  <div class="preview-wrap">
+
+    <div class="preview-col">
+      <div class="preview-label">Avant — الوجه الأمامي</div>
+      <article class="card side-front">
+        <div class="mesh"></div>
+        <div class="grid-lines"></div>
+
+        <div class="top">
+          <span class="pill">مواقع محلية · Sites web</span>
+          <span class="badge-live">Sites Live</span>
+        </div>
+
+        <div class="hook">
+          <h1>كاينين ناس كيبحثو عليك فـ <em>Google</em> وماكايلقاوش؟</h1>
+          <p class="fr">Des clients vous cherchent sur Google.<br />Ils ne vous trouvent pas.</p>
+        </div>
+
+        <div class="bottom">
+          <div class="sectors">
+            عيادات · مطاعم · محلات · صالونات
+            <span class="fr">Cliniques · Restaurants · Commerces</span>
+          </div>
+          <div class="flip-hint">
+            <span>قلب البطاقة ←</span>
+            Infos &amp; contact
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="preview-col">
+      <div class="preview-label">Arrière — الوجه الخلفي</div>
+      <article class="card side-back">
+        <div class="promise">
+          الموقع ديالك واجد فـ <strong>4 أيام</strong> — مضمون
+          <span class="fr">Votre site est prêt en 4 jours — garanti</span>
+        </div>
+
+        <div class="qr-col">
+          <div class="qr-lbl">
+            شوف أعمالي
+            <span class="fr">Portfolio</span>
+          </div>
+          <div class="qr-box">
+            <img alt="QR" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=https%3A%2F%2Fabdesamadabdesamad1552-bit.github.io%2Ffrontend%2Fportfolio.html" />
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="benefit">
+            <span class="dot"></span>
+            <div>موقع سريع يخدم فالتيليفون<span class="fr">Site rapide, 100% mobile</span></div>
+          </div>
+          <div class="benefit">
+            <span class="dot"></span>
+            <div>ظهور فـ Google Maps<span class="fr">Visible sur Google Maps</span></div>
+          </div>
+          <div class="benefit">
+            <span class="dot"></span>
+            <div>صورة احترافية = زبائن أكثر<span class="fr">Image pro = plus de clients</span></div>
+          </div>
+          <div class="benefit">
+            <span class="dot"></span>
+            <div>قبل ما يوصلو ليك كياخدو قرارهم فالتيليفون<span class="fr">Ils décident sur leur téléphone</span></div>
+          </div>
+        </div>
+
+        <div class="contact">
+          <span>+212 6 14 09 72 37</span>
+          <span class="sep">·</span>
+          <span>abdesamadabdesamad1552@gmail.com</span>
+          <span class="sep">·</span>
+          <span>wa.me/212614097237</span>
+        </div>
+      </article>
+    </div>
+
+  </div>
+
+</body>
+</html>
