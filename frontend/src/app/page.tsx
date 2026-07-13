@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import WhyNaqaSection from "@/components/WhyNaqaSection";
+import Reveal from "@/components/Reveal";
 import { products } from "@/lib/products";
 
 const testimonials = [
@@ -28,7 +29,7 @@ export default function Home() {
     <>
       <Header />
 
-      <main>
+      <main id="main-content">
         {/* Hero */}
         <section className="bg-gradient-to-b from-brand-beige via-brand-white to-brand-white pt-16 pb-20 md:pt-24 md:pb-28">
           <div className="max-w-4xl mx-auto px-6 text-center">
@@ -54,7 +55,7 @@ export default function Home() {
               </Link>
               <Link
                 href="#products"
-                className="inline-flex items-center justify-center text-base font-medium text-brand-gold border border-brand-gold/30 px-8 py-4 rounded-xl hover:bg-brand-beige transition-colors"
+                className="inline-flex items-center justify-center text-base font-bold text-brand-black border border-brand-gold/50 px-8 py-4 rounded-xl hover:bg-brand-beige transition-colors"
               >
                 تصفحي المنتجات
               </Link>
@@ -75,45 +76,50 @@ export default function Home() {
         {/* Products */}
         <section id="products" className="py-16 md:py-24 bg-brand-white">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-12 md:mb-16">
+            <Reveal className="text-center mb-12 md:mb-16">
               <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black mb-4">
                 مجموعة نقاء
               </h2>
               <p className="text-brand-gray max-w-xl mx-auto">
                 5 منتجات — 5 حلول. كل منتج يستهدف مشكلة محددة.
               </p>
-            </div>
+            </Reveal>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {products.map((product, i) => (
+                <Reveal key={product.id} delay={Math.min(i, 3) * 0.08}>
+                  <ProductCard product={product} />
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
-        <WhyNaqaSection />
+        <Reveal>
+          <WhyNaqaSection />
+        </Reveal>
 
         {/* Testimonials */}
         <section className="py-16 md:py-24 bg-brand-white">
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black text-center mb-12">
-              آراء عميلاتنا
-            </h2>
+            <Reveal>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black text-center mb-12">
+                آراء عميلاتنا
+              </h2>
+            </Reveal>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {testimonials.map((t) => (
-                <blockquote
-                  key={t.name}
-                  className="bg-brand-beige rounded-2xl border border-brand-beige-dark p-6"
-                >
-                  <p className="text-brand-black/80 text-sm leading-relaxed mb-5">
-                    &ldquo;{t.text}&rdquo;
-                  </p>
-                  <footer>
-                    <p className="font-semibold text-brand-black text-sm">{t.name}</p>
-                    <p className="text-brand-gray text-xs">{t.city}</p>
-                  </footer>
-                </blockquote>
+              {testimonials.map((t, i) => (
+                <Reveal key={t.name} delay={i * 0.08}>
+                  <blockquote className="h-full bg-brand-beige rounded-2xl border border-brand-beige-dark p-6">
+                    <p className="text-brand-black/80 text-sm leading-relaxed mb-5">
+                      &ldquo;{t.text}&rdquo;
+                    </p>
+                    <footer>
+                      <p className="font-semibold text-brand-black text-sm">{t.name}</p>
+                      <p className="text-brand-gray text-xs">{t.city}</p>
+                    </footer>
+                  </blockquote>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -121,7 +127,7 @@ export default function Home() {
 
         {/* CTA */}
         <section className="py-16 md:py-24 bg-brand-beige">
-          <div className="max-w-2xl mx-auto px-6 text-center">
+          <Reveal className="max-w-2xl mx-auto px-6 text-center">
             <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black mb-4">
               ابدئي رحلتك مع نقاء
             </h2>
@@ -134,7 +140,7 @@ export default function Home() {
             >
               تسوقي الآن
             </Link>
-          </div>
+          </Reveal>
         </section>
       </main>
 

@@ -131,7 +131,7 @@ export default function Header() {
         <div className="justify-self-end flex items-center gap-3 sm:gap-5">
           <Link
             href="/shop"
-            className="text-sm font-semibold text-brand-gold hover:text-brand-gold-dark transition-colors"
+            className="text-sm font-bold text-brand-black hover:text-brand-gold-dark transition-colors"
           >
             تسوق
           </Link>

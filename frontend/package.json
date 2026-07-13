@@ -22,6 +22,8 @@
     "@types/pg": "^8.15.2",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.19",
     "sharp": "^0.35.1",
     "tailwindcss": "^4.1.8",
     "typescript": "^5.8.3"

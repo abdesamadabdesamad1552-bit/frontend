@@ -64,7 +64,7 @@ function CrossSellCard({ product }: { product: Product }) {
           {product.name}
         </h3>
         <p className="text-xs text-brand-gray mb-2 break-words">{product.subtitle}</p>
-        <span className="text-xs text-brand-gold font-medium">عرض المنتج</span>
+        <span className="text-xs text-brand-black font-bold underline underline-offset-2">عرض المنتج</span>
       </div>
     </Link>
   );
@@ -102,10 +102,32 @@ export default async function ProductPage({ params }: PageProps) {
     Gem,
   };
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.longDescription,
+    sku: product.sku,
+    image: `https://naqabeauty.store${getPrimaryImage(product)}`,
+    brand: { "@type": "Brand", name: "Naqa Beauty" },
+    offers: {
+      "@type": "Offer",
+      url: `https://naqabeauty.store/products/${product.slug}`,
+      priceCurrency: "SAR",
+      price: product.price,
+      availability: "https://schema.org/InStock",
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <Header />
 
+      <main id="main-content" className="contents">
       {/* 1. Product Hero Section */}
       <section className="pt-8 pb-10 md:pt-12 md:pb-16 bg-brand-white">
         <div className="max-w-7xl mx-auto px-6">
@@ -122,7 +144,7 @@ export default async function ProductPage({ params }: PageProps) {
               <h1 className="text-2xl md:text-3xl font-bold text-brand-black mb-2 break-words">
                 {product.name}
               </h1>
-              <p className="text-base md:text-lg font-medium text-brand-gold mb-4 break-words">
+              <p className="text-base md:text-lg font-medium text-brand-gold-dark mb-4 break-words">
                 {landing.subheadline}
               </p>
 
@@ -155,8 +177,19 @@ export default async function ProductPage({ params }: PageProps) {
                 label="أضف للسلة"
                 variant="accent"
                 accentBg={product.accentBg}
-                className="w-full text-base py-4 mb-6 shadow-lg shadow-brand-gold/20"
+                className="w-full text-base py-4 mb-4 shadow-lg shadow-brand-gold/20"
               />
+
+              <div className="flex items-center justify-center gap-6 mb-6 text-xs text-brand-gray">
+                <span className="flex items-center gap-1.5">
+                  <Truck className="w-4 h-4 text-brand-gold-dark" strokeWidth={2} />
+                  توصيل مجاني
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CreditCard className="w-4 h-4 text-brand-gold-dark" strokeWidth={2} />
+                  الدفع عند الاستلام
+                </span>
+              </div>
 
               {/* 3 Reviews Snippets */}
               <div className="space-y-3 bg-brand-beige/50 p-5 rounded-2xl border border-brand-beige-dark">
@@ -166,7 +199,7 @@ export default async function ProductPage({ params }: PageProps) {
                       <Star className="w-3.5 h-3.5 fill-brand-gold text-brand-gold" />
                     </div>
                     <div>
-                      <p className="text-sm text-brand-black/90 italic mb-1">"{review.quote}"</p>
+                      <p className="text-sm text-brand-black/90 italic mb-1">&ldquo;{review.quote}&rdquo;</p>
                       <p className="text-xs text-brand-gray font-medium">— {review.author}</p>
                     </div>
                   </div>
@@ -267,7 +300,7 @@ export default async function ProductPage({ params }: PageProps) {
                   <thead>
                     <tr className="border-b-2 border-brand-beige-dark">
                       <th className="pb-4 font-bold text-brand-black w-1/2">الميزة</th>
-                      <th className="pb-4 font-bold text-brand-gold text-center w-1/4">نقاء</th>
+                      <th className="pb-4 font-bold text-brand-gold-dark text-center w-1/4">نقاء</th>
                       <th className="pb-4 font-bold text-brand-gray text-center w-1/4">الآخرين</th>
                     </tr>
                   </thead>
@@ -318,7 +351,7 @@ export default async function ProductPage({ params }: PageProps) {
                   {stat.percent}
                 </div>
                 <p className="text-base md:text-lg text-brand-black/90 font-medium italic">
-                  "{stat.text}"
+                  &ldquo;{stat.text}&rdquo;
                 </p>
               </div>
             ))}
@@ -372,6 +405,7 @@ export default async function ProductPage({ params }: PageProps) {
           className="w-full text-base py-3.5 shadow-lg"
         />
       </div>
+      </main>
 
       <Footer />
     </>

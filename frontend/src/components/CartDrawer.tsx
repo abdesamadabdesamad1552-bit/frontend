@@ -67,7 +67,7 @@ export default function CartDrawer() {
               <p className="text-brand-gray text-sm">سلتك فارغة</p>
               <button
                 onClick={closeDrawer}
-                className="mt-4 text-sm text-brand-gold font-semibold hover:underline"
+                className="mt-4 text-sm text-brand-black font-bold underline underline-offset-2"
               >
                 تصفحي المنتجات
               </button>
@@ -155,7 +155,7 @@ export default function CartDrawer() {
                         </div>
                         <button
                           onClick={() => addItem(product.id)}
-                          className="text-xs font-semibold text-brand-gold border border-brand-gold/30 px-3 py-1.5 rounded-lg hover:bg-brand-gold hover:text-brand-white transition-colors flex-shrink-0"
+                          className="text-xs font-bold text-brand-black border border-brand-gold/50 px-3 py-1.5 rounded-lg hover:bg-brand-gold hover:text-brand-white transition-colors flex-shrink-0"
                         >
                           أضف
                         </button>
@@ -176,7 +176,7 @@ export default function CartDrawer() {
                 {formatPrice(total, state.country)}
               </span>
             </div>
-            <p className="text-xs text-brand-gold flex items-center gap-1">
+            <p className="text-xs text-brand-gold-dark flex items-center gap-1">
               ✓ توصيل مجاني
             </p>
             <button

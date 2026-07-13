@@ -71,7 +71,10 @@ export default function ThankYouContent() {
     }>;
   }, [snapshot?.items]);
 
-  const orderedIds = new Set(snapshot?.items.map((i) => i.productId) ?? []);
+  const orderedIds = useMemo(
+    () => new Set(snapshot?.items.map((i) => i.productId) ?? []),
+    [snapshot?.items]
+  );
 
   const crossSells = useMemo(
     () => products.filter((p) => !orderedIds.has(p.id)).slice(0, 3),
@@ -100,7 +103,7 @@ export default function ThankYouContent() {
         {callMsg.banner}
       </div>
 
-      <main className="bg-brand-beige min-h-[60vh] py-8 md:py-12">
+      <main id="main-content" className="bg-brand-beige min-h-[60vh] py-8 md:py-12">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 space-y-6">
           {/* Hero */}
           <section className="text-center pt-4">

@@ -32,7 +32,7 @@ export default function ProductCard({ product }: { product: Product }) {
             {product.name}
           </h3>
         </Link>
-        <p className="text-sm font-medium text-brand-gold mb-2 leading-snug break-words">
+        <p className="text-sm font-medium text-brand-gold-dark mb-2 leading-snug break-words">
           {product.hook}
         </p>
         <p className="text-sm text-brand-gray mb-2 break-words">{product.subtitle}</p>
@@ -61,7 +61,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="flex items-center justify-between gap-2 pt-4 border-t border-brand-beige min-w-0">
           <Link
             href={`/products/${product.slug}`}
-            className="text-xs text-brand-gold font-semibold hover:underline flex-shrink-0"
+            className="text-xs text-brand-black font-bold underline underline-offset-2 hover:text-brand-gold-dark flex-shrink-0"
           >
             التفاصيل
           </Link>

@@ -161,6 +161,39 @@ async function ensureSchema(): Promise<void> {
   schemaReady = true;
 }
 
+export interface ContactInput {
+  name: string;
+  email: string;
+  message: string;
+}
+
+async function ensureContactSchema(): Promise<void> {
+  const db = getPool();
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS contact_messages (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      message TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+}
+
+export async function saveContactMessage(body: ContactInput): Promise<void> {
+  if (!body.name?.trim() || !body.email?.trim() || !body.message?.trim()) {
+    throw new Error("Missing required fields: name, email, message");
+  }
+
+  await ensureContactSchema();
+
+  const db = getPool();
+  await db.query(
+    `INSERT INTO contact_messages (name, email, message) VALUES ($1, $2, $3)`,
+    [body.name.trim(), body.email.trim(), body.message.trim()]
+  );
+}
+
 export interface OrderInput {
   name: string;
   phone: string;

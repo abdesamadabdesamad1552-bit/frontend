@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  eslint: { ignoreDuringBuilds: true },
+  eslint: { ignoreDuringBuilds: false },
   typescript: { ignoreBuildErrors: false },
   turbopack: {
     root: process.cwd(),
@@ -12,14 +12,8 @@ const nextConfig: NextConfig = {
     cpus: 1,
   },
   images: {
-    unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
-      },
-    ],
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [360, 640, 750, 828, 1080, 1200, 1920],
   },
 };
 

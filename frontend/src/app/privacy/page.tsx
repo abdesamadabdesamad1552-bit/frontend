@@ -8,7 +8,7 @@ export default function PrivacyPage() {
   return (
     <>
       <Header />
-      <main className="bg-brand-white py-16 md:py-24">
+      <main id="main-content" className="bg-brand-white py-16 md:py-24">
         <article className="max-w-3xl mx-auto px-6">
           <h1 className="text-3xl md:text-4xl font-bold text-brand-black mb-10">سياسة الخصوصية</h1>
           <div className="space-y-8 text-sm text-brand-black/80 leading-relaxed">
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
             ))}
             <section>
               <h2 className="text-[15px] font-bold text-brand-black mb-3">التواصل</h2>
-              <p>إذا كان لديك أي أسئلة، يمكنك التواصل معنا عبر: <a href="mailto:contact@naqabeauty.store" className="text-brand-gold hover:underline transition-colors">contact@naqabeauty.store</a></p>
+              <p>إذا كان لديك أي أسئلة، يمكنك التواصل معنا عبر: <a href="mailto:contact@naqabeauty.store" className="text-brand-black font-bold underline underline-offset-2">contact@naqabeauty.store</a></p>
             </section>
             <p className="text-xs text-brand-gray pt-6 border-t border-brand-beige-dark">آخر تحديث: يونيو 2026</p>
           </div>

@@ -66,6 +66,25 @@ export const metadata: Metadata = {
   ],
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "نقاء للتجميل الفاخر",
+  alternateName: "Naqa Beauty",
+  url: "https://naqabeauty.store",
+  logo: "https://naqabeauty.store/icon-512.png",
+  email: "contact@naqabeauty.store",
+  areaServed: ["SA", "AE", "KW", "QA", "BH", "OM"],
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "نقاء للتجميل الفاخر",
+  url: "https://naqabeauty.store",
+  inLanguage: "ar",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -76,6 +95,20 @@ export default function RootLayout({
       <body
         className={`${ibmPlexSansArabic.variable} ${reemKufi.variable} font-arabic antialiased bg-brand-white text-brand-black`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:right-3 focus:z-[100] focus:bg-brand-black focus:text-brand-white focus:px-4 focus:py-3 focus:rounded-xl focus:text-sm focus:font-semibold"
+        >
+          تخطي إلى المحتوى الرئيسي
+        </a>
         <CartProvider>
           {children}
           <CartDrawer />

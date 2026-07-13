@@ -77,6 +77,8 @@ const GALLERY_SLOTS = [
   { file: "5-packaging.webp", label: "التغليف والتفاصيل" },
 ] as const;
 
+type RawProduct = Omit<Product, "images" | "benefits" | "landing">;
+
 /** Auto paths: public/images/{slug}/1-hero.webp … 5-packaging.webp */
 export function buildLocalImages(raw: { slug: string; name: string }): ProductImage[] {
   return GALLERY_SLOTS.map(({ file, label }) => ({
@@ -85,7 +87,7 @@ export function buildLocalImages(raw: { slug: string; name: string }): ProductIm
   }));
 }
 
-function enrichProduct(raw: any): Product {
+function enrichProduct(raw: RawProduct): Product {
   const media = (productsMedia as ProductsMediaMap)[raw.slug];
   const skip = new Set(media?.skipSlots ?? []);
   const images =
@@ -104,7 +106,7 @@ function enrichProduct(raw: any): Product {
   };
 }
 
-export const products: Product[] = (rawProducts as any[]).map(enrichProduct);
+export const products: Product[] = (rawProducts as RawProduct[]).map(enrichProduct);
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);

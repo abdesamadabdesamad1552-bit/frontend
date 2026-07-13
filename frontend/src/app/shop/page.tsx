@@ -17,6 +17,7 @@ export default function ShopPage() {
     <>
       <Header />
 
+      <main id="main-content" className="contents">
       <section className="bg-brand-beige pt-12 pb-10 md:pt-16 md:pb-14">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-brand-black mb-4">
@@ -65,6 +66,7 @@ export default function ShopPage() {
           </div>
         </div>
       </section>
+      </main>
 
       <Footer />
     </>
