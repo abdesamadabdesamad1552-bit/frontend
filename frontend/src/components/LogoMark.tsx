@@ -4,11 +4,16 @@ type LogoMarkProps = {
 };
 
 /**
- * Naqa Beauty logo mark — a purity droplet cradled by a leaf inside a ring.
- * Pure vector (crisp at any size) and colored via `currentColor`, so it can
- * render gold on light surfaces or white on the dark footer with no extra asset.
+ * Naqa Beauty logo mark — a geometric eight-petal rosette (Arabic ornament),
+ * matching the brand flower used on packaging and ad creatives.
+ * Pure vector (crisp at any size) and colored via `currentColor`, so it renders
+ * gold on light surfaces or white on the dark footer with no extra asset.
  */
 export default function LogoMark({ className, title = "Naqa Beauty" }: LogoMarkProps) {
+  // 4 axis-aligned petals + 4 diagonal petals, each a slender pointed leaf.
+  const petal =
+    "M24 4 C27.8 9.5 27.8 13.5 24 17 C20.2 13.5 20.2 9.5 24 4 Z";
+
   return (
     <svg
       viewBox="0 0 48 48"
@@ -18,21 +23,15 @@ export default function LogoMark({ className, title = "Naqa Beauty" }: LogoMarkP
       aria-label={title}
       className={className}
     >
-      {/* Outer ring */}
-      <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="1.5" opacity="0.55" />
-      {/* Purity droplet */}
-      <path
-        d="M24 9c6.5 8.2 10 13.4 10 18.4A10 10 0 0 1 24 37.4a10 10 0 0 1-10-10C14 22.4 17.5 17.2 24 9Z"
-        fill="currentColor"
-      />
-      {/* Leaf highlight sweeping across the droplet */}
-      <path
-        d="M18.5 29.5c3.4-.2 7.6-2.3 10-6.6"
-        stroke="#1a1a1a"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        opacity="0.35"
-      />
+      <g fill="currentColor">
+        {/* Outer petals — N, NE, E, SE, S, SW, W, NW */}
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+          <path key={angle} d={petal} transform={`rotate(${angle} 24 24)`} />
+        ))}
+      </g>
+      {/* Inner ring + heart of the rosette */}
+      <circle cx="24" cy="24" r="4" stroke="currentColor" strokeWidth="1.3" />
+      <circle cx="24" cy="24" r="1.7" fill="currentColor" />
     </svg>
   );
 }
