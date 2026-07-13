@@ -35,10 +35,10 @@ export default function Home() {
             <p className="text-brand-gray text-sm md:text-base mb-8 leading-relaxed">
               تركيبات علمية – مكونات فعالة – تركيزات حقيقية
             </p>
-            <h1 className="text-[clamp(2.5rem,7vw,4.5rem)] font-bold text-brand-black leading-[1.15]">
+            <h1 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] font-bold text-brand-black leading-[1.15]">
               لأن بشرتك
             </h1>
-            <p className="text-[clamp(2.5rem,7vw,4.5rem)] font-bold text-brand-gold leading-[1.15] mt-1 mb-10">
+            <p className="font-display text-[clamp(2.5rem,7vw,4.5rem)] font-bold text-brand-gold leading-[1.15] mt-1 mb-10">
               تستحق الأنقى
             </p>
             <p className="text-brand-gray text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
@@ -76,7 +76,7 @@ export default function Home() {
         <section id="products" className="py-16 md:py-24 bg-brand-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-12 md:mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-brand-black mb-4">
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black mb-4">
                 مجموعة نقاء
               </h2>
               <p className="text-brand-gray max-w-xl mx-auto">
@@ -97,7 +97,7 @@ export default function Home() {
         {/* Testimonials */}
         <section className="py-16 md:py-24 bg-brand-white">
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-black text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black text-center mb-12">
               آراء عميلاتنا
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -122,7 +122,7 @@ export default function Home() {
         {/* CTA */}
         <section className="py-16 md:py-24 bg-brand-beige">
           <div className="max-w-2xl mx-auto px-6 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-black mb-4">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black mb-4">
               ابدئي رحلتك مع نقاء
             </h2>
             <p className="text-brand-gray mb-8 leading-relaxed">

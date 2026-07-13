@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import LogoMark from "@/components/LogoMark";
 import { useCart } from "@/lib/cart-context";
 import { countries, type CountryCode } from "@/lib/pricing";
 import { ChevronDown } from "lucide-react";
@@ -115,16 +115,8 @@ export default function Header() {
           href="/"
           className="justify-self-center flex items-center gap-2 sm:gap-2.5 min-w-0"
         >
-          <div className="relative h-10 w-10 sm:h-11 sm:w-11 shrink-0">
-            <Image
-              src="/header-icon.png"
-              alt="Naqa Beauty"
-              fill
-              sizes="(max-width: 640px) 40px, 44px"
-              className="object-contain object-center"
-              priority
-            />
-          </div>
+          <LogoMark className="h-10 w-10 sm:h-11 sm:w-11 shrink-0 text-brand-gold" />
+
           <div className="flex flex-col items-start justify-center leading-none min-w-0">
             <span className="text-xl sm:text-2xl font-bold text-brand-black tracking-tight">
               نقاء

@@ -3,6 +3,7 @@
 @theme {
   --font-sans: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
   --font-arabic: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-reem), "IBM Plex Sans Arabic", ui-sans-serif, sans-serif;
 
   --color-brand-black: #1a1a1a;
   --color-brand-gold: #c5a55a;

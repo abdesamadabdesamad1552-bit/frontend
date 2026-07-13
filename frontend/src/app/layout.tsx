@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import { IBM_Plex_Sans_Arabic, Reem_Kufi } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import CartDrawer from "@/components/CartDrawer";
@@ -10,6 +10,13 @@ const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic", "latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-arabic",
+  display: "swap",
+});
+
+const reemKufi = Reem_Kufi({
+  subsets: ["arabic", "latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-reem",
   display: "swap",
 });
 
@@ -25,6 +32,21 @@ export const metadata: Metadata = {
   description:
     "تركيبات علمية بمكونات فعّالة بتركيزات حقيقية — مصممة لمناخ الخليج. توصيل مجاني. الدفع عند الاستلام.",
   metadataBase: new URL("https://naqabeauty.store"),
+  openGraph: {
+    type: "website",
+    locale: "ar_SA",
+    siteName: "نقاء للتجميل الفاخر",
+    title: "نقاء للتجميل الفاخر | Naqa Beauty",
+    description:
+      "تركيبات علمية بمكونات فعّالة بتركيزات حقيقية — مصممة لمناخ الخليج. توصيل مجاني. الدفع عند الاستلام.",
+    url: "https://naqabeauty.store",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "نقاء للتجميل الفاخر | Naqa Beauty",
+    description:
+      "تركيبات علمية بمكونات فعّالة بتركيزات حقيقية — مصممة لمناخ الخليج. توصيل مجاني. الدفع عند الاستلام.",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -52,7 +74,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body
-        className={`${ibmPlexSansArabic.variable} font-arabic antialiased bg-brand-white text-brand-black`}
+        className={`${ibmPlexSansArabic.variable} ${reemKufi.variable} font-arabic antialiased bg-brand-white text-brand-black`}
       >
         <CartProvider>
           {children}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LogoMark from "@/components/LogoMark";
 
 const links = {
   store: [
@@ -26,10 +27,15 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
           <div className="col-span-2 md:col-span-1">
-            <span className="text-xl font-bold block mb-1">نقاء</span>
-            <span className="text-[10px] tracking-[0.3em] text-brand-gold font-medium uppercase block mb-4">
-              NAQA BEAUTY
-            </span>
+            <div className="flex items-center gap-2.5 mb-4">
+              <LogoMark className="h-9 w-9 shrink-0 text-brand-white" />
+              <div className="flex flex-col leading-none">
+                <span className="font-display text-xl font-bold">نقاء</span>
+                <span className="mt-1 text-[10px] tracking-[0.3em] text-brand-gold font-medium uppercase">
+                  NAQA BEAUTY
+                </span>
+              </div>
+            </div>
             <p className="text-sm text-brand-white/60 leading-relaxed max-w-xs">
               تركيبات علمية بمكونات فعّالة — مصممة لمناخ الخليج وبشرته.
             </p>
