@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { products, getPrimaryImage } from "@/lib/products";
 import {
@@ -17,7 +18,6 @@ export default function CartDrawer() {
     decrement,
     removeItem,
     addItem,
-    openCheckout,
     totalItems,
     cartProductIds,
   } = useCart();
@@ -179,8 +179,9 @@ export default function CartDrawer() {
             <p className="text-xs text-brand-gold-dark flex items-center gap-1">
               ✓ توصيل مجاني
             </p>
-            <button
-              onClick={openCheckout}
+            <Link
+              href="/checkout"
+              onClick={closeDrawer}
               className="w-full bg-brand-black text-brand-white text-base font-semibold py-4 rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] flex items-center justify-center gap-2"
             >
               إتمام الطلب
@@ -197,7 +198,7 @@ export default function CartDrawer() {
                   d="M14 5l7 7m0 0l-7 7m7-7H3"
                 />
               </svg>
-            </button>
+            </Link>
           </div>
         )}
       </div>

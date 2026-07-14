@@ -143,6 +143,23 @@ export function getSinglePrice(country: CountryCode): number {
   return countries[country].pricing.single;
 }
 
+/**
+ * Cash-on-delivery handling fee, per country, in that country's currency.
+ * KSA is 30 SAR as requested; others use a sensible local-currency equivalent.
+ */
+const COD_FEE: Record<CountryCode, number> = {
+  SA: 30,
+  AE: 30,
+  KW: 3,
+  QA: 30,
+  BH: 3,
+  OM: 3,
+};
+
+export function getCodFee(country: CountryCode): number {
+  return COD_FEE[country];
+}
+
 const ARABIC_INDIC_DIGITS = "٠١٢٣٤٥٦٧٨٩";
 const EXT_ARABIC_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
 
