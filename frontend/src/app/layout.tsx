@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans_Arabic, Reem_Kufi } from "next/font/google";
+import { IBM_Plex_Sans_Arabic, Reem_Kufi, Aref_Ruqaa, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import CartDrawer from "@/components/CartDrawer";
@@ -17,6 +17,20 @@ const reemKufi = Reem_Kufi({
   subsets: ["arabic", "latin"],
   weight: ["500", "600", "700"],
   variable: "--font-reem",
+  display: "swap",
+});
+
+const arefRuqaa = Aref_Ruqaa({
+  subsets: ["arabic"],
+  weight: ["700"],
+  variable: "--font-ruqaa",
+  display: "swap",
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -93,7 +107,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body
-        className={`${ibmPlexSansArabic.variable} ${reemKufi.variable} font-arabic antialiased bg-brand-white text-brand-black`}
+        className={`${ibmPlexSansArabic.variable} ${reemKufi.variable} ${arefRuqaa.variable} ${cormorantGaramond.variable} font-arabic antialiased bg-brand-white text-brand-black`}
       >
         <script
           type="application/ld+json"

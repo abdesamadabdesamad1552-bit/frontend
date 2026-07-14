@@ -115,13 +115,14 @@ export default function Header() {
           href="/"
           className="justify-self-center flex items-center gap-2 sm:gap-2.5 min-w-0"
         >
-          <LogoMark className="h-10 w-10 sm:h-11 sm:w-11 shrink-0 text-brand-gold" />
+          <LogoMark className="h-8 w-11 sm:h-9 sm:w-12 shrink-0 text-brand-gold" />
+          <div className="w-px h-7 sm:h-8 bg-brand-black/25" aria-hidden />
 
           <div className="flex flex-col items-start justify-center leading-none min-w-0">
-            <span className="text-xl sm:text-2xl font-bold text-brand-black tracking-tight">
+            <span className="font-logo-ar text-2xl sm:text-3xl font-bold text-brand-black">
               نقاء
             </span>
-            <span className="mt-0.5 text-[8px] sm:text-[10px] tracking-[0.22em] sm:tracking-[0.28em] text-brand-gold font-semibold uppercase">
+            <span className="font-logo-latin mt-0.5 text-[9px] sm:text-[11px] tracking-[0.24em] sm:tracking-[0.3em] text-brand-black font-semibold uppercase">
               NAQA BEAUTY
             </span>
           </div>

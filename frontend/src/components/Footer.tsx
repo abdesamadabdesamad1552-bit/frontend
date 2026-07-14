@@ -28,10 +28,11 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2.5 mb-4">
-              <LogoMark className="h-9 w-9 shrink-0 text-brand-white" />
+              <LogoMark className="h-7 w-10 shrink-0 text-brand-gold" />
+              <div className="w-px h-7 bg-brand-white/25" aria-hidden />
               <div className="flex flex-col leading-none">
-                <span className="font-display text-xl font-bold">نقاء</span>
-                <span className="mt-1 text-[10px] tracking-[0.3em] text-brand-gold font-medium uppercase">
+                <span className="font-logo-ar text-2xl font-bold text-brand-white">نقاء</span>
+                <span className="font-logo-latin mt-1 text-[10px] tracking-[0.3em] text-brand-gold font-semibold uppercase">
                   NAQA BEAUTY
                 </span>
               </div>
