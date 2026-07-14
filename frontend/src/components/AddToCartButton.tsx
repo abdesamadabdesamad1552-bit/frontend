@@ -23,15 +23,16 @@ export default function AddToCartButton({
   const { addItem, state } = useCart();
   const price = getSinglePrice(state.country);
 
-  const baseClasses =
-    variant === "accent" && accentBg
-      ? `${accentBg} text-white hover:opacity-90`
-      : "bg-brand-black text-brand-white hover:bg-brand-gold";
+  // Unified luxury style: black → gold on hover (accent/accentBg kept for
+  // backward compatibility but no longer drives the color, to keep the
+  // palette to black / gold / neutrals across every product.)
+  void variant;
+  void accentBg;
 
   return (
     <button
       onClick={() => addItem(productId)}
-      className={`font-semibold rounded-xl transition-all ${baseClasses} ${className}`}
+      className={`bg-brand-black text-brand-white font-semibold rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] ${className}`}
     >
       {showPrice ? `${label} — ${formatPrice(price, state.country)}` : label}
     </button>

@@ -23,7 +23,7 @@ export default function ProductGallery({
   productName,
   fallbackSrc,
   badge,
-  badgeBg = "bg-brand-gold text-white",
+  badgeBg = "bg-brand-white/95 backdrop-blur-sm text-brand-black shadow-sm",
 }: ProductGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);

@@ -11,9 +11,17 @@ const countryList = Object.values(countries);
 
 function AnnouncementBar() {
   return (
-    <div className="bg-brand-gold-dark text-brand-white text-center text-[11px] sm:text-xs py-1.5 px-3 sm:px-4 font-medium tracking-wide">
-      <span className="hidden sm:inline">توصيل مجاني لجميع دول الخليج 🚚 | الدفع عند الاستلام</span>
-      <span className="sm:hidden">توصيل مجاني 🚚 | الدفع عند الاستلام</span>
+    <div className="bg-brand-black text-brand-white/90 text-center text-[11px] sm:text-xs py-2 px-3 sm:px-4 font-medium tracking-[0.08em]">
+      <span className="hidden sm:inline">
+        توصيل مجاني لجميع دول الخليج
+        <span className="mx-2.5 text-brand-gold" aria-hidden>•</span>
+        الدفع عند الاستلام
+      </span>
+      <span className="sm:hidden">
+        توصيل مجاني
+        <span className="mx-2 text-brand-gold" aria-hidden>•</span>
+        الدفع عند الاستلام
+      </span>
     </div>
   );
 }
@@ -38,9 +46,9 @@ export default function Header() {
   }, [showCountryPicker]);
 
   return (
-    <header className="sticky top-0 z-50 bg-brand-white/95 backdrop-blur-md border-b border-brand-beige-dark shadow-sm">
+    <header className="sticky top-0 z-50 bg-brand-white/85 backdrop-blur-xl border-b border-brand-beige-dark">
       <AnnouncementBar />
-      <div className="max-w-7xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3">
+      <div className="max-w-7xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 sm:px-6 py-3.5 sm:py-4">
         {/* Country selector */}
         <div ref={pickerRef} className="relative justify-self-start z-[60]">
           <button
@@ -49,10 +57,10 @@ export default function Header() {
             aria-expanded={showCountryPicker}
             aria-haspopup="listbox"
             aria-label={`الدولة: ${currentCountry.nameAr}`}
-            className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full border bg-brand-white px-2.5 sm:px-3.5 py-2 text-brand-black shadow-sm transition-all duration-200 hover:border-brand-gold hover:shadow-md active:scale-[0.98] ${
+            className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full border bg-brand-white px-2.5 sm:px-3.5 py-2 text-brand-black transition-all duration-300 hover:border-brand-gold active:scale-[0.98] ${
               showCountryPicker
-                ? "border-brand-gold ring-2 ring-brand-gold/20"
-                : "border-brand-gold/40"
+                ? "border-brand-gold ring-2 ring-brand-gold/15"
+                : "border-brand-beige-dark"
             }`}
           >
             <span className="text-base sm:text-lg leading-none" aria-hidden>
@@ -62,10 +70,10 @@ export default function Header() {
               {currentCountry.nameAr}
             </span>
             <ChevronDown
-              className={`w-4 h-4 shrink-0 text-brand-gold transition-transform duration-300 ease-out ${
-                showCountryPicker ? "rotate-180" : ""
+              className={`w-4 h-4 shrink-0 text-brand-gray transition-transform duration-300 ease-out ${
+                showCountryPicker ? "rotate-180 text-brand-gold" : ""
               }`}
-              strokeWidth={2.5}
+              strokeWidth={2.25}
               aria-hidden
             />
           </button>
@@ -129,17 +137,17 @@ export default function Header() {
         </Link>
 
         {/* Nav + cart */}
-        <div className="justify-self-end flex items-center gap-3 sm:gap-5">
+        <div className="justify-self-end flex items-center gap-4 sm:gap-6">
           <Link
             href="/shop"
-            className="text-sm font-bold text-brand-black hover:text-brand-gold-dark transition-colors"
+            className="relative inline-block text-sm font-semibold text-brand-black tracking-wide transition-colors hover:text-brand-gold-dark after:absolute after:-bottom-1 after:right-0 after:h-px after:w-0 after:bg-brand-gold after:transition-all after:duration-300 hover:after:w-full"
           >
             تسوق
           </Link>
           <button
             type="button"
             onClick={openDrawer}
-            className="relative text-brand-black hover:text-brand-gold transition-colors"
+            className="relative text-brand-black transition-colors duration-300 hover:text-brand-gold-dark active:scale-95"
             aria-label="السلة"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,7 +159,7 @@ export default function Header() {
               />
             </svg>
             {totalItems > 0 && (
-              <span className="absolute -top-2 -left-2 w-5 h-5 bg-brand-gold text-brand-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -left-2 min-w-[1.25rem] h-5 px-1 bg-brand-gold text-brand-white text-[10px] font-bold rounded-full flex items-center justify-center tabular-nums">
                 {totalItems}
               </span>
             )}

@@ -7,15 +7,18 @@
   --font-logo-ar: var(--font-ruqaa), "IBM Plex Sans Arabic", ui-sans-serif, sans-serif;
   --font-logo-latin: var(--font-cormorant), ui-serif, serif;
 
-  --color-brand-black: #1a1a1a;
-  --color-brand-gold: #c5a55a;
-  --color-brand-gold-light: #d4b96e;
-  --color-brand-gold-dark: #a8893f;
-  --color-brand-beige: #f5f0eb;
-  --color-brand-beige-dark: #e8dfd5;
+  --color-brand-black: #111111;
+  --color-brand-gold: #c8a24a;
+  --color-brand-gold-light: #d8b96a;
+  --color-brand-gold-dark: #a07f2e;
+  --color-brand-beige: #f8f8f6;
+  --color-brand-beige-dark: #e8e8e8;
   --color-brand-white: #ffffff;
-  --color-brand-gray: #6b7280;
-  --color-brand-gray-light: #9ca3af;
+  --color-brand-gray: #6b6b6b;
+  --color-brand-gray-light: #9b9b9b;
+
+  --shadow-luxe: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px -12px rgba(17, 17, 17, 0.10);
+  --shadow-luxe-lg: 0 2px 4px rgba(17, 17, 17, 0.04), 0 24px 48px -20px rgba(17, 17, 17, 0.16);
 }
 
 html {
@@ -27,11 +30,31 @@ body {
   background-color: var(--color-brand-white);
   font-family: var(--font-arabic);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
   background-color: var(--color-brand-gold);
   color: var(--color-brand-white);
+}
+
+/* Luxury focus ring — visible only for keyboard users */
+*:focus-visible {
+  outline: 2px solid var(--color-brand-gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @keyframes slide-in-left {

@@ -96,7 +96,7 @@ export default function ThankYouContent() {
       <div
         className={`sticky top-0 z-40 px-4 py-3 text-center text-sm font-bold shadow-md ${
           callMsg.urgency === "now"
-            ? "bg-amber-600 text-white animate-pulse"
+            ? "bg-brand-black text-brand-white"
             : "bg-brand-gold text-brand-white"
         }`}
       >
@@ -107,7 +107,7 @@ export default function ThankYouContent() {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 space-y-6">
           {/* Hero */}
           <section className="text-center pt-4">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 text-3xl mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-gold/10 text-brand-gold-dark text-3xl mb-4">
               ✓
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-brand-black mb-2">
@@ -129,8 +129,8 @@ export default function ThankYouContent() {
           {/* Call expectation card */}
           <section className="bg-brand-white rounded-2xl border-2 border-brand-gold/40 p-5 md:p-6 shadow-sm">
             <div className="flex items-start gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                <Phone className="w-5 h-5 text-amber-700" strokeWidth={2} />
+              <div className="w-10 h-10 rounded-full bg-brand-gold/10 flex items-center justify-center flex-shrink-0">
+                <Phone className="w-5 h-5 text-brand-gold-dark" strokeWidth={2} />
               </div>
               <div>
                 <h2 className="text-base font-bold text-brand-black mb-1">
@@ -206,7 +206,7 @@ export default function ThankYouContent() {
               <div className="border-t border-brand-beige-dark mt-4 pt-4 space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-brand-gray">التوصيل</span>
-                  <span className="text-emerald-600 font-semibold">مجاني</span>
+                  <span className="text-brand-gold-dark font-semibold">مجاني</span>
                 </div>
                 <div className="flex justify-between items-baseline">
                   <span className="text-base font-bold text-brand-black">المبلغ عند الاستلام</span>
@@ -260,7 +260,7 @@ export default function ThankYouContent() {
 
           {/* Results excitement */}
           {lineItems.length > 0 && (
-            <section className="bg-gradient-to-br from-amber-50 to-brand-beige rounded-2xl border border-brand-gold/20 p-5 md:p-6">
+            <section className="bg-brand-beige rounded-2xl border border-brand-gold/20 p-5 md:p-6">
               <h2 className="text-sm font-bold text-brand-black mb-3 flex items-center gap-2">
                 <Clock className="w-4 h-4 text-brand-gold" />
                 ماذا تتوقعين بعد التأكيد؟

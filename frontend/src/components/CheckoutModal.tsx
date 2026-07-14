@@ -151,7 +151,7 @@ export default function CheckoutModal() {
               <div className="border-t border-brand-beige mt-3 pt-3 space-y-1.5">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-brand-gray">التوصيل</span>
-                  <span className="text-emerald-600 font-medium">مجاني</span>
+                  <span className="text-brand-gold-dark font-semibold">مجاني</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-base font-bold text-brand-black">الإجمالي</span>

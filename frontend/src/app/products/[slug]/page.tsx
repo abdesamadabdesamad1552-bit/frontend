@@ -137,7 +137,6 @@ export default async function ProductPage({ params }: PageProps) {
               productName={product.name}
               fallbackSrc={getFallbackImage(product.slug)}
               badge={product.badge}
-              badgeBg={product.badgeBg}
             />
 
             <div className="flex flex-col min-w-0">
@@ -314,7 +313,7 @@ export default async function ProductPage({ params }: PageProps) {
                           {feature.us ? (
                             <CheckCircle2 className="w-5 h-5 text-brand-gold mx-auto" />
                           ) : (
-                            <XCircle className="w-5 h-5 text-red-400 mx-auto" />
+                            <XCircle className="w-5 h-5 text-brand-gray-light mx-auto" />
                           )}
                         </td>
                         <td className="py-4 text-center">

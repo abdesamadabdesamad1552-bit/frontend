@@ -31,31 +31,33 @@ export default function Home() {
 
       <main id="main-content">
         {/* Hero */}
-        <section className="bg-gradient-to-b from-brand-beige via-brand-white to-brand-white pt-16 pb-20 md:pt-24 md:pb-28">
+        <section className="bg-gradient-to-b from-brand-beige to-brand-white pt-20 pb-24 md:pt-28 md:pb-32">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <p className="text-brand-gray text-sm md:text-base mb-8 leading-relaxed">
+            <p className="inline-flex items-center gap-3 text-brand-gray text-xs md:text-sm tracking-[0.15em] mb-8">
+              <span className="w-6 h-px bg-brand-gold" aria-hidden />
               تركيبات علمية – مكونات فعالة – تركيزات حقيقية
+              <span className="w-6 h-px bg-brand-gold" aria-hidden />
             </p>
-            <h1 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] font-bold text-brand-black leading-[1.15]">
+            <h1 className="font-display text-[clamp(2.75rem,7.5vw,5rem)] font-bold text-brand-black leading-[1.12]">
               لأن بشرتك
             </h1>
-            <p className="font-display text-[clamp(2.5rem,7vw,4.5rem)] font-bold text-brand-gold leading-[1.15] mt-1 mb-10">
+            <p className="font-display text-[clamp(2.75rem,7.5vw,5rem)] font-bold text-brand-gold leading-[1.12] mt-1 mb-10">
               تستحق الأنقى
             </p>
-            <p className="text-brand-gray text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
+            <p className="text-brand-gray text-base md:text-lg max-w-2xl mx-auto leading-[1.9] mb-11">
               5 منتجات premium تحل مشاكل حقيقية — تصبغات، جفاف، تساقط الشعر،
               هالات، وحب الشباب. توصيل مجاني ودفع عند الاستلام.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center gap-2 bg-brand-black text-brand-white text-base font-semibold px-8 py-4 rounded-xl hover:bg-brand-gold transition-colors"
+                className="inline-flex items-center justify-center bg-brand-black text-brand-white text-sm font-semibold tracking-wide px-10 py-4 rounded-full transition-all duration-300 hover:bg-brand-gold hover:shadow-[var(--shadow-luxe)] active:scale-[0.98]"
               >
                 تسوقي المجموعة
               </Link>
               <Link
                 href="#products"
-                className="inline-flex items-center justify-center text-base font-bold text-brand-black border border-brand-gold/50 px-8 py-4 rounded-xl hover:bg-brand-beige transition-colors"
+                className="inline-flex items-center justify-center text-sm font-semibold tracking-wide text-brand-black border border-brand-black/15 px-10 py-4 rounded-full transition-all duration-300 hover:border-brand-gold hover:text-brand-gold-dark active:scale-[0.98]"
               >
                 تصفحي المنتجات
               </Link>
@@ -64,28 +66,34 @@ export default function Home() {
         </section>
 
         {/* Trust bar */}
-        <section className="bg-brand-black text-brand-white py-5">
-          <div className="max-w-5xl mx-auto px-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-sm">
+        <section className="bg-brand-black text-brand-white/90 py-5">
+          <div className="max-w-5xl mx-auto px-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm tracking-wide">
             <span>+2,347 عميلة</span>
-            <span>★★★★★ 4.9/5</span>
+            <span className="text-brand-gold/30" aria-hidden>|</span>
+            <span className="text-brand-gold">★★★★★ 4.9/5</span>
+            <span className="text-brand-gold/30" aria-hidden>|</span>
             <span>5 منتجات</span>
+            <span className="text-brand-gold/30" aria-hidden>|</span>
             <span>6 دول خليجية</span>
           </div>
         </section>
 
         {/* Products */}
-        <section id="products" className="py-16 md:py-24 bg-brand-white">
+        <section id="products" className="py-20 md:py-32 bg-brand-white">
           <div className="max-w-7xl mx-auto px-6">
-            <Reveal className="text-center mb-12 md:mb-16">
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black mb-4">
+            <Reveal className="text-center mb-14 md:mb-20">
+              <p className="text-brand-gold text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+                المجموعة
+              </p>
+              <h2 className="font-display text-3xl md:text-5xl font-bold text-brand-black mb-5">
                 مجموعة نقاء
               </h2>
-              <p className="text-brand-gray max-w-xl mx-auto">
+              <p className="text-brand-gray text-base max-w-xl mx-auto leading-relaxed">
                 5 منتجات — 5 حلول. كل منتج يستهدف مشكلة محددة.
               </p>
             </Reveal>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
               {products.map((product, i) => (
                 <Reveal key={product.id} delay={Math.min(i, 3) * 0.08}>
                   <ProductCard product={product} />
@@ -100,23 +108,27 @@ export default function Home() {
         </Reveal>
 
         {/* Testimonials */}
-        <section className="py-16 md:py-24 bg-brand-white">
+        <section className="py-20 md:py-32 bg-brand-white">
           <div className="max-w-7xl mx-auto px-6">
-            <Reveal>
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black text-center mb-12">
+            <Reveal className="text-center mb-14 md:mb-16">
+              <p className="text-brand-gold text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+                آراء موثوقة
+              </p>
+              <h2 className="font-display text-3xl md:text-5xl font-bold text-brand-black">
                 آراء عميلاتنا
               </h2>
             </Reveal>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {testimonials.map((t, i) => (
                 <Reveal key={t.name} delay={i * 0.08}>
-                  <blockquote className="h-full bg-brand-beige rounded-2xl border border-brand-beige-dark p-6">
-                    <p className="text-brand-black/80 text-sm leading-relaxed mb-5">
+                  <blockquote className="h-full flex flex-col bg-brand-beige rounded-2xl border border-brand-beige-dark p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand-gold/40 hover:shadow-[var(--shadow-luxe-lg)]">
+                    <div className="text-brand-gold text-sm tracking-widest mb-4" aria-hidden>★★★★★</div>
+                    <p className="text-brand-black/80 text-[15px] leading-[1.9] mb-6 flex-1">
                       &ldquo;{t.text}&rdquo;
                     </p>
-                    <footer>
+                    <footer className="pt-4 border-t border-brand-beige-dark">
                       <p className="font-semibold text-brand-black text-sm">{t.name}</p>
-                      <p className="text-brand-gray text-xs">{t.city}</p>
+                      <p className="text-brand-gray text-xs mt-0.5">{t.city}</p>
                     </footer>
                   </blockquote>
                 </Reveal>
@@ -126,17 +138,17 @@ export default function Home() {
         </section>
 
         {/* CTA */}
-        <section className="py-16 md:py-24 bg-brand-beige">
+        <section className="py-20 md:py-32 bg-brand-beige border-t border-brand-beige-dark">
           <Reveal className="max-w-2xl mx-auto px-6 text-center">
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-brand-black mb-4">
+            <h2 className="font-display text-3xl md:text-5xl font-bold text-brand-black mb-5">
               ابدئي رحلتك مع نقاء
             </h2>
-            <p className="text-brand-gray mb-8 leading-relaxed">
+            <p className="text-brand-gray text-base mb-9 leading-relaxed">
               طلبك يصلك لباب البيت — تدفعين عند الاستلام فقط.
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center justify-center bg-brand-black text-brand-white text-base font-semibold px-10 py-4 rounded-xl hover:bg-brand-gold transition-colors"
+              className="inline-flex items-center justify-center bg-brand-black text-brand-white text-sm font-semibold tracking-wide px-12 py-4 rounded-full transition-all duration-300 hover:bg-brand-gold hover:shadow-[var(--shadow-luxe)] active:scale-[0.98]"
             >
               تسوقي الآن
             </Link>
