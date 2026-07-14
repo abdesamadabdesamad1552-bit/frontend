@@ -187,10 +187,10 @@ export default function CheckoutModal() {
                     if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
                   }}
                   placeholder="مثال: محمد أحمد"
-                  className={`w-full px-4 py-3 rounded-xl border ${
+                  className={`w-full px-4 py-3.5 rounded-xl border ${
                     errors.name
                       ? "border-red-400 bg-red-50/50"
-                      : "border-brand-beige-dark"
+                      : "border-brand-beige-dark focus:ring-2 focus:ring-brand-gold/15"
                   } bg-brand-white text-brand-black placeholder:text-brand-gray-light focus:outline-none focus:border-brand-gold transition-colors`}
                 />
                 {errors.name && (
@@ -219,10 +219,10 @@ export default function CheckoutModal() {
                       : "xxxx xxxx"
                   }
                   dir="ltr"
-                  className={`w-full px-4 py-3 rounded-xl border ${
+                  className={`w-full px-4 py-3.5 rounded-xl border ${
                     errors.phone
                       ? "border-red-400 bg-red-50/50"
-                      : "border-brand-beige-dark"
+                      : "border-brand-beige-dark focus:ring-2 focus:ring-brand-gold/15"
                   } bg-brand-white text-brand-black placeholder:text-brand-gray-light focus:outline-none focus:border-brand-gold transition-colors`}
                 />
                 {errors.phone && (
@@ -233,7 +233,7 @@ export default function CheckoutModal() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-brand-black text-brand-white text-base font-bold py-4 rounded-xl hover:bg-brand-gold transition-colors disabled:opacity-60"
+                className="w-full bg-brand-black text-brand-white text-base font-semibold py-4 rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none"
               >
                 {isSubmitting ? "جاري التأكيد..." : "تأكيد الطلب — الدفع عند الاستلام"}
               </button>

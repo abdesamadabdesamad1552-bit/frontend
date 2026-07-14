@@ -426,7 +426,7 @@ export default function ThankYouContent() {
           <div className="text-center pb-8">
             <Link
               href="/shop"
-              className="inline-block bg-brand-black text-brand-white font-bold px-8 py-3.5 rounded-xl hover:bg-brand-gold transition-colors text-sm"
+              className="inline-block bg-brand-black text-brand-white font-semibold tracking-wide px-10 py-4 rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] text-sm"
             >
               متابعة التسوق
             </Link>

@@ -63,7 +63,7 @@ export default function ContactForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="مثال: سارة أحمد"
-          className="w-full px-4 py-3 rounded-xl border border-brand-beige-dark bg-brand-white text-brand-black placeholder:text-brand-gray-light focus:outline-none focus:border-brand-gold"
+          className="w-full px-4 py-3.5 rounded-xl border border-brand-beige-dark bg-brand-white text-brand-black placeholder:text-brand-gray-light transition-colors focus:outline-none focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/15"
         />
       </div>
       <div>
@@ -78,7 +78,7 @@ export default function ContactForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="example@email.com"
           dir="ltr"
-          className="w-full px-4 py-3 rounded-xl border border-brand-beige-dark bg-brand-white text-brand-black placeholder:text-brand-gray-light focus:outline-none focus:border-brand-gold"
+          className="w-full px-4 py-3.5 rounded-xl border border-brand-beige-dark bg-brand-white text-brand-black placeholder:text-brand-gray-light transition-colors focus:outline-none focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/15"
         />
       </div>
       <div>
@@ -93,12 +93,12 @@ export default function ContactForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="اكتب رسالتك هنا..."
-          className="w-full px-4 py-3 rounded-xl border border-brand-beige-dark bg-brand-white text-brand-black placeholder:text-brand-gray-light focus:outline-none focus:border-brand-gold resize-none"
+          className="w-full px-4 py-3.5 rounded-xl border border-brand-beige-dark bg-brand-white text-brand-black placeholder:text-brand-gray-light transition-colors focus:outline-none focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/15 resize-none"
         />
       </div>
 
       {status === "error" && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-600">
+        <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600">
           {errorMsg}
         </div>
       )}
@@ -106,7 +106,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full bg-brand-black text-brand-white text-base font-bold py-3.5 rounded-xl hover:bg-brand-gold transition-colors disabled:opacity-60"
+        className="w-full bg-brand-black text-brand-white text-sm font-semibold tracking-wide py-4 rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none"
       >
         {status === "submitting" ? "جاري الإرسال..." : "إرسال الرسالة"}
       </button>

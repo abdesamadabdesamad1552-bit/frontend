@@ -181,7 +181,7 @@ export default function CartDrawer() {
             </p>
             <button
               onClick={openCheckout}
-              className="w-full bg-brand-black text-brand-white text-base font-bold py-4 rounded-xl hover:bg-brand-gold transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-brand-black text-brand-white text-base font-semibold py-4 rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] flex items-center justify-center gap-2"
             >
               إتمام الطلب
               <svg
