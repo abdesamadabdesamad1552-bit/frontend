@@ -4,32 +4,44 @@
 > Cash-on-Delivery (COD) checkout into a full multi-gateway checkout
 > (Stripe card + Apple Pay, Tabby, Tamara), for the GCC market (KSA-first).
 
-## What already exists (done)
+## Status: code is implemented, gateways are not yet credentialed
+
+Every piece below is coded and passes `tsc`/`eslint`/`build`, tested locally
+**without real gateway credentials** (each provider gracefully falls back to
+a 501 "قيد التفعيل" / COD-only state when its env vars are absent — verified).
+What's left is purely operational: get real Stripe/Tabby/Tamara accounts, drop
+the keys into EasyPanel, and test each flow against sandbox/test credentials
+end-to-end (a real card charge, a real Apple Pay device, a real Tabby/Tamara
+sandbox approval) — see the checklist in `skills.md`.
 
 | Piece | Location | Status |
 |-------|----------|--------|
-| Checkout page UI | `src/app/checkout/page.tsx` | ✅ Built (simplified header, Apple Pay express slot, form, method selector, dynamic COD +30 SAR fee, trust block, simple footer, sticky summary) |
-| COD order flow | `src/lib/checkout-flow.ts` → `/api/orders` → Postgres + Google Sheet | ✅ Works end-to-end |
-| Gateway entry point (stub) | `src/app/api/payments/create-session/route.ts` | ⛔ Returns `501` — **you implement this** |
+| Checkout page UI | `src/app/checkout/page.tsx` | ✅ Simplified header, Apple Pay/Google Pay express button, form, method selector, dynamic COD +30 SAR fee, trust block, simple footer, sticky summary |
+| COD order flow | `src/lib/checkout-flow.ts` → `/api/orders` → Postgres + Google Sheet | ✅ Unchanged, still works end-to-end |
+| Server total recompute | `src/lib/payments/server-total.ts` | ✅ Recomputes from the cart; rejects tampered amounts |
+| Minor/major unit helper | `src/lib/payments/amount.ts` | ✅ 2 vs 3 decimals per currency |
+| Pending-order + idempotent confirm | `src/lib/db.ts` (`createPendingOrder`, `markOrderPaid`, `getOrderPaymentStatus`) | ✅ New `city`/`address`/`payment_method`/`payment_status`/`payment_reference` columns (auto-migrated) |
+| Gateway session endpoint | `src/app/api/payments/create-session/route.ts` | ✅ Implemented for card/apple_pay/tabby/tamara — returns 501 with a docs pointer if that provider's env vars are missing |
+| Stripe card + Apple Pay | `src/lib/payments/stripe.ts`, `src/components/checkout/StripePaymentSection.tsx` | ✅ PaymentIntent + Express Checkout Element (Apple/Google Pay) + Payment Element, deferred-intent pattern |
+| Tabby session + capture | `src/lib/payments/tabby.ts` | ✅ Create session, fetch payment, capture |
+| Tamara session + authorise | `src/lib/payments/tamara.ts` | ✅ Create session, fetch order, authorise |
+| Webhooks | `src/app/api/payments/{stripe,tabby,tamara}/webhook/route.ts` | ✅ Signature/token verified, idempotent via `markOrderPaid` |
+| Return pages | `src/app/checkout/{success,cancel,failure}/page.tsx` | ✅ success polls `/api/payments/status` then hands off to `/thank-you` |
 | COD fee helper | `src/lib/pricing.ts` → `getCodFee(country)` | ✅ 30 SAR for KSA |
 
-The checkout page already collects everything (name, phone, city, address,
-cart, amount, currency, method) and `POST`s it to
-`/api/payments/create-session` for every electronic method. Your job is to make
-that endpoint create a real gateway session and return a redirect/secret.
+## What's left (operational, not code)
 
-## What you implement
-
-For each electronic method the page sends `{ method, items, country, amount,
-currency, customer }`. Implement `create-session` so it returns one of:
-
-- `{ redirectUrl }` — page will `window.location.href = redirectUrl` (Tabby / Tamara / Stripe Checkout)
-- `{ web_url }` — Tabby hosted checkout
-- `{ checkout_url }` — Tamara hosted checkout
-- `{ clientSecret }` — Stripe Payment Element (if you switch to an on-page Element instead of redirect)
-
-Then implement the **webhook** + **success/cancel/failure** return routes so the
-order is created only after the gateway confirms payment.
+1. **Get real merchant accounts** for Stripe, Tabby, and Tamara (see each
+   `api/*.md` for requirements — Tamara needs a Saudi corporate bank account).
+2. **Set the env vars** from `.env.example` in EasyPanel (sandbox/test keys first).
+3. **Register webhooks** in each dashboard pointing at
+   `https://naqabeauty.store/api/payments/{stripe,tabby,tamara}/webhook`.
+4. **Register your domain with Stripe** for Apple Pay (`api/apple-pay.md` —
+   one `curl` call, no certificates needed).
+5. **Test each flow for real** and adjust the two spots explicitly marked
+   "verify against a live payload" in the Tabby/Tamara webhook handlers — the
+   field names there are our best documented understanding, not a guarantee,
+   since they were written from public docs rather than a live webhook capture.
 
 ## Read these in order
 

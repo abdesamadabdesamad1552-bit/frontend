@@ -16,35 +16,40 @@
 - **i18n/RTL Arabic**: keep copy Arabic, layout RTL, currency per GCC country.
 - **Money math**: ISO-4217 minor units (2 vs 3 decimals), never float the charge.
 
-## Build order (recommended)
+## Status: implemented, needs real credentials + live testing
 
-1. `src/lib/payments/amount.ts` — `toMinorUnits(currency, major)`.
-2. Server total recompute helper — derive the authoritative total from the cart
-   (reuse `calculateCartTotal` + `getCodFee`) and compare to the client `amount`.
-3. **COD** already works — verify it end-to-end first (it's your reference).
-4. **Stripe card** (`stripe.md`) → PaymentIntent + Payment Element + webhook.
-5. **Apple Pay** (`apple-pay.md`) → domain registration + Express Checkout
-   Element (reuses the Stripe webhook).
-6. **Tabby** (`tabby.md`) → session → `web_url` → verify + capture + webhook.
-7. **Tamara** (`tamara.md`) → session → `checkout_url` → authorise + webhook.
-8. Return routes: `/checkout/success|cancel|failure` (can reuse `/thank-you`).
+All of the below is already coded (see `README.md` for the full file map).
+There is nothing left to build from scratch — your job is to:
 
-## The endpoint you must complete
+1. Get real Stripe / Tabby / Tamara accounts and sandbox keys.
+2. Drop them into `.env.local` (dev) / EasyPanel (prod) per `.env.example`.
+3. Test each flow for real (see the test matrix below) and fix anything a live
+   payload reveals — in particular, the Tabby and Tamara webhook handlers
+   (`src/app/api/payments/{tabby,tamara}/webhook/route.ts`) have a comment
+   flagging the exact field names as "our best documented understanding,
+   verify against a live delivery" — adjust those interfaces if a real
+   webhook payload differs.
+4. Register each provider's webhook URL in its dashboard, and register your
+   domain with Stripe for Apple Pay (one `curl` call — see `apple-pay.md`).
 
-`src/app/api/payments/create-session/route.ts` (currently returns 501). Turn it
-into:
+## The endpoint (already implemented)
+
+`src/app/api/payments/create-session/route.ts` validates the request,
+recomputes the total server-side, creates a pending order, then:
 
 ```ts
 switch (method) {
   case "card":
-  case "apple_pay": return createStripeIntent(...);   // { clientSecret }
-  case "tabby":     return createTabbySession(...);    // { web_url }
-  case "tamara":    return createTamaraSession(...);   // { checkout_url }
+  case "apple_pay": // -> Stripe PaymentIntent, returns { clientSecret, orderId }
+  case "tabby":      // -> Tabby session,        returns { web_url, orderId }
+  case "tamara":     // -> Tamara session,        returns { checkout_url, orderId }
 }
 ```
 
-The checkout page already reads `redirectUrl | web_url | checkout_url` and
-redirects, or mounts the Stripe Element when `clientSecret` is returned.
+Each branch returns **501 `gateway_not_configured`** if that provider's env
+vars aren't set yet — the checkout page already shows the right fallback
+message in that case, so you can deploy incrementally (e.g. ship Tabby before
+Stripe is ready).
 
 ## Data the page already sends to `create-session`
 

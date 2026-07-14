@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,8 @@ import {
 import { placeOrder } from "@/lib/checkout-flow";
 import { getThankYouPath, storeLastOrderId } from "@/lib/order-redirect";
 import { storeOrderSnapshot } from "@/lib/order-snapshot";
-import LogoMark from "@/components/LogoMark";
+import { CheckoutHeader, CheckoutFooter } from "@/components/checkout/CheckoutChrome";
+import StripePaymentSection from "@/components/checkout/StripePaymentSection";
 import {
   ShieldCheck,
   Truck,
@@ -63,39 +64,6 @@ const PAYMENT_METHODS: {
   },
 ];
 
-function SimpleHeader() {
-  return (
-    <header className="border-b border-brand-beige-dark bg-brand-white">
-      <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="نقاء">
-          <LogoMark className="h-6 w-9 text-brand-gold" />
-          <div className="w-px h-6 bg-brand-black/20" aria-hidden />
-          <span className="font-logo-ar text-xl font-bold text-brand-black">نقاء</span>
-        </Link>
-        <span className="flex items-center gap-1.5 text-xs text-brand-gray">
-          <Lock className="w-3.5 h-3.5 text-brand-gold-dark" strokeWidth={2.25} />
-          دفع آمن ومشفّر
-        </span>
-      </div>
-    </header>
-  );
-}
-
-function SimpleFooter() {
-  return (
-    <footer className="border-t border-brand-beige-dark bg-brand-white py-6">
-      <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-brand-gray">
-        <p>© 2026 نقاء للتجميل الفاخر</p>
-        <div className="flex items-center gap-5">
-          <Link href="/privacy" className="hover:text-brand-black transition-colors">الخصوصية</Link>
-          <Link href="/returns" className="hover:text-brand-black transition-colors">الإرجاع</Link>
-          <Link href="/terms" className="hover:text-brand-black transition-colors">الشروط</Link>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 export default function CheckoutPage() {
   const router = useRouter();
   const { state, totalItems, resetFlow } = useCart();
@@ -110,19 +78,6 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notice, setNotice] = useState("");
-  const [isApplePay, setIsApplePay] = useState(false);
-
-  // Show the Apple Pay express button only where it can actually run.
-  useEffect(() => {
-    try {
-      const w = window as unknown as {
-        ApplePaySession?: { canMakePayments?: () => boolean };
-      };
-      if (w.ApplePaySession?.canMakePayments?.()) setIsApplePay(true);
-    } catch {
-      /* not available */
-    }
-  }, []);
 
   const cartProducts = useMemo(
     () =>
@@ -151,7 +106,24 @@ export default function CheckoutPage() {
     return Object.keys(e).length === 0;
   }
 
-  async function startElectronicPayment(payMethod: "card" | "tabby" | "tamara" | "apple_pay") {
+  /** Store the order snapshot used by the /thank-you page, regardless of which payment path produced the order. */
+  function snapshotAndResetCart(orderId: string) {
+    storeOrderSnapshot({
+      orderId,
+      name: name.trim(),
+      phone: normalizePhone(phone, country),
+      country,
+      items: state.items,
+      total,
+      currency: countryConfig.currency,
+      createdAt: new Date().toISOString(),
+    });
+    storeLastOrderId(orderId);
+    resetFlow();
+  }
+
+  /** Tabby / Tamara: create the hosted session, then redirect the shopper there. */
+  async function startRedirectPayment(payMethod: "tabby" | "tamara") {
     setNotice("");
     const res = await fetch("/api/payments/create-session", {
       method: "POST",
@@ -166,9 +138,11 @@ export default function CheckoutPage() {
       }),
     });
     const data = await res.json().catch(() => ({}));
-    // Once implemented, the API returns a redirect URL to the gateway.
-    if (res.ok && (data.redirectUrl || data.web_url || data.checkout_url)) {
-      window.location.href = data.redirectUrl || data.web_url || data.checkout_url;
+    const redirectUrl: string | undefined = data.web_url || data.checkout_url;
+
+    if (res.ok && redirectUrl && data.orderId) {
+      snapshotAndResetCart(data.orderId);
+      window.location.href = redirectUrl;
       return;
     }
     setNotice(
@@ -176,30 +150,26 @@ export default function CheckoutPage() {
     );
   }
 
+  /** Called once Stripe has created + is confirming a PaymentIntent for card/Apple Pay. */
+  function handleStripeOrderCreated(orderId: string) {
+    snapshotAndResetCart(orderId);
+  }
+
   async function handleSubmit(e?: React.FormEvent) {
     e?.preventDefault();
+    // Card/Apple Pay are driven entirely by StripePaymentSection's own buttons.
+    if (method === "card") return;
     if (!validate()) return;
     setIsSubmitting(true);
     setNotice("");
     try {
       if (method === "cod") {
         const orderId = await placeOrder(name.trim(), normalizePhone(phone, country), country, state.items);
-        storeOrderSnapshot({
-          orderId,
-          name: name.trim(),
-          phone: normalizePhone(phone, country),
-          country,
-          items: state.items,
-          total,
-          currency: countryConfig.currency,
-          createdAt: new Date().toISOString(),
-        });
-        storeLastOrderId(orderId);
-        resetFlow();
+        snapshotAndResetCart(orderId);
         router.push(getThankYouPath(orderId));
         return;
       }
-      await startElectronicPayment(method);
+      await startRedirectPayment(method);
     } catch (err) {
       setNotice(err instanceof Error ? err.message : "حدث خطأ، يرجى المحاولة مرة أخرى");
     } finally {
@@ -219,7 +189,7 @@ export default function CheckoutPage() {
   if (cartProducts.length === 0) {
     return (
       <>
-        <SimpleHeader />
+        <CheckoutHeader />
         <main className="bg-brand-beige min-h-[60vh] flex items-center justify-center px-6 py-24">
           <div className="text-center max-w-sm">
             <span className="text-5xl block mb-4" aria-hidden>🛒</span>
@@ -235,14 +205,14 @@ export default function CheckoutPage() {
             </Link>
           </div>
         </main>
-        <SimpleFooter />
+        <CheckoutFooter />
       </>
     );
   }
 
   return (
     <>
-      <SimpleHeader />
+      <CheckoutHeader />
 
       <main id="main-content" className="bg-brand-beige min-h-screen">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-12">
@@ -253,27 +223,6 @@ export default function CheckoutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 lg:gap-8 items-start">
             {/* ── Left: form ── */}
             <form onSubmit={handleSubmit} noValidate className="space-y-6 order-2 lg:order-1">
-              {/* Apple Pay express (iOS only) */}
-              {isApplePay && (
-                <div className="bg-brand-white rounded-2xl border border-brand-beige-dark p-5 shadow-[var(--shadow-luxe)]">
-                  <p className="text-xs text-brand-gray text-center mb-3">دفع سريع بنقرة واحدة</p>
-                  <button
-                    type="button"
-                    onClick={() => startElectronicPayment("apple_pay")}
-                    className="w-full h-12 rounded-full bg-brand-black text-brand-white text-lg font-medium flex items-center justify-center gap-1.5 transition-transform active:scale-[0.98]"
-                    aria-label="الدفع عبر Apple Pay"
-                  >
-                    <span aria-hidden></span>
-                    <span>Pay</span>
-                  </button>
-                  <div className="flex items-center gap-3 mt-5">
-                    <span className="h-px flex-1 bg-brand-beige-dark" />
-                    <span className="text-xs text-brand-gray">أو أكملي بالبيانات</span>
-                    <span className="h-px flex-1 bg-brand-beige-dark" />
-                  </div>
-                </div>
-              )}
-
               {/* Contact + shipping */}
               <section className="bg-brand-white rounded-2xl border border-brand-beige-dark p-5 md:p-6 shadow-[var(--shadow-luxe)]">
                 <div className="flex items-center justify-between mb-5">
@@ -379,6 +328,22 @@ export default function CheckoutPage() {
                   })}
                 </div>
 
+                {method === "card" && (
+                  <div className="mt-5 pt-5 border-t border-brand-beige-dark">
+                    <StripePaymentSection
+                      items={state.items}
+                      country={country}
+                      currency={countryConfig.currency}
+                      amount={total}
+                      customer={{ name: name.trim(), phone, city: city.trim(), address: address.trim() }}
+                      showCardFields
+                      onValidate={validate}
+                      onOrderCreated={handleStripeOrderCreated}
+                      onError={setNotice}
+                    />
+                  </div>
+                )}
+
                 {notice && (
                   <div className="mt-4 p-3.5 rounded-xl bg-brand-beige border border-brand-gold/30 text-sm text-brand-black/80">
                     {notice}
@@ -386,18 +351,20 @@ export default function CheckoutPage() {
                 )}
               </section>
 
-              {/* Submit (desktop) */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="hidden lg:flex w-full bg-brand-black text-brand-white text-base font-semibold py-4 rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none items-center justify-center gap-2"
-              >
-                {isSubmitting
-                  ? "جاري المعالجة..."
-                  : method === "cod"
-                  ? `تأكيد الطلب — ${formatPrice(total, country)}`
-                  : `المتابعة للدفع — ${formatPrice(total, country)}`}
-              </button>
+              {/* Submit (desktop) — card pays via its own buttons above */}
+              {method !== "card" && (
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="hidden lg:flex w-full bg-brand-black text-brand-white text-base font-semibold py-4 rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none items-center justify-center gap-2"
+                >
+                  {isSubmitting
+                    ? "جاري المعالجة..."
+                    : method === "cod"
+                    ? `تأكيد الطلب — ${formatPrice(total, country)}`
+                    : `المتابعة للدفع — ${formatPrice(total, country)}`}
+                </button>
+              )}
             </form>
 
             {/* ── Right: order summary ── */}
@@ -468,19 +435,26 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Submit (mobile, under summary) */}
-              <button
-                type="button"
-                onClick={() => handleSubmit()}
-                disabled={isSubmitting}
-                className="lg:hidden w-full bg-brand-black text-brand-white text-base font-semibold py-4 rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none"
-              >
-                {isSubmitting
-                  ? "جاري المعالجة..."
-                  : method === "cod"
-                  ? `تأكيد الطلب — ${formatPrice(total, country)}`
-                  : `المتابعة للدفع — ${formatPrice(total, country)}`}
-              </button>
+              {/* Submit (mobile, under summary) — card pays via its own buttons in the form below */}
+              {method !== "card" && (
+                <button
+                  type="button"
+                  onClick={() => handleSubmit()}
+                  disabled={isSubmitting}
+                  className="lg:hidden w-full bg-brand-black text-brand-white text-base font-semibold py-4 rounded-full transition-all duration-300 hover:bg-brand-gold active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none"
+                >
+                  {isSubmitting
+                    ? "جاري المعالجة..."
+                    : method === "cod"
+                    ? `تأكيد الطلب — ${formatPrice(total, country)}`
+                    : `المتابعة للدفع — ${formatPrice(total, country)}`}
+                </button>
+              )}
+              {method === "card" && (
+                <p className="lg:hidden text-center text-xs text-brand-gray">
+                  أكملي بيانات البطاقة أدناه لإتمام الدفع
+                </p>
+              )}
 
               <p className="text-center text-xs text-brand-gray flex items-center justify-center gap-1.5">
                 <Lock className="w-3 h-3" /> بياناتك محمية ولن تُشارك مع أي طرف
@@ -490,7 +464,7 @@ export default function CheckoutPage() {
         </div>
       </main>
 
-      <SimpleFooter />
+      <CheckoutFooter />
     </>
   );
 }

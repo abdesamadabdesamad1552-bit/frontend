@@ -158,6 +158,20 @@ async function ensureSchema(): Promise<void> {
     )
   `);
 
+  // Checkout v2: shipping detail + payment-gateway columns (safe to re-run).
+  await db.query(`
+    ALTER TABLE orders
+      ADD COLUMN IF NOT EXISTS city VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS address TEXT,
+      ADD COLUMN IF NOT EXISTS payment_method VARCHAR(30) DEFAULT 'cod',
+      ADD COLUMN IF NOT EXISTS payment_status VARCHAR(30) DEFAULT 'pending',
+      ADD COLUMN IF NOT EXISTS payment_reference VARCHAR(255)
+  `);
+  await db.query(`
+    CREATE UNIQUE INDEX IF NOT EXISTS orders_payment_reference_idx
+      ON orders(payment_reference) WHERE payment_reference IS NOT NULL
+  `);
+
   schemaReady = true;
 }
 
@@ -201,6 +215,9 @@ export interface OrderInput {
   items: { productId: number; quantity: number; isUpsell?: boolean }[];
   total: number;
   currency: string;
+  city?: string;
+  address?: string;
+  paymentMethod?: string;
 }
 
 function generateOrderId(): string {
@@ -218,13 +235,15 @@ export async function saveOrder(body: OrderInput): Promise<{ orderId: string }> 
   const db = getPool();
   const client = await db.connect();
   const target = getDatabaseTarget();
+  const paymentMethod = body.paymentMethod ?? "cod";
+  const paymentStatus = paymentMethod === "cod" ? "cod_pending" : "pending";
 
   try {
     await client.query("BEGIN");
 
     await client.query(
-      `INSERT INTO orders (order_id, name, phone, country, total, currency, status)
-       VALUES ($1, $2, $3, $4, $5, $6, 'pending')`,
+      `INSERT INTO orders (order_id, name, phone, country, total, currency, status, city, address, payment_method, payment_status)
+       VALUES ($1, $2, $3, $4, $5, $6, 'pending', $7, $8, $9, $10)`,
       [
         orderId,
         body.name.trim(),
@@ -232,6 +251,10 @@ export async function saveOrder(body: OrderInput): Promise<{ orderId: string }> 
         body.country,
         body.total,
         body.currency,
+        body.city?.trim() ?? null,
+        body.address?.trim() ?? null,
+        paymentMethod,
+        paymentStatus,
       ]
     );
 
@@ -285,4 +308,185 @@ export async function saveOrder(body: OrderInput): Promise<{ orderId: string }> 
   }
 
   return { orderId };
+}
+
+// ─── Gateway checkout (card / Apple Pay / Tabby / Tamara) ───────────────────
+//
+// Two-phase flow: create a *pending* order when the gateway session/intent is
+// created, then confirm it via `markOrderPaid` once the provider's webhook (or
+// a verified return) confirms the payment. This keeps COD's `saveOrder` (which
+// finalizes immediately, since "payment" happens on delivery) completely
+// separate from the electronic-payment path, which must never create a
+// finalized order before money has actually moved.
+
+export interface PendingOrderInput {
+  name: string;
+  phone: string;
+  country: string;
+  items: { productId: number; quantity: number; isUpsell?: boolean }[];
+  total: number;
+  currency: string;
+  city?: string;
+  address?: string;
+  paymentMethod: "card" | "apple_pay" | "tabby" | "tamara";
+}
+
+export async function createPendingOrder(
+  body: PendingOrderInput
+): Promise<{ orderId: string }> {
+  if (!body.name?.trim() || !body.phone?.trim() || !body.items?.length) {
+    throw new Error("Missing required fields: name, phone, items");
+  }
+
+  await ensureSchema();
+
+  const orderId = generateOrderId();
+  const db = getPool();
+  const client = await db.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    await client.query(
+      `INSERT INTO orders (order_id, name, phone, country, total, currency, status, city, address, payment_method, payment_status)
+       VALUES ($1, $2, $3, $4, $5, $6, 'pending', $7, $8, $9, 'pending')`,
+      [
+        orderId,
+        body.name.trim(),
+        body.phone.trim(),
+        body.country,
+        body.total,
+        body.currency,
+        body.city?.trim() ?? null,
+        body.address?.trim() ?? null,
+        body.paymentMethod,
+      ]
+    );
+
+    for (const item of body.items) {
+      await client.query(
+        `INSERT INTO order_items (order_id, product_id, quantity, is_upsell)
+         VALUES ($1, $2, $3, $4)`,
+        [orderId, item.productId, item.quantity, item.isUpsell ?? false]
+      );
+    }
+
+    await client.query("COMMIT");
+  } catch (err) {
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+  }
+
+  return { orderId };
+}
+
+/** Store the gateway's own session/order id right after creating it, so it can be looked up later even before payment is confirmed (support, reconciliation, or webhooks that only carry the gateway's id). */
+export async function setOrderPaymentReference(
+  orderId: string,
+  paymentReference: string
+): Promise<void> {
+  const db = getPool();
+  await db.query(
+    `UPDATE orders SET payment_reference = COALESCE(payment_reference, $2) WHERE order_id = $1`,
+    [orderId, paymentReference]
+  );
+}
+
+export async function findOrderIdByPaymentReference(
+  paymentReference: string
+): Promise<string | null> {
+  const db = getPool();
+  const result = await db.query(
+    `SELECT order_id FROM orders WHERE payment_reference = $1`,
+    [paymentReference]
+  );
+  return result.rows[0]?.order_id ?? null;
+}
+
+/**
+ * Idempotently confirm payment for a pending order. Safe to call more than
+ * once (e.g. a webhook retry) — only the first call flips the status and
+ * fires the side effects (tracking event + Google Sheet sync).
+ *
+ * Returns `false` if the order was already paid (or doesn't exist), so the
+ * caller can treat repeat webhook deliveries as a no-op.
+ */
+export async function markOrderPaid(
+  orderId: string,
+  paymentReference: string,
+  gateway: string
+): Promise<boolean> {
+  const db = getPool();
+  const result = await db.query(
+    `UPDATE orders
+        SET payment_status = 'paid', payment_reference = COALESCE(payment_reference, $2)
+      WHERE order_id = $1 AND payment_status <> 'paid'
+      RETURNING order_id, name, phone, country, total, currency`,
+    [orderId, paymentReference]
+  );
+
+  if (result.rowCount === 0) return false;
+
+  const order = result.rows[0] as {
+    order_id: string;
+    name: string;
+    phone: string;
+    country: string;
+    total: string;
+    currency: string;
+  };
+
+  try {
+    await db.query(
+      `INSERT INTO tracking_events (order_id, event, metadata) VALUES ($1, 'payment_confirmed', $2)`,
+      [orderId, JSON.stringify({ gateway, paymentReference })]
+    );
+  } catch {
+    // non-fatal
+  }
+
+  try {
+    const itemsResult = await db.query<{
+      productId: number;
+      quantity: number;
+      isUpsell: boolean;
+    }>(
+      `SELECT product_id AS "productId", quantity, is_upsell AS "isUpsell"
+         FROM order_items WHERE order_id = $1`,
+      [orderId]
+    );
+    const { buildSheetPayload, sendOrderWebhook } = await import("./sheet-webhook");
+    const sheetPayload = buildSheetPayload(
+      order.order_id,
+      order.name,
+      order.phone,
+      order.country as import("./pricing").CountryCode,
+      itemsResult.rows,
+      Number(order.total),
+      order.currency
+    );
+    await sendOrderWebhook(sheetPayload);
+    console.log(`[orders] payment confirmed + synced ${orderId} via ${gateway}`);
+  } catch (err) {
+    console.error(
+      `[orders] payment-confirmed webhook failed ${orderId}:`,
+      err instanceof Error ? err.message : err
+    );
+  }
+
+  return true;
+}
+
+export async function getOrderPaymentStatus(
+  orderId: string
+): Promise<{ paymentStatus: string; paymentMethod: string } | null> {
+  const db = getPool();
+  const result = await db.query(
+    `SELECT payment_status AS "paymentStatus", payment_method AS "paymentMethod"
+       FROM orders WHERE order_id = $1`,
+    [orderId]
+  );
+  return result.rows[0] ?? null;
 }
