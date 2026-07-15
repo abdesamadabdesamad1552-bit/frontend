@@ -1,26 +1,26 @@
 [
   {
-    "id": "concentration",
-    "image": "/images/why-naqa/concentration.svg",
-    "title": "تركيزات حقيقية",
-    "description": "نسب دقيقة لكل مكون — مو بس \"يحتوي على\""
-  },
-  {
     "id": "gcc-climate",
     "image": "/images/why-naqa/gcc-climate.svg",
-    "title": "مصمم للخليج",
-    "description": "تركيبات مستقرة في الحرارة العالية والرطوبة"
+    "title": "ثابتة في الحرارة والرطوبة",
+    "description": "نختار أشكال مكوّنات تبقى فعّالة في جو الخليج — مثل فيتامين سي (Ethyl Ascorbic) الذي لا يتأكسد بسهولة."
+  },
+  {
+    "id": "concentration",
+    "image": "/images/why-naqa/concentration.svg",
+    "title": "تركيزات معلنة",
+    "description": "كل منتج يكتب لك النسبة بالضبط — 15% فيتامين سي، 2% ساليسيليك، مو بس \"يحتوي على\"."
   },
   {
     "id": "transparency",
     "image": "/images/why-naqa/transparency.svg",
     "title": "شفافية كاملة",
-    "description": "قائمة مكونات واضحة مع شرح لكل مكون"
+    "description": "قائمة مكوّنات واضحة + قائمة \"خالٍ من\" (هيدروكينون، كورتيزون، بارابين) على كل منتج."
   },
   {
     "id": "results",
     "image": "/images/why-naqa/results.svg",
-    "title": "نتائج مرئية",
-    "description": "مكونات مثبتة بدراسات سريرية — مو وعود فارغة"
+    "title": "قوام يناسب جوّك اليومي",
+    "description": "تركيبات خفيفة سريعة الامتصاص، تُستخدم تحت المكياج أو الواقي بدون لزوجة في الرطوبة."
   }
 ]

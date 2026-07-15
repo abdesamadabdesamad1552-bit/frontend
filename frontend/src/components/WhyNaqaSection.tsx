@@ -6,13 +6,13 @@ export default function WhyNaqaSection() {
     <section className="py-20 md:py-32 bg-brand-beige border-y border-brand-beige-dark">
       <div className="max-w-7xl mx-auto px-6">
         <p className="text-brand-gold text-xs font-semibold tracking-[0.25em] uppercase text-center mb-4">
-          فلسفتنا
+          WHY NAQA
         </p>
         <h2 className="font-display text-3xl md:text-5xl font-bold text-brand-black text-center mb-5">
-          لماذا نقاء؟
+          مصمّمة لحرارة الخليج — مو منقولة من برّا
         </h2>
         <p className="text-brand-gray text-center text-sm md:text-base mb-14 md:mb-16 max-w-xl mx-auto leading-relaxed">
-          معايير فاخرة في كل تفصيل — من التركيبة إلى التجربة
+          كل ادّعاء في نقاء لازم يكون قابل للتحقق: نسبة، مكوّن، سبب وجوده في التركيبة.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {whyNaqaPillars.map((pillar) => (
