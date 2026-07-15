@@ -1,4 +1,6 @@
 import pg from "pg";
+import { products } from "@/lib/products";
+import { sendTikTokPurchaseEvent } from "@/lib/analytics/tiktok-capi";
 
 const { Pool } = pg;
 
@@ -224,6 +226,24 @@ function generateOrderId(): string {
   return `NQ-${Date.now().toString(36).toUpperCase()}`;
 }
 
+/** Look up product name/price for the TikTok CAPI "contents" array. */
+function toTikTokItems(
+  items: { productId: number; quantity: number }[]
+): { id: string; name: string; price: number; quantity: number }[] {
+  return items
+    .map((item) => {
+      const product = products.find((p) => p.id === item.productId);
+      if (!product) return null;
+      return {
+        id: String(product.id),
+        name: product.name,
+        price: product.price,
+        quantity: item.quantity,
+      };
+    })
+    .filter((item): item is { id: string; name: string; price: number; quantity: number } => item !== null);
+}
+
 export async function saveOrder(body: OrderInput): Promise<{ orderId: string }> {
   if (!body.name?.trim() || !body.phone?.trim() || !body.items?.length) {
     throw new Error("Missing required fields: name, phone, items");
@@ -303,6 +323,22 @@ export async function saveOrder(body: OrderInput): Promise<{ orderId: string }> 
   } catch (err) {
     console.error(
       `[orders] webhook failed ${orderId}:`,
+      err instanceof Error ? err.message : err
+    );
+  }
+
+  try {
+    await sendTikTokPurchaseEvent({
+      orderId,
+      phone: body.phone,
+      country: body.country as import("./pricing").CountryCode,
+      currency: body.currency,
+      value: body.total,
+      items: toTikTokItems(body.items),
+    });
+  } catch (err) {
+    console.error(
+      `[orders] TikTok CAPI failed ${orderId}:`,
       err instanceof Error ? err.message : err
     );
   }
@@ -469,6 +505,15 @@ export async function markOrderPaid(
     );
     await sendOrderWebhook(sheetPayload);
     console.log(`[orders] payment confirmed + synced ${orderId} via ${gateway}`);
+
+    await sendTikTokPurchaseEvent({
+      orderId: order.order_id,
+      phone: order.phone,
+      country: order.country as import("./pricing").CountryCode,
+      currency: order.currency,
+      value: Number(order.total),
+      items: toTikTokItems(itemsResult.rows),
+    });
   } catch (err) {
     console.error(
       `[orders] payment-confirmed webhook failed ${orderId}:`,
