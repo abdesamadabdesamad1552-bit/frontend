@@ -17,9 +17,7 @@ export default function CartDrawer() {
     increment,
     decrement,
     removeItem,
-    addItem,
     totalItems,
-    cartProductIds,
   } = useCart();
 
   if (!state.isDrawerOpen) return null;
@@ -31,7 +29,6 @@ export default function CartDrawer() {
     }))
     .filter((item) => item.product);
 
-  const crossSells = products.filter((p) => !cartProductIds.includes(p.id));
   const total = calculateCartTotal(totalItems, state.country);
   const singlePrice = getSinglePrice(state.country);
 
@@ -125,45 +122,6 @@ export default function CartDrawer() {
                 </div>
               ))}
 
-              {crossSells.length > 0 && (
-                <div className="pt-4 border-t border-brand-beige-dark">
-                  <p className="text-sm font-bold text-brand-black mb-3">
-                    ✦ أضيفي لطلبك
-                  </p>
-                  <div className="space-y-2">
-                    {crossSells.map((product) => (
-                      <div
-                        key={product.id}
-                        className="flex items-center gap-3 p-2.5 rounded-lg border border-brand-beige-dark hover:border-brand-gold/30 transition-colors"
-                      >
-                        <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                          <Image
-                            src={getPrimaryImage(product)}
-                            alt={product.name}
-                            fill
-                            sizes="48px"
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-brand-black truncate">
-                            {product.name}
-                          </p>
-                          <p className="text-xs text-brand-gray">
-                            {formatPrice(singlePrice, state.country)}
-                          </p>
-                        </div>
-                        <button
-                          onClick={() => addItem(product.id)}
-                          className="text-xs font-bold text-brand-black border border-brand-gold/50 px-3 py-1.5 rounded-lg hover:bg-brand-gold hover:text-brand-white transition-colors flex-shrink-0"
-                        >
-                          أضف
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           )}
         </div>
