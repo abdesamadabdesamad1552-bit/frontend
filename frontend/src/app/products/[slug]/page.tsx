@@ -333,6 +333,56 @@ export default async function ProductPage({ params }: PageProps) {
         </div>
       </section>
 
+      {/* 4b. Before / After — sensory contrast (no fabricated imagery) */}
+      {landing.beforeAfter && (
+        <section className="py-16 md:py-24 bg-brand-white">
+          <div className="max-w-5xl mx-auto px-6">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-4xl font-bold text-brand-black mb-4">
+                {landing.beforeAfter.title}
+              </h2>
+              <p className="text-base text-brand-gray">
+                {landing.beforeAfter.subtitle}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              {/* قبل */}
+              <div className="p-8 rounded-3xl bg-brand-beige border border-brand-beige-dark">
+                <span className="inline-block px-4 py-1 rounded-full bg-brand-white text-brand-gray text-sm font-bold mb-6">
+                  {landing.beforeAfter.before.label}
+                </span>
+                <ul className="space-y-4">
+                  {landing.beforeAfter.before.points.map((point, i) => (
+                    <li key={i} className="flex gap-3 items-start">
+                      <XCircle className="w-5 h-5 text-brand-gray-light flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-brand-gray leading-relaxed">
+                        {point}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {/* بعد */}
+              <div className="p-8 rounded-3xl bg-brand-black text-brand-white shadow-xl">
+                <span className="inline-block px-4 py-1 rounded-full bg-brand-gold text-brand-white text-sm font-bold mb-6">
+                  {landing.beforeAfter.after.label}
+                </span>
+                <ul className="space-y-4">
+                  {landing.beforeAfter.after.points.map((point, i) => (
+                    <li key={i} className="flex gap-3 items-start">
+                      <CheckCircle2 className="w-5 h-5 text-brand-gold flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-brand-white/90 leading-relaxed">
+                        {point}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* 5. Trusted by Thousands */}
       <section className="py-16 md:py-24 bg-brand-white">
         <div className="max-w-4xl mx-auto px-6 text-center">

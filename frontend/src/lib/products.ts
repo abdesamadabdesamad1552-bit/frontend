@@ -32,6 +32,12 @@ export interface ProductLanding {
     paragraph: string;
     stats: { percent: string; text: string }[];
   };
+  beforeAfter?: {
+    title: string;
+    subtitle: string;
+    before: { label: string; points: string[] };
+    after: { label: string; points: string[] };
+  };
   faq: { q: string; a: string }[];
 }
 
